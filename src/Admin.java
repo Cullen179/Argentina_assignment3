@@ -2,8 +2,19 @@ import java.io.*;
 import java.util.Scanner;
 
 public class Admin {
-    public static void viewProduct() {
+    public void viewProduct() throws IOException {
+        // Scan items file
+        Scanner sc = new Scanner(new File("./src/File/items.txt"));
+        // Loop through items file
+        while (sc.hasNextLine()) {
+            String item = sc.nextLine();
+            Product.productDetails(item);
+        }
+    }
 
+    public static void main(String[] args) throws IOException {
+        Admin admin = new Admin();
+        admin.viewProduct();
     }
 
     public static void viewOrders() {
