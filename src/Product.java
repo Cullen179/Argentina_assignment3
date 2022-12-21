@@ -15,17 +15,12 @@ public class Product {
         this.category = category;
     }
 
-    public static void productDetails(String productInfo) {
-        String[] itemsInfo = productInfo.split(",");
-        String itemID = itemsInfo[0];
-        String itemTitle = itemsInfo[1];
-        String itemPrice = itemsInfo[2];
-        String itemCategory = itemsInfo[3];
-
-        System.out.println("ID: " + itemID);
-        System.out.println("Title: " + itemTitle);
-        System.out.println("Price: " + itemPrice);
-        System.out.println("Category: " + itemCategory);
+    public static void productDetails(String item) {
+        Product product = Product.generateProduct(item);
+        System.out.println("ID: " + product.getId());
+        System.out.println("Title: " + product.getName());
+        System.out.println("Price: " + product.getPrice());
+        System.out.println("Category: " + product.getCategory());
         System.out.println("-----------------");
     }
 
@@ -77,7 +72,7 @@ public class Product {
     }
 
     // Generate product from item line
-    public Product generateProduct(String item) {
+    public static Product generateProduct(String item) {
         String[] productInfo = item.split(",");
         String productID = productInfo[0];
         String productName = productInfo[1];
