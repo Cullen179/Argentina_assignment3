@@ -14,7 +14,7 @@ public class Admin {
 
     public static void main(String[] args) throws IOException {
         Admin admin = new Admin();
-        admin.viewProduct();
+        admin.addProduct();
     }
 
     public static void viewOrders() {
@@ -25,11 +25,16 @@ public class Admin {
 
     }
 
-    public static void addProduct() {
-
+    public void addProduct() throws IOException{
+        PrintWriter pw = new PrintWriter(new FileWriter("src/File/items.txt", true));
+        Product newProduct = Product.createProduct();
+        pw.printf("\n%s,%s,%f,%s", newProduct.getId(), newProduct.getName(), newProduct.getPrice(), newProduct.getCategory());
+        pw.close();
     }
 
+    public static void removeProduct() {
 
+    }
     public static void addCategory() {
 
     }
@@ -38,9 +43,6 @@ public class Admin {
 
     }
 
-    public static void removeProduct() {
-
-    }
 
     public static void getOrderByCusID() {
 
