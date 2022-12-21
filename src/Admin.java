@@ -44,7 +44,7 @@ public class Admin {
     }
 
 
-    public static void getOrderByCusID() {
+    public static void getOrderByCustomerID() {
 
     }
     public static void changeStatus() {

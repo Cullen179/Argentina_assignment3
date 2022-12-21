@@ -76,6 +76,16 @@ public class Product {
         return new Product(newIDNumber(year), name, price, category);
     }
 
+    // Generate product from item line
+    public Product generateProduct(String item) {
+        String[] productInfo = item.split(",");
+        String productID = productInfo[0];
+        String productName = productInfo[1];
+        double productPrice = Double.parseDouble(productInfo[2]);
+        String productCategory = productInfo[3];
+        return new Product(productID, productName, productPrice, productCategory);
+    }
+
     public String getId() { return id;
     }
 
