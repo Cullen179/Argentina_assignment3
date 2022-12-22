@@ -25,11 +25,11 @@ public class Main {
 //        Customer.listProductByCategory();
 //        Customer.sortProduct();
 //
-        Admin.removeProduct();
+//        Admin.removeProduct();
 //        Customer.login();
 //        Admin.login();
 //        Admin.addProduct();
 //        Admin.viewProduct();
-//        Admin.updatePrice();
+        Admin.updatePrice();
     }
 }

@@ -1,7 +1,7 @@
 import java.io.IOException;
 
 public class Order {
-    public static void displayOrderInfo(String productInfo) {
+    public static void orderDetail(String productInfo) {
         String[] orderInfo = productInfo.split(",");
         String orderId = orderInfo[0];
         String customerId = orderInfo[1];

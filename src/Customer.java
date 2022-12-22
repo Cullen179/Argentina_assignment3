@@ -259,11 +259,7 @@ public class Customer {
             int numbersOfItem = InputValidator.getIntInput(
                     "How many this items you would like to buy?", "Please type only number.");
             total += itemPrice * numbersOfItem;
-
             orderItemDetail.put(itemName, numbersOfItem);
-
-
-
         }
 
 
