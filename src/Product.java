@@ -30,7 +30,6 @@ public class Product {
             String currentProduct = scannerProduct.nextLine();
             String[] currentProductInfo = currentProduct.split(",");
             String currentProductName = currentProductInfo[1];
-
             if (name.equals(currentProductName)) {
                 return true;
             }
