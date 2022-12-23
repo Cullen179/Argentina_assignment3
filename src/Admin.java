@@ -164,8 +164,8 @@ public class Admin {
                     "Type the new item's price: ",
                     "The price should be a natural or decimal number. Please try again."));
             // Updated the new price for item.
-            String currentPrice = currentItem.split(",")[2];
-            String updateItem = currentItem.replace(currentPrice, updatePrice);
+            String itemPrice = currentItem.split(",")[2];
+            String updateItem = currentItem.replace(itemPrice, updatePrice);
             // Write the updated line to the temporary file.
             writer.write(updateItem + (scannerProduct.hasNextLine() ? System.lineSeparator() : ""));
             // Prompt a message to users.
@@ -188,11 +188,11 @@ public class Admin {
     }
     public static void getOrderByCustomerID() throws IOException {
         System.out.println("\nGET ORDER BY CUSTOMER ID");
-        Scanner scannerOrder = new Scanner(new File("./src/File/order.txt"));
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter the Customer ID: ");
         String customerIDInput = sc.nextLine();
 
+        Scanner scannerOrder = new Scanner(new File("./src/File/order.txt"));
         boolean checkCustomerIDExisted = false;
 
         while (scannerOrder.hasNextLine()) {
@@ -212,9 +212,45 @@ public class Admin {
         scannerOrder.close();
     }
 
-    public static void changeOrderStatus() {
+    public static void changeOrderStatus() throws IOException {
         System.out.println("\nCHANGE STATUS OF THE ORDER");
         Scanner sc = new Scanner(System.in);
+        System.out.print("Enter the order ID: ");
+        String orderIDInput = sc.nextLine();
+        Scanner scannerOrder = new Scanner(new File("./src/File/order.txt"));
+
+        // Create a writer for a temporary file to store updated data
+        File tempFile = new File("tempFile.txt");
+        BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+
+        boolean checkOrderIDExisted = false;
+
+        while (scannerOrder.hasNextLine()) {
+            String order = scannerOrder.nextLine();
+            String[] orderInfo = order.split(",");
+            String orderID = orderInfo[0];
+            // In case the name from input is not equivalent to the name of item in the file, it would add the new line.
+            if (!orderIDInput.equals(orderID)) {
+                writer.write(order + (scannerOrder.hasNextLine() ? System.lineSeparator() : ""));
+                continue;
+            }
+            checkOrderIDExisted = true;
+            String orderStatus = orderInfo[9];
+            if (!orderStatus.equals("paid")) {
+                String updatedOrder = order.replace(orderStatus, "paid");
+                writer.write(updatedOrder + (scannerOrder.hasNextLine() ? System.lineSeparator() : ""));
+                System.out.println("The status of this order has been successfully changed to paid.\n");
+            } else {
+                System.out.println("This order already has paid status.");
+                writer.write(order + (scannerOrder.hasNextLine() ? System.lineSeparator() : ""));
+                continue;
+            }
+            tempFile.renameTo(new File("./src/File/order.txt"));
+            writer.close();
+            }
+        if (!checkOrderIDExisted) {
+            System.out.println("\nThis customer's id cannot found. Please try with another one.");
+        }
 
     }
 

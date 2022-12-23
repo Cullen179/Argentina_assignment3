@@ -1,0 +1,2 @@
+O001,C003,Linh Nguyen,0424173255,2022-23-12,Macbook Pro M1 Max,12 Brunswick Street,1,22.0,paid
+O002,C005,Linh Nguyen,2022-23-12,0424325123,Macbook Pro M1 Max,45 Sydney Road,1,22.0,delivered
