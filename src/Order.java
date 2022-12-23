@@ -14,12 +14,13 @@ public class Order {
         String orderTotal = orderInfo[8];
         String orderStatus = orderInfo[9];
 
-        // getting each product name and number from the order
+        // Getting each product name and number from the order.
         String[] orderProductList = orderItem.split(":");
         String [] orderProductNumList = numberOfItems.split(":");
-
-        System.out.println("Order Id: " + orderId);
-        System.out.println("Customer Id: "  + customerId);
+        // Format and print out the information of the order.
+        System.out.println("-----------------");
+        System.out.println("ORDER ID: " + orderId);
+        System.out.println("Customer ID: "  + customerId);
         System.out.println("Customer Name: "  + customerName);
         System.out.println("Customer Phone: " + customerPhone);
         System.out.println("Order date: " + orderDate);
@@ -27,10 +28,10 @@ public class Order {
         System.out.println("Order products: ");
 
         for (int i = 0; i < orderProductList.length; i++) {
-            System.out.println("\t" + orderProductList[i] + " - " + orderProductNumList[i]);
+            System.out.println(orderProductList[i] + " | " + orderProductNumList[i]);
         }
-        System.out.println("Order total: " + orderTotal + " mil VND");
-        System.out.println("Order status: " + orderStatus + "\n");
+        System.out.println("Order total: " + orderTotal + " million VND.");
+        System.out.println("Order status: " + orderStatus);
     }
 
 }
