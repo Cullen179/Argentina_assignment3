@@ -28,8 +28,8 @@ public class Main {
 //        Admin.removeProduct();
 //        Customer.login();
 //        Admin.login();
-//        Admin.addProduct();
+        Admin.addProduct();
 //        Admin.viewProduct();
-        Admin.updatePrice();
+//        Admin.updatePrice();
     }
 }

@@ -1,4 +1,5 @@
 import java.io.*;
+import java.lang.reflect.Member;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -51,7 +52,7 @@ public class Admin {
     public static void viewOrders() throws IOException {
         // Create a scanner object to read from an item text file.
         Scanner scannerOrder = new Scanner(new File("./src/order.txt"));
-        System.out.println("\nVIEW ORDER\n");
+        System.out.println("\nVIEW ORDER");
         // A loop is used to display detailed information of each order.
         while (scannerOrder.hasNextLine()) {
             String order = scannerOrder.nextLine();
@@ -59,40 +60,20 @@ public class Admin {
         }
         scannerOrder.close();
     }
-//    public static void addProducts() throws IOException {
-//        System.out.println("\nADD NEW PRODUCT\n");
-//        Scanner sc = new Scanner(System.in);
-//
-////        String itemId = UUID.randomUUID().toString();
-//
-//        String itemName;
-//
-//        while (true) {
-//            System.out.print("Type the item's name: ");
-//            itemName = sc.nextLine();
-//
-//            if (!Product.checkProductExisted(itemName)) {
-//                break;
-//            } else {
-//                System.out.println("This name has already been used. Please try with another one.");
-//            }
-//        }
-//        System.out.print("Type the item's category: ");
-//        String itemCategory = sc.nextLine();
-//
-//        String itemPrice = String.valueOf(InputValidator.getDoubleInput(
-//                "Type the item's price: ",
-//                "The price should be a natural or decimal number. Please try again."));
-//        System.out.println("What is the year of the product:");
-//        int year = sc.nextInt();
-////        String newItem = String.join(",", itemId, itemName, itemPrice, itemCategory);
-////        Writer addItem = new BufferedWriter(new FileWriter("./src/File/items.txt", true));
-////        addItem.append(System.lineSeparator() + newItem);
-////
-////        System.out.println("ADD PRODUCT SUCCESSFULLY");
-////        addItem.close();
-//    }
 
+    public static void viewMembers() throws IOException {
+        // Create a scanner object to read from a member text file.
+        Scanner scannerMember = new Scanner(new File("./src/File.member.txt"));
+        System.out.println("\nVIEW MEMBER");
+        // A loop is used to display detailed information of each member.
+        while (scannerMember.hasNextLine()) {
+            String member = scannerMember.nextLine();
+            // ADD THIS FUNCTION IN MEMBER CLASS LATER
+//            Member.memberDetail(member);
+        }
+        scannerMember.close();
+
+    }
 
     // This method is used to add new product for admin.
     public static void addProduct() throws IOException{
@@ -103,61 +84,8 @@ public class Admin {
         System.out.println("ADD PRODUCT SUCCESSFULLY");
         pw.close();
     }
-
-    // This method is used to update the price of product for admin.
-    public static void updatePrice() throws IOException {
-        System.out.println("\nUPDATE THE PRICE OF PRODUCT");
-        // Create a scanner object to be ready to get input information (nameItem) from users via keyboard.
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Enter item's name: ");
-        String nameInput = sc.nextLine();
-        // Create a scanner object to read from an item text file.
-        Scanner scannerProduct = new Scanner(new File("./src/File/items.txt"));
-        // Create a writer for a temporary file to store updated data
-        File tempFile = new File("tempFile.txt");
-        BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-        // A boolean value to check the item name matched or not.
-        boolean checkItem = false;
-        // Continue to loop through each line of items.txt file to find the name of item.
-        while (scannerProduct.hasNextLine()) {
-            String currentItem = scannerProduct.nextLine();
-            String[] currentItemInfo = currentItem.split(",");
-            String currentItemName = currentItemInfo[1];
-            // In case the name from input is not equivalent to the name of item in the file, it would add the new line.
-            if (!nameInput.equals(currentItemName)) {
-                writer.write(currentItem + (scannerProduct.hasNextLine() ? System.lineSeparator() : ""));
-                continue;
-            }
-            // In case an item is found, it would prompt user to input the new price of item.
-            checkItem = true;
-            String updatePrice = String.valueOf(InputValidator.getDoubleInput(
-                    "Type the new item's price: ",
-                    "The price should be a natural or decimal number. Please try again."));
-            // Updated the new price for item.
-            String currentPrice = currentItem.split(",")[2];
-            String updateItem = currentItem.replace(currentPrice, updatePrice);
-            // Write the updated line to the temporary file.
-            writer.write(updateItem + (scannerProduct.hasNextLine() ? System.lineSeparator() : ""));
-            // Prompt a message to users.
-            System.out.println("Update the price of product successfully");
-        }
-        // Rename the temporary file to the original one.
-        tempFile.renameTo(new File("./src/File/items.txt"));
-        writer.close();
-        // In case an item is not found, it would prompt user an unsuccessful message.
-        if (!checkItem) {
-            System.out.println("This item's name cannot found. Please try with another one.\n");
-        }
-    }
-    public static void addCategory() {
-
-    }
-
-    public static void removeCategory() {
-
-    }
-
     public static void removeProduct() throws IOException {
+        System.out.println("\nREMOVE PRODUCT");
         // Create a scanner object to be ready to get input information (nameItem) from users via keyboard.
         Scanner scannerInput = new Scanner(System.in);
         System.out.println("Enter item's name: ");
@@ -206,8 +134,86 @@ public class Admin {
         }
     }
 
+    // This method is used to update the price of product for admin.
+    public static void updatePrice() throws IOException {
+        System.out.println("\nUPDATE THE PRICE OF PRODUCT");
+        // Create a scanner object to be ready to get input information (nameItem) from users via keyboard.
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter item's name: ");
+        String nameInput = sc.nextLine();
+        // Create a scanner object to read from an item text file.
+        Scanner scannerProduct = new Scanner(new File("./src/File/items.txt"));
+        // Create a writer for a temporary file to store updated data
+        File tempFile = new File("tempFile.txt");
+        BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+        // A boolean value to check the item name matched or not.
+        boolean checkItem = false;
+        // Continue to loop through each line of items.txt file to find the name of item.
+        while (scannerProduct.hasNextLine()) {
+            String currentItem = scannerProduct.nextLine();
+            String[] currentItemInfo = currentItem.split(",");
+            String currentItemName = currentItemInfo[1];
+            // In case the name from input is not equivalent to the name of item in the file, it would add the new line.
+            if (!nameInput.equals(currentItemName)) {
+                writer.write(currentItem + (scannerProduct.hasNextLine() ? System.lineSeparator() : ""));
+                continue;
+            }
+            // In case an item is found, it would prompt user to input the new price of item.
+            checkItem = true;
+            String updatePrice = String.valueOf(InputValidator.getDoubleInput(
+                    "Type the new item's price: ",
+                    "The price should be a natural or decimal number. Please try again."));
+            // Updated the new price for item.
+            String currentPrice = currentItem.split(",")[2];
+            String updateItem = currentItem.replace(currentPrice, updatePrice);
+            // Write the updated line to the temporary file.
+            writer.write(updateItem + (scannerProduct.hasNextLine() ? System.lineSeparator() : ""));
+            // Prompt a message to users.
+            System.out.println("Update the price of product successfully");
+        }
+        // Rename the temporary file to the original one.
+        tempFile.renameTo(new File("./src/File/items.txt"));
+        // In case an item is not found, it would prompt user an unsuccessful message.
+        if (!checkItem) {
+            System.out.println("\nThis item's name cannot found. Please try with another one.");
+        }
+        writer.close();
+    }
+    public static void addCategory() {
+
+    }
+
+    public static void removeCategory() {
+
+    }
+    public static void getOrderByCustomerID() throws IOException {
+        System.out.println("\nGET ORDER BY CUSTOMER ID");
+        Scanner scannerOrder = new Scanner(new File("./src/File/order.txt"));
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter the Customer ID: ");
+        String customerIDInput = sc.nextLine();
+
+        boolean checkCustomerIDExisted = false;
+
+        while (scannerOrder.hasNextLine()) {
+            String order = scannerOrder.nextLine();
+            String[] orderInfo = order.split(",");
+            String customerID = orderInfo[1];
+
+            if (customerIDInput.equals(customerID)) {
+                Order.orderDetail(order);
+                checkCustomerIDExisted = true;
+            }
+        }
+
+        if (!checkCustomerIDExisted) {
+            System.out.println("\nThis customer's id cannot found. Please try with another one.");
+        }
+        scannerOrder.close();
+    }
+
     public static void changeOrderStatus() {
-        System.out.println("\nCHANGE STATUS OF THE ORDER\n");
+        System.out.println("\nCHANGE STATUS OF THE ORDER");
         Scanner sc = new Scanner(System.in);
 
     }

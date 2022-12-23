@@ -174,7 +174,7 @@ public class Customer {
 
     public static void sortProduct() throws IOException {
         System.out.println("Sorting all products by product price following an increasing or decreasing order.");
-        Scanner scannerProduct = new Scanner(new File("./src/items.txt"));
+        Scanner scannerProduct = new Scanner(new File("./src/File/items.txt"));
         ArrayList<Product> productList = new ArrayList<>();
 
         while (scannerProduct.hasNextLine()) {
