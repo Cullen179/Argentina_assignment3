@@ -62,7 +62,7 @@ public class Customer {
                 maximum = Double.parseDouble(maximumString);
             System.out.println("--------------");
         } catch (NumberFormatException nfe) {
-            fileScanner.nextLine();
+            maximum = 10000000;
         }
 
         // variable to count whether there is any matches
