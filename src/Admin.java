@@ -251,7 +251,7 @@ public class Admin {
         if (!checkOrderIDExisted) {
             System.out.println("\nThis customer's id cannot found. Please try with another one.");
         }
-
+        scannerOrder.close();
     }
 
 }
