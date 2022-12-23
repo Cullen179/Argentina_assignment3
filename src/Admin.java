@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Admin {
@@ -86,26 +87,31 @@ public class Admin {
         } else {
             System.out.println("Category is already available. Do you want to retry ?");
             boolean retry = sc.nextBoolean();
-            // Call add category method if admin want to retry
+            // Call addCategory method if admin want to retry
             if (retry) {
                 addCategory();
             }
         }
     }
 
-    public static void removeCategory() {
+    public void removeCategory() throws IOException{
         Scanner sc = new Scanner(System.in);
-        System.out.println("What category do you want to add ?");
-        String newCategory = sc.next();
-        // Check if new category is in category list
-        if (!Product.getCategoryList().contains(newCategory)) {
-            Product.addCategory(newCategory);
+        System.out.println("What category do you want to remove ?");
+        String removeCategory = sc.next();
+        ArrayList<String> categoryList = Product.getCategoryList();
+        // Check if remove category is in category list
+        if (categoryList.contains(removeCategory)) {
+            for (int i = 0; i < categoryList.size(); i++) {
+                if (categoryList.get(i).equals(removeCategory)) {
+                    categoryList.remove(i);
+                }
+            }
         } else {
-            System.out.println("Category is already available. Do you want to retry ?");
+            System.out.println("Remove category is not in the list. Do you want to retry ?");
             boolean retry = sc.nextBoolean();
-            // Call add category method if admin want to retry
+            // Call removeCategory method if admin want to retry
             if (retry) {
-                addCategory();
+                removeCategory();
             }
         }
 
