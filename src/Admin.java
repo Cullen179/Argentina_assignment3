@@ -94,7 +94,7 @@ public class Admin {
         }
     }
 
-    public void removeCategory() throws IOException{
+    public void removeCategory() throws IOException {
         Scanner sc = new Scanner(System.in);
         System.out.println("What category do you want to remove ?");
         String removeCategory = sc.next();
@@ -114,6 +114,50 @@ public class Admin {
                 removeCategory();
             }
         }
+    }
+
+    public void removeCustomer() throws IOException{
+        // Add new file
+        File removeCus = new File("./src/File/removeCustomers.txt");
+        File customerFile = new File("./src/File/customers.txt");
+        Scanner fileScanner = new Scanner(customerFile);
+        PrintWriter pw = new PrintWriter(new FileWriter(removeCus, true));
+        // Initiate line number
+        int line = 0;
+        String id = "C007";
+        // Boolean variable if remove customer match line 1
+        boolean matchedLine1 = false;
+
+        // Loop through customer file
+        while (fileScanner.hasNextLine()) {
+            String item = fileScanner.nextLine();
+            line++;
+            Product product = Product.generateProduct(item);
+
+            // Check if product id equal remove item id, and line number is 1
+            if (product.getId().equals(id) && line == 1) {
+                matchedLine1 = true;
+                continue;
+
+                // Check if product id equal remove item id,
+            } else if (product.getId().equals(id)) {
+                continue;
+            }
+
+            // if line number is 1 or 2 with remove item in line 1, avoid adding new line
+            if (line == 1 || (line == 2 && matchedLine1)) {
+                pw.printf(item);
+            } else {
+                pw.printf("\n" + item);
+            }
+        }
+        fileScanner.close();
+        pw.close();
+        // Delete the item file
+        customerFile.delete();
+        // Rename remove item file to item file
+        removeCus.renameTo(customerFile);
+    }
 
 
     public static void getOrderByCustomerID() {
