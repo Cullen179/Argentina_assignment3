@@ -40,8 +40,10 @@ public class Admin {
         File itemFile = new File("./src/File/items.txt");
         Scanner fileScanner = new Scanner(itemFile);
         PrintWriter pw = new PrintWriter(new FileWriter(removeItem, true));
+        // Initiate line number
         int line = 0;
-        String id = "I001-2001";
+        String id = "I007-2003";
+        // Boolean variable if remove item match line 1
         boolean matchedLine1 = false;
 
         // Loop through items file
@@ -50,34 +52,62 @@ public class Admin {
             line++;
             Product product = Product.generateProduct(item);
 
-            // If product id equal remove item id, print writer skip that item
+            // Check if product id equal remove item id, and line number is 1
             if (product.getId().equals(id) && line == 1) {
                 matchedLine1 = true;
                 continue;
+
+            // Check if product id equal remove item id,
             } else if (product.getId().equals(id)) {
                 continue;
             }
 
-            // Trim the last item of the file to avoid adding new line
+            // if line number is 1 or 2 with remove item in line 1, avoid adding new line
             if (line == 1 || (line == 2 && matchedLine1)) {
                 pw.printf(item);
             } else {
                 pw.printf("\n" + item);
             }
         }
-
         fileScanner.close();
         pw.close();
+        // Delete the item file
         itemFile.delete();
+        // Rename remove item file to item file
         removeItem.renameTo(itemFile);
     }
-    public static void addCategory() {
-
+    public void addCategory() throws IOException{
+        Scanner sc = new Scanner(System.in);
+        System.out.println("What category do you want to add ?");
+        String newCategory = sc.next();
+        // Check if new category is in category list
+        if (!Product.getCategoryList().contains(newCategory)) {
+            Product.addCategory(newCategory);
+        } else {
+            System.out.println("Category is already available. Do you want to retry ?");
+            boolean retry = sc.nextBoolean();
+            // Call add category method if admin want to retry
+            if (retry) {
+                addCategory();
+            }
+        }
     }
 
     public static void removeCategory() {
-
-    }
+        Scanner sc = new Scanner(System.in);
+        System.out.println("What category do you want to add ?");
+        String newCategory = sc.next();
+        // Check if new category is in category list
+        if (!Product.getCategoryList().contains(newCategory)) {
+            Product.addCategory(newCategory);
+        } else {
+            System.out.println("Category is already available. Do you want to retry ?");
+            boolean retry = sc.nextBoolean();
+            // Call add category method if admin want to retry
+            if (retry) {
+                addCategory();
+            }
+        }
 
 
     public static void getOrderByCustomerID() {

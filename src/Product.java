@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Product {
@@ -7,6 +8,7 @@ public class Product {
     private final String name;
     private double price;
     private String category;
+    private static ArrayList<String> categoryList = new ArrayList<String>();
 
     public Product(String id, String name, double price, String category) {
         this.id = id;
@@ -80,6 +82,22 @@ public class Product {
         return new Product(productID, productName, productPrice, productCategory);
     }
 
+    public static ArrayList<String> getCategoryList() throws IOException{
+        // Scan items file
+        Scanner sc = new Scanner(new File("./src/File/items.txt"));
+        // Loop through items file
+        while (sc.hasNextLine()) {
+            String item = sc.nextLine();
+            Product product = Product.generateProduct(item);
+            // If category is not in the list, add category
+            if (!categoryList.contains(product.getCategory())) {
+                categoryList.add(product.getCategory());
+            }
+        }
+        return categoryList;
+    }
+
+
     public String getId() { return id;
     }
 
@@ -101,5 +119,19 @@ public class Product {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public static void addCategory(String category) throws IOException{
+        getCategoryList().add(category);
+    }
+
+    public static void main(String[] args) throws IOException{
+        getCategoryList().add("test");
+        for (int i = 0; i < categoryList.size(); i++) {
+            System.out.println(categoryList.get(i));
+        }
+//        for (String category: categoryList) {
+//            System.out.println(category);
+//        }
     }
 }
