@@ -51,7 +51,7 @@ public class Admin {
     // This method is used to view orders for admin.
     public static void viewOrders() throws IOException {
         // Create a scanner object to read from an item text file.
-        Scanner scannerOrder = new Scanner(new File("./src/order.txt"));
+        Scanner scannerOrder = new Scanner(new File("./src/File/order.txt"));
         System.out.println("\nVIEW ORDER");
         // A loop is used to display detailed information of each order.
         while (scannerOrder.hasNextLine()) {

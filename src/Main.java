@@ -32,6 +32,8 @@ public class Main {
 //        Admin.viewProduct();
 //        Admin.updatePrice();
 //        Admin.changeOrderStatus();
-        Admin.getOrderByCustomerID();
+//        Admin.getOrderByCustomerID();
+        Admin.viewOrders();
     }
+
 }
