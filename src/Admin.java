@@ -77,49 +77,43 @@ public class Admin {
         // Rename remove item file to item file
         removeItem.renameTo(itemFile);
     }
-//    public void updateProduct() throws IOException{
-//        // Add new file
-//        File updatePrice = new File("./src/File/update_items.txt");
-//        File itemFile = new File("./src/File/items.txt");
-//        Scanner fileScanner = new Scanner(itemFile);
-//        PrintWriter pw = new PrintWriter(new FileWriter(updatePrice, true));
-//        // Initiate line number
-//        int line = 0;
-//        String id = "I007-2003";
-//        // Boolean variable if update price item match line 1
-//        boolean matchedLine1 = false;
-//
-//        // Loop through items file
-//        while (fileScanner.hasNextLine()) {
-//            String item = fileScanner.nextLine();
-//            line++;
-//            Product product = Product.generateProduct(item);
-//
-//            // Check if product id equal update item id, and line number is 1
-//            if (product.getId().equals(id) && line == 1) {
-//                matchedLine1 = true;
-//                continue;
-//
-//            // Check if product id equal update item id,
-//            } else if (product.getId().equals(id)) {
-//                product.setPrice(newPrice);
-//                continue;
-//            }
-//
-//            // if line number is 1, avoid adding new line
-//            if (line == 1) {
-//                pw.printf(item);
-//            } else {
-//                pw.printf("\n" + item);
-//            }
-//        }
-//        fileScanner.close();
-//        pw.close();
-//        // Delete the item file
-//        itemFile.delete();
-//        // Rename remove item file to item file
-//        updatePrice.renameTo(itemFile);
-//    }
+    public void updateProduct() throws IOException{
+        Scanner sc = new Scanner(System.in);
+        System.out.println("What is the product you want to update");
+
+        // Add new file
+        File updatePrice = new File("./src/File/update_items.txt");
+        File itemFile = new File("./src/File/items.txt");
+        Scanner fileScanner = new Scanner(itemFile);
+        PrintWriter pw = new PrintWriter(new FileWriter(updatePrice, true));
+        // Initiate line number
+        int line = 0;
+        String id = "I007-2003";
+
+        // Loop through items file
+        while (fileScanner.hasNextLine()) {
+            String item = fileScanner.nextLine();
+            line++;
+            Product product = Product.generateProduct(item);
+
+            if (product.getId().equals(id)) {
+//                product.setPrice();
+            }
+
+            // if line number is 1, avoid adding new line
+            if (line == 1) {
+                pw.printf(item);
+            } else {
+                pw.printf("\n" + item);
+            }
+        }
+        fileScanner.close();
+        pw.close();
+        // Delete the item file
+        itemFile.delete();
+        // Rename remove item file to item file
+        updatePrice.renameTo(itemFile);
+    }
     public void addCategory() throws IOException{
         Scanner sc = new Scanner(System.in);
         System.out.println("What category do you want to add ?");
@@ -156,6 +150,41 @@ public class Admin {
             if (retry) {
                 removeCategory();
             }
+        }
+    }
+
+    public void removeItemCategory(String category) throws IOException {
+        File updateCategory = new File("./src/File/updateItems.txt");
+        File itemFile = new File("./src/File/items.txt");
+        Scanner fileScanner = new Scanner(itemFile);
+        PrintWriter pw = new PrintWriter(new FileWriter(updateCategory, true));
+        // Initiate line number
+        int line = 0;
+
+        // Loop through items file
+        while (fileScanner.hasNextLine()) {
+            String item = fileScanner.nextLine();
+            line++;
+            Product product = Product.generateProduct(item);
+
+            // Check if product category equal remove category
+            if (product.getCategory().equals(category)) {
+                product.setCategory("None");
+
+
+                // if line number is 1 , avoid adding new line
+                if (line == 1) {
+                    pw.printf(item);
+                } else {
+                    pw.printf("\n" + item);
+                }
+            }
+            fileScanner.close();
+            pw.close();
+            // Delete the item file
+            itemFile.delete();
+            // Rename remove item file to item file
+            updateCategory.renameTo(itemFile);
         }
     }
 

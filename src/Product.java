@@ -61,12 +61,10 @@ public class Product {
 
     public static Product createProduct() throws IOException{
         Scanner sc = new Scanner(System.in);
-        System.out.println("What is the name of the product:");
-        String name = sc.next();
+        String name = checkName();
         System.out.println("What is the price of the product:");
         double price = sc.nextDouble();
-        System.out.println("What is the category of the product:");
-        String category = sc.next();
+        String category = checkCategory();
         System.out.println("What is the year of the product:");
         int year = sc.nextInt();
         return new Product(newIDNumber(year), name, price, category);
@@ -97,6 +95,40 @@ public class Product {
         return categoryList;
     }
 
+    public static String checkName() throws IOException {
+        Scanner sc = new Scanner(System.in);
+        String name;
+        while (true) {
+            System.out.println("What is the name of the product:");
+            name = sc.next();
+            // Check if product name exist
+            if (checkProductExisted(name)) {
+                System.out.println("Product name already exist");
+                System.out.println("Please enter different name");
+                // Stop if product name is valid
+            } else {
+                break;
+            }
+        }
+        return name;
+    }
+
+    public static String checkCategory() throws IOException {
+        Scanner sc = new Scanner(System.in);
+        String category;
+        while (true) {
+            System.out.println("What is the category of the product:");
+            category = sc.next();
+            // Check if category is available
+            if (!Product.getCategoryList().contains(category)) {
+                System.out.println("The category does not exist");
+                System.out.println("Please enter a valid category");
+                // Stop if category is valid
+            } else {
+                break;
+            }
+        }
+    }
 
     public String getId() { return id;
     }
@@ -126,12 +158,7 @@ public class Product {
     }
 
     public static void main(String[] args) throws IOException{
-        getCategoryList().add("test");
-        for (int i = 0; i < categoryList.size(); i++) {
-            System.out.println(categoryList.get(i));
-        }
-//        for (String category: categoryList) {
-//            System.out.println(category);
-//        }
+//        String name = createName();
+//        System.out.println(name);
     }
 }
