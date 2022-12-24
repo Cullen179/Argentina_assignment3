@@ -15,7 +15,7 @@ public class Admin {
 
     public static void main(String[] args) throws IOException {
         Admin admin = new Admin();
-        admin.removeProduct();
+        admin.removeCategory();
     }
 
     public static void viewOrders() {
@@ -43,7 +43,7 @@ public class Admin {
         PrintWriter pw = new PrintWriter(new FileWriter(removeItem, true));
         // Initiate line number
         int line = 0;
-        String id = "I007-2003";
+        String id = "I007-2014";
         // Boolean variable if remove item match line 1
         boolean matchedLine1 = false;
 
@@ -143,6 +143,7 @@ public class Admin {
                     categoryList.remove(i);
                 }
             }
+            removeItemCategory(removeCategory);
         } else {
             System.out.println("Remove category is not in the list. Do you want to retry ?");
             boolean retry = sc.nextBoolean();
@@ -154,9 +155,9 @@ public class Admin {
     }
 
     public void removeItemCategory(String category) throws IOException {
-        File updateCategory = new File("./src/File/updateItems.txt");
-        File itemFile = new File("./src/File/items.txt");
-        Scanner fileScanner = new Scanner(itemFile);
+        File updateCategory = new File("./src/File/updateCategory.txt");
+        File items = new File("src/File/items.txt");
+        Scanner fileScanner = new Scanner(items);
         PrintWriter pw = new PrintWriter(new FileWriter(updateCategory, true));
         // Initiate line number
         int line = 0;
@@ -170,22 +171,23 @@ public class Admin {
             // Check if product category equal remove category
             if (product.getCategory().equals(category)) {
                 product.setCategory("None");
-
-
-                // if line number is 1 , avoid adding new line
-                if (line == 1) {
-                    pw.printf(item);
-                } else {
-                    pw.printf("\n" + item);
-                }
+                // Update category to item line
+                item = Product.generateItem(product);
             }
-            fileScanner.close();
-            pw.close();
-            // Delete the item file
-            itemFile.delete();
-            // Rename remove item file to item file
-            updateCategory.renameTo(itemFile);
+
+            // if line number is 1 , avoid adding new line
+            if (line == 1) {
+                pw.printf(item);
+            } else {
+                pw.printf("\n" + item);
+            }
         }
+//        fileScanner.close();
+//        pw.close();
+        // Delete the items file
+        items.delete();
+        // Rename remove item file to item file
+//        updateCategory.renameTo(items);
     }
 
     public void removeCustomer() throws IOException{

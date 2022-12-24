@@ -80,6 +80,10 @@ public class Product {
         return new Product(productID, productName, productPrice, productCategory);
     }
 
+    public static String generateItem(Product product) {
+        return String.format("%s,%s,%.1f,%s", product.getId(), product.getName(), product.getPrice(), product.getCategory());
+    }
+
     public static ArrayList<String> getCategoryList() throws IOException{
         // Scan items file
         Scanner sc = new Scanner(new File("./src/File/items.txt"));
@@ -128,6 +132,7 @@ public class Product {
                 break;
             }
         }
+        return category;
     }
 
     public String getId() { return id;
