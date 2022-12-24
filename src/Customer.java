@@ -6,7 +6,7 @@ public class Customer {
         Scanner input = new Scanner(System.in);
 
         String username;
-        System.out.println("Please type your username: ");
+        System.out.print("Please type your username: ");
         while (true) {
             username = input.nextLine();
 
@@ -42,7 +42,7 @@ public class Customer {
         }
 
         String email;
-        System.out.println("Please type your email, eg: abc@gmail.com ");
+        System.out.print("Please type your email, eg: abc@gmail.com ");
 //        while (true) {
 //            email = input.nextLine();
 //

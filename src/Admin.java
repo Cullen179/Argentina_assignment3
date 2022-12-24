@@ -6,7 +6,7 @@ import java.util.UUID;
 public class Admin {
     // This method is used to log in for admin role.
     public static boolean login() throws IOException {
-        System.out.println("\nLOG IN AS ADMIN ROLE\n");
+        System.out.println("\nLOG IN AS ADMIN ROLE");
         // Create a scanner object to be ready to get input information (username & password) from users via keyboard.
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter your username: ");
@@ -14,7 +14,7 @@ public class Admin {
         System.out.print("Enter your password: ");
         String passwordAd = sc.nextLine();
         // Create a scanner object to read from an admin text file.
-        Scanner scannerAdmin = new Scanner(new File("./src//admin.txt"));
+        Scanner scannerAdmin = new Scanner(new File("./src/File/admin.txt"));
         // Continue to loop through each line of admin.txt file to find the username and password of admin.
         while (scannerAdmin.hasNextLine()) {
             String currentAdmin = scannerAdmin.nextLine();
@@ -25,6 +25,7 @@ public class Admin {
             if (usernameAd.equals(currentAdminUsername) && passwordAd.equals(currentAdminPassword)) {
                 // Prompt user a successful message
                 System.out.println("LOGIN SUCCESSFULLY");
+                System.out.println("-------------------");
                 scannerAdmin.close();
                 return true;
             }
@@ -36,7 +37,7 @@ public class Admin {
     }
 
     // This method is used to view products for admin.
-    public static void viewProduct() throws IOException {
+    public static void viewProducts() throws IOException {
         // Create a scanner object to read from an item text file.
         Scanner scannerProduct = new Scanner(new File("./src/File/items.txt"));
         System.out.println("\nVIEW PRODUCT\n");
@@ -63,7 +64,7 @@ public class Admin {
 
     public static void viewMembers() throws IOException {
         // Create a scanner object to read from a member text file.
-        Scanner scannerMember = new Scanner(new File("./src/File.member.txt"));
+        Scanner scannerMember = new Scanner(new File("./src/File/member.txt"));
         System.out.println("\nVIEW MEMBER");
         // A loop is used to display detailed information of each member.
         while (scannerMember.hasNextLine()) {
@@ -88,7 +89,7 @@ public class Admin {
         System.out.println("\nREMOVE PRODUCT");
         // Create a scanner object to be ready to get input information (nameItem) from users via keyboard.
         Scanner scannerInput = new Scanner(System.in);
-        System.out.println("Enter item's name: ");
+        System.out.print("Enter item's name: ");
         String nameItemInput = scannerInput.nextLine();
         // Create a scanner object to read from an item text file.
         Scanner scannerProduct = new Scanner(new File("./src/File/items.txt"));
@@ -146,7 +147,7 @@ public class Admin {
         // Create a writer for a temporary file to store updated data
         File tempFile = new File("tempFile.txt");
         BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-        // A boolean value to check the item name matched or not.
+        // A boolean value to check the item's name existed or not.
         boolean checkItem = false;
         // Continue to loop through each line of items.txt file to find the name of item.
         while (scannerProduct.hasNextLine()) {
@@ -186,72 +187,88 @@ public class Admin {
     public static void removeCategory() {
 
     }
+    // This method is used to get the information of all orders made by customers through his/ her ID.
     public static void getOrderByCustomerID() throws IOException {
         System.out.println("\nGET ORDER BY CUSTOMER ID");
+        // Create a scanner object to be ready to get input information (customer ID) from users via keyboard.
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter the Customer ID: ");
         String customerIDInput = sc.nextLine();
-
+        // Create a scanner object to read from an order text file.
         Scanner scannerOrder = new Scanner(new File("./src/File/order.txt"));
+        // A boolean value to check the item's name existed or not.
         boolean checkCustomerIDExisted = false;
-
+        // Continue to loop through each line of order.txt file to find the ID of customers.
         while (scannerOrder.hasNextLine()) {
             String order = scannerOrder.nextLine();
             String[] orderInfo = order.split(",");
             String customerID = orderInfo[1];
-
+            // In case the input ID is equivalent to the customerID from file, the following function would be executed.
             if (customerIDInput.equals(customerID)) {
                 Order.orderDetail(order);
                 checkCustomerIDExisted = true;
             }
         }
-
+        // In case the customer's id is not existed, prompt user a message.
         if (!checkCustomerIDExisted) {
             System.out.println("\nThis customer's id cannot found. Please try with another one.");
         }
         scannerOrder.close();
     }
 
+    // This method is used to change the status of an order.
     public static void changeOrderStatus() throws IOException {
         System.out.println("\nCHANGE STATUS OF THE ORDER");
+        // Create a scanner object to be ready to get input information (order ID) from users via keyboard.
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter the order ID: ");
         String orderIDInput = sc.nextLine();
+        // Create a scanner object to read from an order text file.
         Scanner scannerOrder = new Scanner(new File("./src/File/order.txt"));
-
         // Create a writer for a temporary file to store updated data
         File tempFile = new File("tempFile.txt");
         BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-
+        // A boolean value to check the order was made or not.
         boolean checkOrderIDExisted = false;
-
+        // Continue to loop through each line of order.txt file to find the ID of an order.
         while (scannerOrder.hasNextLine()) {
             String order = scannerOrder.nextLine();
             String[] orderInfo = order.split(",");
             String orderID = orderInfo[0];
-            // In case the name from input is not equivalent to the name of item in the file, it would add the new line.
+            // In case the ID from input is not equivalent to the orderID in the file, it would add the new line.
             if (!orderIDInput.equals(orderID)) {
                 writer.write(order + (scannerOrder.hasNextLine() ? System.lineSeparator() : ""));
                 continue;
             }
             checkOrderIDExisted = true;
             String orderStatus = orderInfo[9];
+            // In case the status is delivered, it would be changed to 'paid', update the new line to the file then prompt a message.
             if (!orderStatus.equals("paid")) {
                 String updatedOrder = order.replace(orderStatus, "paid");
                 writer.write(updatedOrder + (scannerOrder.hasNextLine() ? System.lineSeparator() : ""));
                 System.out.println("The status of this order has been successfully changed to paid.\n");
-            } else {
-                System.out.println("This order already has paid status.");
+            } // In case the status is paid, it would prompt a message.
+            else {
+                System.out.println("This order is already paid received.");
                 writer.write(order + (scannerOrder.hasNextLine() ? System.lineSeparator() : ""));
                 continue;
             }
+            // Rename the temporary file to the original one.
             tempFile.renameTo(new File("./src/File/order.txt"));
             writer.close();
             }
+        // In case the order's id is not existed, prompt user a message.
         if (!checkOrderIDExisted) {
-            System.out.println("\nThis customer's id cannot found. Please try with another one.");
+            System.out.println("\nThis order's id cannot found. Please try with another one.");
         }
         scannerOrder.close();
+    }
+
+    public static void listProductWithHighestNumber() {
+
+    }
+    public static void calculateTotalRevenue() {
+
     }
 
 }
