@@ -70,12 +70,26 @@ public class Customer {
     public static boolean login() throws IOException {
         Scanner sc = new Scanner(System.in);
         System.out.println("\nLOGIN AS CUSTOMER ROLE\n");
-        System.out.print("Enter your username: ");
-        String usernameCus = sc.nextLine();
-        System.out.print("Enter your password: ");
-        String passwordCus = sc.nextLine();
+        String usernameCus;
+        System.out.print("Please type your username: ");
+        while (true) {
+            usernameCus = sc.nextLine();
+            if (checkCustomerUsernameExisted(usernameCus)) break;
+            else {
+                System.out.println("This username is not existed. Please try with another one.");
+            }
+        }
 
-        Scanner scannerCustomer = new Scanner(new File("./src/customers.txt"));
+        String passwordCus;
+        System.out.print("Please type your password: ");
+        while (true) {
+            passwordCus = sc.nextLine();
+            if (checkCustomerPasswordExisted(passwordCus)) break;
+            else {
+                System.out.println("This password is not existed. Please try with another one.");
+            }
+        }
+        Scanner scannerCustomer = new Scanner(new File("./src/File/customers.txt"));
 
         while (scannerCustomer.hasNextLine()) {
             String currentCustomer = scannerCustomer.nextLine();
@@ -92,12 +106,11 @@ public class Customer {
 
         System.out.println("Login unsuccessfully, please check your username and password and try again");
         scannerCustomer.close();
-
         return false;
     }
 
     public static boolean checkCustomerUsernameExisted(String username) throws IOException {
-        Scanner scannerCustomer = new Scanner(new File("./src/customers.txt"));
+        Scanner scannerCustomer = new Scanner(new File("./src/File/customers.txt"));
 
         while (scannerCustomer.hasNextLine()) {
             String currentCustomer = scannerCustomer.nextLine();
@@ -108,11 +121,12 @@ public class Customer {
                 return true;
             }
         }
+        scannerCustomer.close();
         return false;
     }
 
     public static boolean checkCustomerPasswordExisted(String password) throws IOException {
-        Scanner scannerCustomer = new Scanner(new File("./src/customers.txt"));
+        Scanner scannerCustomer = new Scanner(new File("./src/File/customers.txt"));
 
         while (scannerCustomer.hasNextLine()) {
             String currentCustomer = scannerCustomer.nextLine();
@@ -123,6 +137,7 @@ public class Customer {
                 return true;
             }
         }
+        scannerCustomer.close();
         return false;
     }
 
@@ -256,7 +271,7 @@ public class Customer {
                 }
             }
 
-            int numbersOfItem = InputValidator.getIntInput(
+            int numbersOfItem = InputValidator.validateIntInput(
                     "How many this items you would like to buy?", "Please type only number.");
             total += itemPrice * numbersOfItem;
             orderItemDetail.put(itemName, numbersOfItem);
