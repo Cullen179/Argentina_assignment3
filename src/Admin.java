@@ -252,9 +252,36 @@ public class Admin {
     public static void changeStatus() {
 
     }
+
+    public void highestProduct() throws IOException{
+        Scanner sc = new Scanner(new File("./src/File/customers.txt"));
+        ArrayList<Customer> highBought = new ArrayList<Customer>();
+        int maxNum = 0;
+        while(sc.hasNextLine()) {
+            String customerLine = sc.nextLine();
+            Customer customer = Customer.generateCus(customerLine);
+            if (customer.highBoughtAmount() > maxNum) {
+                highBought.clear();
+                highBought.add(customer);
+                maxNum = customer.highBoughtAmount();
+            } else if (customer.highBoughtAmount() == maxNum) {
+                highBought.add(customer);
+            }
+        }
+        ArrayList<String> listProduct = new ArrayList<String>();
+        for (Customer customer: highBought) {
+            for (String item: customer.highestBoughtProduct()) {
+                if (!listProduct.contains(item)) {
+                    listProduct.add(item);
+                }
+            }
+        }
+        System.out.println(listProduct);
+        System.out.println("Highest number bought: " + maxNum);
+    }
     public static void main(String[] args) throws IOException {
         Admin admin = new Admin();
-        admin.updateProduct();
+        admin.highestProduct();
     }
 
 }

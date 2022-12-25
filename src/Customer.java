@@ -2,6 +2,80 @@ import java.io.*;
 import java.util.*;
 
 public class Customer {
+    private String memberId;
+    private String fullName;
+    private String phoneNumb;
+    private String address;
+    private String username;
+    private String password;
+    private String membership;
+    private static HashMap<String, Integer> productBought = new HashMap<String, Integer>();
+    double totalSpent;
+
+    public Customer(String memberId, String fullName, String phoneNumb, String address, String username, String password, String membership) {
+        this.memberId = memberId;
+        this.fullName = fullName;
+        this.phoneNumb = phoneNumb;
+        this.address = address;
+        this.username = username;
+        this.password = password;
+        this.membership = membership;
+    }
+
+    public static Customer generateCus(String customer) {
+        String[] customerInfo = customer.split(",");
+        String customerID = customerInfo[0];
+        String customerName = customerInfo[1];
+        String phone = customerInfo[2];
+        String customerAddress = customerInfo[3];
+        String username = customerInfo[4];
+        String customerPass = customerInfo[5];
+        String membership = customerInfo[6];
+        return new Customer(customerID, customerName, phone,customerAddress, username, customerPass, membership);
+    }
+
+    public HashMap<String, Integer> getProductBought() throws IOException{
+        HashMap<String, Integer> productBought = new HashMap<String, Integer>();
+        Scanner sc = new Scanner(new File("./src/File/orders.txt"));
+        while (sc.hasNextLine()) {
+            String orderLine = sc.nextLine();
+            Order order = Order.displayOrderDetail(orderLine);
+            if (order.getCustomerID().equals(this.memberId)) {
+                if (productBought.get(order.getOrderProduct()) == null) {
+                    productBought.put(order.getOrderProduct(), order.getProductNum());
+                } else {
+                    productBought.put(order.getOrderProduct(), productBought.get(order.getOrderProduct()) + order.getProductNum());
+                }
+            }
+        }
+        this.productBought = productBought;
+        return this.productBought;
+    }
+
+    public ArrayList<String> highestBoughtProduct() throws IOException {
+        ArrayList<String> list = new ArrayList<String>();
+        int maxNum = 0;
+        for (String product: getProductBought().keySet()) {
+            if (productBought.get(product) > maxNum) {
+                list.clear();
+                maxNum = productBought.get(product);
+                list.add(product);
+            } else if (productBought.get(product) == maxNum) {
+                list.add(product);
+            }
+        }
+        return list;
+    }
+
+    public int highBoughtAmount() throws IOException {
+        int maxNum = 0;
+        for (String product: getProductBought().keySet()) {
+            if (productBought.get(product) > maxNum) {
+                maxNum = productBought.get(product);
+            }
+        }
+        return maxNum;
+    }
     public static void registerCustomer() throws IOException {
         Scanner input = new Scanner(System.in);
 
@@ -261,9 +335,11 @@ public class Customer {
             total += itemPrice * numbersOfItem;
             orderItemDetail.put(itemName, numbersOfItem);
         }
+    }
 
-
-
+    public static void main(String[] args) throws IOException {
+        Customer lam = Customer.generateCus("C001,Minh Hoang,18 Irwin Street,0421473243,Silver,minhhoang,123456");
+        System.out.println(lam.getProductBought());
     }
 
 }

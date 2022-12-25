@@ -15,5 +15,7 @@ public class Test {
         test.put("hello1", test.get("hello1") + 3);
         System.out.println(test.get("hello1"));
         System.out.println(test);
+        System.out.println(test.get("hellof"));
+
     }
 }
