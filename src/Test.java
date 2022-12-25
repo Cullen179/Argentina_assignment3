@@ -8,24 +8,12 @@ import java.util.Scanner;
 
 public class Test {
     public static void main(String[] args) throws IOException {
-//        Scanner sc = new Scanner(new File("./src/File/items.txt"));
-//
-//        // Initialize lastItem
-//        // Loop through items file
-//        while (sc.hasNextLine()) {
-//            String item = sc.nextLine();
-//            // Check if the current line is the last line
-//            if (sc.nextLine().isEmpty()) {
-//                System.out.println("end");
-//            }
-//            System.out.println(item);
-//        }
-//    }
-        ArrayList<Integer> test = new ArrayList<Integer>();
+        HashMap<String, Integer> test = new HashMap<String, Integer>();
         for (int i = 0; i < 5; i++) {
-            test.add(i);
+            test.put("hello" + i, i);
         }
-        test.remove(2);
+        test.put("hello1", test.get("hello1") + 3);
+        System.out.println(test.get("hello1"));
         System.out.println(test);
     }
 }

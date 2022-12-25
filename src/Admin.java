@@ -13,10 +13,6 @@ public class Admin {
         }
     }
 
-    public static void main(String[] args) throws IOException {
-        Admin admin = new Admin();
-        admin.removeCategory();
-    }
 
     public static void viewOrders() {
 
@@ -36,14 +32,17 @@ public class Admin {
     }
 
     public void removeProduct() throws IOException{
+        Scanner sc = new Scanner(System.in);
+        System.out.println("What is name of the product you want to delete ?");
+        String productName = sc.next();
+        boolean matchProduct = false;
         // Add new file
         File removeItem = new File("./src/File/removeItems.txt");
         File itemFile = new File("./src/File/items.txt");
         Scanner fileScanner = new Scanner(itemFile);
-        PrintWriter pw = new PrintWriter(new FileWriter(removeItem, true));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(removeItem));
         // Initiate line number
         int line = 0;
-        String id = "I007-2014";
         // Boolean variable if remove item match line 1
         boolean matchedLine1 = false;
 
@@ -54,41 +53,47 @@ public class Admin {
             Product product = Product.generateProduct(item);
 
             // Check if product id equal remove item id, and line number is 1
-            if (product.getId().equals(id) && line == 1) {
+            if (product.getName().equals(productName) && line == 1) {
                 matchedLine1 = true;
                 continue;
 
             // Check if product id equal remove item id,
-            } else if (product.getId().equals(id)) {
+            } else if (product.getName().equals(productName)) {
                 continue;
             }
 
             // if line number is 1 or 2 with remove item in line 1, avoid adding new line
             if (line == 1 || (line == 2 && matchedLine1)) {
-                pw.printf(item);
+                bufferedWriter.write(item);
             } else {
-                pw.printf("\n" + item);
+                bufferedWriter.write("\n" + item);
             }
         }
         fileScanner.close();
-        pw.close();
-        // Delete the item file
+        bufferedWriter.close();
         itemFile.delete();
         // Rename remove item file to item file
         removeItem.renameTo(itemFile);
+
+        // Print error if product name doesn't match
+        if (!Product.checkProductExisted(productName)) {
+            System.out.println("Product doesn't exist.Please try again");
+        }
     }
+
     public void updateProduct() throws IOException{
         Scanner sc = new Scanner(System.in);
         System.out.println("What is the product you want to update");
-
-        // Add new file
+        String productName = sc.next();
         File updatePrice = new File("./src/File/update_items.txt");
         File itemFile = new File("./src/File/items.txt");
         Scanner fileScanner = new Scanner(itemFile);
         PrintWriter pw = new PrintWriter(new FileWriter(updatePrice, true));
+        boolean matchProduct = false;
+        // Add new file
         // Initiate line number
         int line = 0;
-        String id = "I007-2003";
+//        String productName = "I007-2003";
 
         // Loop through items file
         while (fileScanner.hasNextLine()) {
@@ -96,8 +101,11 @@ public class Admin {
             line++;
             Product product = Product.generateProduct(item);
 
-            if (product.getId().equals(id)) {
-//                product.setPrice();
+            if (product.getName().equals(productName)) {
+                matchProduct = true;
+                product.setPrice(100);
+                // Update item to new product
+                item = Product.generateItem(product);
             }
 
             // if line number is 1, avoid adding new line
@@ -109,21 +117,29 @@ public class Admin {
         }
         fileScanner.close();
         pw.close();
+
         // Delete the item file
         itemFile.delete();
         // Rename remove item file to item file
         updatePrice.renameTo(itemFile);
+
+        // Print error if product name doesn't match
+        if (!Product.checkProductExisted(productName)) {
+            System.out.println("Product doesn't exist.Please try again");
+        }
     }
     public void addCategory() throws IOException{
         Scanner sc = new Scanner(System.in);
         System.out.println("What category do you want to add ?");
         String newCategory = sc.next();
+
         // Check if new category is in category list
         if (!Product.getCategoryList().contains(newCategory)) {
             Product.addCategory(newCategory);
         } else {
             System.out.println("Category is already available. Do you want to retry ?");
             boolean retry = sc.nextBoolean();
+
             // Call addCategory method if admin want to retry
             if (retry) {
                 addCategory();
@@ -135,41 +151,29 @@ public class Admin {
         Scanner sc = new Scanner(System.in);
         System.out.println("What category do you want to remove ?");
         String removeCategory = sc.next();
+        boolean matchCategory = false;
         ArrayList<String> categoryList = Product.getCategoryList();
         // Check if remove category is in category list
         if (categoryList.contains(removeCategory)) {
-            for (int i = 0; i < categoryList.size(); i++) {
-                if (categoryList.get(i).equals(removeCategory)) {
-                    categoryList.remove(i);
-                }
-            }
-            removeItemCategory(removeCategory);
-        } else {
-            System.out.println("Remove category is not in the list. Do you want to retry ?");
-            boolean retry = sc.nextBoolean();
-            // Call removeCategory method if admin want to retry
-            if (retry) {
-                removeCategory();
-            }
+            matchCategory = true;
         }
-    }
 
-    public void removeItemCategory(String category) throws IOException {
-        File updateCategory = new File("./src/File/updateCategory.txt");
+        File update = new File("./src/File/update.txt");
         File items = new File("src/File/items.txt");
-        Scanner fileScanner = new Scanner(items);
-        PrintWriter pw = new PrintWriter(new FileWriter(updateCategory, true));
+        Scanner fileScanner = new Scanner(new File("src/File/items.txt"));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(update));
+
         // Initiate line number
         int line = 0;
 
         // Loop through items file
-        while (fileScanner.hasNextLine()) {
-            String item = fileScanner.nextLine();
+        while (sc.hasNextLine()) {
+            String item = sc.nextLine();
             line++;
             Product product = Product.generateProduct(item);
 
             // Check if product category equal remove category
-            if (product.getCategory().equals(category)) {
+            if (product.getCategory().equals(removeCategory)) {
                 product.setCategory("None");
                 // Update category to item line
                 item = Product.generateItem(product);
@@ -177,20 +181,28 @@ public class Admin {
 
             // if line number is 1 , avoid adding new line
             if (line == 1) {
-                pw.printf(item);
+                bufferedWriter.write(item);
             } else {
-                pw.printf("\n" + item);
+                bufferedWriter.write("\n" + item);
             }
         }
-//        fileScanner.close();
-//        pw.close();
+        sc.close();
+        bufferedWriter.close();
         // Delete the items file
         items.delete();
         // Rename remove item file to item file
-//        updateCategory.renameTo(items);
+        update.renameTo(new File("src/File/items.txt"));
+
+        // Print error if category doesn't exist
+        if (!matchCategory) {
+            System.out.println("Category doesn't exist. Please try again.");
+        }
     }
 
     public void removeCustomer() throws IOException{
+        Scanner sc = new Scanner(System.in);
+        System.out.println("What is the ID of the customer you want to remove?");
+        String id = sc.next();
         // Add new file
         File removeCus = new File("./src/File/removeCustomers.txt");
         File customerFile = new File("./src/File/customers.txt");
@@ -198,7 +210,6 @@ public class Admin {
         PrintWriter pw = new PrintWriter(new FileWriter(removeCus, true));
         // Initiate line number
         int line = 0;
-        String id = "C007";
         // Boolean variable if remove customer match line 1
         boolean matchedLine1 = false;
 
@@ -234,11 +245,16 @@ public class Admin {
     }
 
 
+
     public static void getOrderByCustomerID() {
 
     }
     public static void changeStatus() {
 
+    }
+    public static void main(String[] args) throws IOException {
+        Admin admin = new Admin();
+        admin.updateProduct();
     }
 
 }
