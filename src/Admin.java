@@ -1,7 +1,6 @@
 import java.io.*;
-import java.lang.reflect.Member;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
-import java.util.UUID;
 
 public class Admin {
     // This method is used to log in for admin role.
@@ -9,10 +8,24 @@ public class Admin {
         System.out.println("\nLOG IN AS ADMIN ROLE");
         // Create a scanner object to be ready to get input information (username & password) from users via keyboard.
         Scanner sc = new Scanner(System.in);
-        System.out.print("Enter your username: ");
-        String usernameAd = sc.nextLine();
-        System.out.print("Enter your password: ");
-        String passwordAd = sc.nextLine();
+        String usernameAd;
+        System.out.print("Please type your username: ");
+        while (true) {
+            usernameAd = sc.nextLine();
+            if (checkAdminUsernameExisted(usernameAd)) break;
+            else {
+                System.out.println("This username is not existed. Please try with another one.");
+            }
+        }
+        String passwordAd;
+        System.out.print("Please type your password: ");
+        while (true) {
+            passwordAd = sc.nextLine();
+            if (checkAdminPasswordExisted(passwordAd)) break;
+            else {
+                System.out.println("This password is not existed. Please try with another one.");
+            }
+        }
         // Create a scanner object to read from an admin text file.
         Scanner scannerAdmin = new Scanner(new File("./src/File/admin.txt"));
         // Continue to loop through each line of admin.txt file to find the username and password of admin.
@@ -22,7 +35,7 @@ public class Admin {
             String currentAdminUsername = currentAdminInfo[0];
             String currentAdminPassword = currentAdminInfo[1];
             // in case the users input are matched, completed this function.
-            if (usernameAd.equals(currentAdminUsername) && passwordAd.equals(currentAdminPassword)) {
+            if (currentAdminUsername.equals(usernameAd) && currentAdminPassword.equals(passwordAd)) {
                 // Prompt user a successful message
                 System.out.println("LOGIN SUCCESSFULLY");
                 System.out.println("-------------------");
@@ -32,6 +45,37 @@ public class Admin {
         }
         // In case the users input are not matched, prompt user an unsuccessful message.
         System.out.println("Login unsuccessfully, please check your username and password and try again");
+        scannerAdmin.close();
+        return false;
+    }
+    public static boolean checkAdminUsernameExisted(String username) throws IOException {
+        Scanner scannerAdmin = new Scanner(new File("./src/File/admin.txt"));
+
+        while (scannerAdmin.hasNextLine()) {
+            String currentAdmin = scannerAdmin.nextLine();
+            String[] currentAdminInfo = currentAdmin.split(",");
+            String currentAdminUsername = currentAdminInfo[0];
+
+            if (username.equals(currentAdminUsername)) {
+                return true;
+            }
+        }
+        scannerAdmin.close();
+        return false;
+    }
+
+    public static boolean checkAdminPasswordExisted(String password) throws IOException {
+        Scanner scannerAdmin = new Scanner(new File("./src/File/admin.txt"));
+
+        while (scannerAdmin.hasNextLine()) {
+            String currentAdmin = scannerAdmin.nextLine();
+            String[] currentAdminInfo = currentAdmin.split(",");
+            String currentAdminPassword = currentAdminInfo[1];
+
+            if (password.equals(currentAdminPassword)) {
+                return true;
+            }
+        }
         scannerAdmin.close();
         return false;
     }
@@ -161,7 +205,7 @@ public class Admin {
             }
             // In case an item is found, it would prompt user to input the new price of item.
             checkItem = true;
-            String updatePrice = String.valueOf(InputValidator.getDoubleInput(
+            String updatePrice = String.valueOf(InputValidator.validateDoubleInput(
                     "Type the new item's price: ",
                     "The price should be a natural or decimal number. Please try again."));
             // Updated the new price for item.
@@ -264,11 +308,52 @@ public class Admin {
         scannerOrder.close();
     }
 
-    public static void listProductWithHighestNumber() {
-
+    public static void listProductWithHighestQuantity() throws IOException {
+        System.out.println("\nLIST THE PRODUCT WITH THE HIGHEST QUANTITY BOUGHT BY A CUSTOMER/ MEMBER");
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter the customer ID: ");
+        String cusID = sc.nextLine();
     }
-    public static void calculateTotalRevenue() {
+    public static boolean validateDateInput(String date) throws IOException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        Scanner scannerOrder = new Scanner(new File("./src/File/order.txt"));
+        try {
+            formatter.parse(date);
+            double revenue = 0;
+            while (scannerOrder.hasNextLine()) {
+                String order = scannerOrder.nextLine();
+                String[] orderInfo = order.split(",");
+                String orderDate = orderInfo[4];
 
+                if (orderDate.equals(date)) {
+                    double orderTotal = Double.parseDouble(orderInfo[8]);
+                    revenue += orderTotal;
+                }
+            }
+            System.out.printf("\nThe total revenue in %s is %.2f", date, revenue);
+        }
+        catch (Exception e) {
+            System.out.println("\nInvalid input, please try again.");
+        }
+        return true;
+    }
+    public static void calculateTotalRevenue() throws IOException {
+        System.out.println("\nCALCULATE THE STORE TOTAL REVENUE IN A PARTICULAR DAY");
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter the date that you want to calculate the revenue: ");
+        String date = sc.nextLine();
+        validateDateInput(date);
     }
 
+    public static void checkOrderInfoInADay() throws IOException {
+        System.out.println("\nCHECK THE INFORMATION OF ALL ORDERS EXECUTED IN A PARTICULAR DAY");
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter the date that you want to check info of all orders: ");
+    }
+
+    public static void main(String[] args) throws IOException {
+//        login();
+        calculateTotalRevenue();
+    }
 }
+
