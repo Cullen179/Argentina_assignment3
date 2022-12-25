@@ -259,9 +259,15 @@ public class Customer {
 
         boolean usernameNotFound = true;
 
+        int count = 0;
+
         while (usernameNotFound) {
             // find the customer ID by asking the customer(s) their username
-            System.out.println("Your username is:");
+            if (count == 0)
+                System.out.println("Your username is: ");
+            else
+                System.out.println("Invalid username. Please enter another username: ");
+
             username = customerInput.next();
 
             File customerFile = new File("./src/File/customers.txt");
@@ -288,6 +294,7 @@ public class Customer {
                     usernameNotFound = false;
                 }
             }
+            count ++;
         }
 
 
@@ -363,9 +370,15 @@ public class Customer {
     public static void findOrderDetails() throws IOException {
         boolean notMatched = true;
 
+        // notify user to enter another ID if looping through the file and can't find the order ID
+        int count = 0;
+
         while (notMatched) {
             Scanner userInput = new Scanner(System.in);
-            System.out.println("Please enter the orderID:");
+            if (count == 0)
+                System.out.println("Please enter the orderID:");
+            else
+                System.out.println("Can't find the order ID. Please enter another order ID");
             String inputOrderID = userInput.nextLine();
             Scanner orderFileScanner = new Scanner(new File("src/orders.txt"));
 
@@ -386,6 +399,7 @@ public class Customer {
                     notMatched = false;
                 }
             }
+            count ++;
         }
     }
 }
