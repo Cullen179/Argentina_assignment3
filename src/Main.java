@@ -115,8 +115,8 @@ public class Main {
                     break;
                 default:
                     System.out.println("Unsuccessfully access, please type your role again.");
+                    Customer.login();
             }
         }
     }
-
 }

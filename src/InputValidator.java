@@ -1,7 +1,9 @@
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.Scanner;
 
 public class InputValidator {
-    public static int getIntInput(String promptUser, String errorMessage) {
+    public static int validateIntInput(String promptUser, String errorMessage) {
         Scanner sc = new Scanner(System.in);
         while (true) {
             try {
@@ -14,7 +16,7 @@ public class InputValidator {
         }
     }
 
-    public static double getDoubleInput(String promptUser, String errorMessage) {
+    public static double validateDoubleInput(String promptUser, String errorMessage) {
         Scanner sc = new Scanner(System.in);
         while (true) {
             try {
@@ -26,4 +28,5 @@ public class InputValidator {
             }
         }
     }
+
 }
