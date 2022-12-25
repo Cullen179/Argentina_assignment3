@@ -369,8 +369,6 @@ public class Customer {
 
     public static void findOrderDetails() throws IOException {
         boolean notMatched = true;
-
-        // notify user to enter another ID if looping through the file and can't find the order ID
         int count = 0;
 
         while (notMatched) {
@@ -380,26 +378,18 @@ public class Customer {
             else
                 System.out.println("Can't find the order ID. Please enter another order ID");
             String inputOrderID = userInput.nextLine();
-            Scanner orderFileScanner = new Scanner(new File("src/orders.txt"));
 
+            Scanner orderFileScanner = new Scanner(new File("./src/File/orders.txt"));
             while (orderFileScanner.hasNext()) {
                 String orderLine = orderFileScanner.nextLine();
                 String[] orderInfo = orderLine.split(",");
-
-                if (inputOrderID.equals(orderInfo[0])) {
-                    System.out.println("Order detail");
-                    System.out.println("-----------------");
-                    System.out.println("OrderID: " + orderInfo[0]);
-                    System.out.println("Order date: " + orderInfo[1]);
-                    System.out.println("Customer name:" + orderInfo[3]);
-                    System.out.println("Shipping address: " + orderInfo[7]);
-                    System.out.println("Items: " + orderInfo[4]);
-                    System.out.println("Quantity: " + orderInfo[5]);
-                    System.out.println("Total: " + orderInfo[6]);
+                String orderID = orderInfo[0];
+                if (inputOrderID.equals(orderID)) {
+                    Order.displayOrderInfo(orderLine);
                     notMatched = false;
                 }
             }
-            count ++;
+            count++;
         }
     }
 }
