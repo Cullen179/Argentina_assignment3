@@ -1,0 +1,8 @@
+ord1,C001,2022-08-27,12 ABC Street,Macbook Pro 15,1,23.0,paid
+ord2,C002,2022-09-12,13 HUY Street,Macbook Air M1,1,15.0,paid
+ord3,C001,2022-09-13,ABC Street,Iphone12,1,6.5,paid
+ord3,C004,2022-09-13,ABC Street,Iphone12,1,6.5,paid
+ord4,C001,2022-09-13,ABC Street,Iphone12,4,6.5,paid
+ord5,C002,2022-09-13,ABC Street,Iphone12,1,6.5,paid
+ord6,C005,2022-09-13,ABC Street,Iphone14,5,6.5,paid
+ord7,C001,2022-08-27,12 ABC Street,Macbook Pro 15,1,23.0,paid
