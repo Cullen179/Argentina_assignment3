@@ -369,6 +369,8 @@ public class Customer {
 
     public static void findOrderDetails() throws IOException {
         boolean notMatched = true;
+
+        // notify the user about wrong input when necessary
         int count = 0;
 
         while (notMatched) {
@@ -392,4 +394,33 @@ public class Customer {
             count++;
         }
     }
+
+    public static void displayPreviousOrders() throws IOException {
+        boolean notMatched = true;
+
+        // notify the user about wrong input when necessary
+        int count = 0;
+
+        while (notMatched) {
+            Scanner userInput = new Scanner(System.in);
+            if (count == 0)
+                System.out.println("Please enter your username:");
+            else
+                System.out.println("Can't find the username. Please enter another username");
+            String inputCustomerName = userInput.nextLine();
+
+            Scanner orderFileScanner = new Scanner(new File("src/orders.txt"));
+            while (orderFileScanner.hasNext()) {
+                String orderLine = orderFileScanner.nextLine();
+                String[] orderInfo = orderLine.split(",");
+                String customerName = orderInfo[3];
+                if (inputCustomerName.equals(customerName)) {
+                    Order.displayOrderInfo(orderLine);
+                    notMatched = false;
+                }
+            }
+            count++;
+        }
+    }
+
 }
