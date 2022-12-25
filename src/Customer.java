@@ -163,7 +163,7 @@ public class Customer {
 
     // generating the order ID while still maintaining the format
     public static String newOrderId() throws IOException {
-        Scanner sc = new Scanner(new File("src/orders.txt"));
+        Scanner sc = new Scanner(new File("./src/File/orders.txt"));
         // Initialize last order
         String lastOrder = "";
         // Loop through orders.txt file
@@ -204,7 +204,7 @@ public class Customer {
             System.out.println("Enter the number of the item you want to buy:");
             itemNum = customerInput.nextInt();
 
-            File productFile = new File("src/products.txt");
+            File productFile = new File("./src/File/products.txt");
             Scanner productFileScanner = new Scanner(productFile);
 
             while (productFileScanner.hasNextLine()) {
@@ -255,16 +255,16 @@ public class Customer {
         }
 
 
-        String customerId = "";
+        String customerId = "", username ="";
 
         boolean usernameNotFound = true;
 
         while (usernameNotFound) {
             // find the customer ID by asking the customer(s) their username
             System.out.println("Your username is:");
-            String username = customerInput.next();
+            username = customerInput.next();
 
-            File customerFile = new File("src/customers.txt");
+            File customerFile = new File("./src/File/customers.txt");
             Scanner customerFileScanner = new Scanner(customerFile);
 
             while (customerFileScanner.hasNext()) {
@@ -286,8 +286,7 @@ public class Customer {
                         totalAfterDiscount = total;
 
                     usernameNotFound = false;
-                } else
-                    System.out.println("Invalid username. Please try again!");
+                }
             }
         }
 
@@ -338,9 +337,9 @@ public class Customer {
         }
 
         // append the line for the new order to the end of the orders.txt file
-        String newOrder = String.join(",", orderId,orderDate,customerId, address,
+        String newOrder = String.join(",", orderId,orderDate,customerId,username,address,
                 currentOrderProducts.toString(), currentOrderProductQuantity.toString(), String.valueOf(totalAfterDiscount), "delivered");
-        PrintWriter pw = new PrintWriter(new FileWriter("src/orders.txt",true));
+        PrintWriter pw = new PrintWriter(new FileWriter("./src/File/orders.txt",true));
         pw.println(newOrder);
 
         pw.flush();
@@ -349,7 +348,9 @@ public class Customer {
         // display order details
         System.out.println("Your order detail");
         System.out.println("-----------------");
+        System.out.println("OrderID: " + orderId);
         System.out.println("Order date: "+ orderDate);
+        System.out.println("Customer name:"+ username);
         System.out.println("Shipping address: "+ address);
         System.out.println("Items: "+ currentOrderProducts );
         System.out.println("Quantity: "+ currentOrderProductQuantity);
@@ -358,6 +359,33 @@ public class Customer {
         // update membership by adding the order total to total spending
 
     }
+
+    public static void findOrderDetails() throws IOException {
+        boolean notMatched = true;
+
+        while (notMatched) {
+            Scanner userInput = new Scanner(System.in);
+            System.out.println("Please enter the orderID:");
+            String inputOrderID = userInput.nextLine();
+            Scanner orderFileScanner = new Scanner(new File("src/orders.txt"));
+
+            while (orderFileScanner.hasNext()) {
+                String orderLine = orderFileScanner.nextLine();
+                String[] orderInfo = orderLine.split(",");
+
+                if (inputOrderID.equals(orderInfo[0])) {
+                    System.out.println("Order detail");
+                    System.out.println("-----------------");
+                    System.out.println("OrderID: " + orderInfo[0]);
+                    System.out.println("Order date: " + orderInfo[1]);
+                    System.out.println("Customer name:" + orderInfo[3]);
+                    System.out.println("Shipping address: " + orderInfo[7]);
+                    System.out.println("Items: " + orderInfo[4]);
+                    System.out.println("Quantity: " + orderInfo[5]);
+                    System.out.println("Total: " + orderInfo[6]);
+                    notMatched = false;
+                }
+            }
+        }
+    }
 }
-
-
