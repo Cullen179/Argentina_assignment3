@@ -810,7 +810,96 @@ public class Customer {
         }
     }
 
+    public static void orderHash() {
+        HashMap<String, Integer> total = new HashMap<String, Integer>();
+        Scanner sc = new Scanner(System.in);
+        while (true) {
+            System.out.println("what product buy");
+            String product = sc.next();
+            System.out.println("quantity");
+            int quantity = sc.nextInt();
+            if (total.get(product) == null) {
+                total.put(product, quantity);
+            } else {
+                total.put(product, total.get(product) + quantity);
+            }
+            System.out.println("continue");
+            boolean option = sc.nextBoolean();
+            if (option == true) {
+                continue;
+            } else {
+                break;
+            }
+        }
+        System.out.println(total);
+    }
+
+    public void order2() throws IOException {
+        System.out.println("Creating order");
+        HashMap<String, Integer> total = buyProduct();
+        double price = 0;
+        Product product;
+        Scanner file = new Scanner(new File("./src/File/items.txt"));
+        while (file.hasNextLine()) {
+            String line = file.nextLine();
+            product = Product.generateProduct(line);
+            if (total.get(product.getName()) != null) {
+                price += total.get(product.getName()) * product.getPrice();
+            }
+
+        }
+        Scanner sc = new Scanner(System.in);
+        System.out.println("What is your address");
+        String address = sc.next();
+        String list = "";
+        int index = 0;
+        for (String item: total.keySet()) {
+            if (index == 0) {
+                list += item;
+            } else {
+                list += ":" + item;
+            }
+            index++;
+        }
+        String listQuan = "";
+        int indexQuan = 0;
+        for (int item: total.values()) {
+            if (indexQuan == 0) {
+                listQuan += item;
+            } else {
+                listQuan += ":" + item;
+            }
+            indexQuan++;
+        }
+        Order order = new Order(newOrderId(), getID(), LocalDate.now().toString(), address, list, listQuan, price, "delivered");
+        order.getOrderProduct();
+    }
+
+    public HashMap<String, Integer> buyProduct() {
+        HashMap<String, Integer> total = new HashMap<String, Integer>();
+        Scanner sc = new Scanner(System.in);
+        while (true) {
+            System.out.println("what product buy");
+            String product = sc.next();
+            System.out.println("quantity");
+            int quantity = sc.nextInt();
+            if (total.get(product) == null) {
+                total.put(product, quantity);
+            } else {
+                total.put(product, total.get(product) + quantity);
+            }
+            System.out.println("continue");
+            boolean option = sc.nextBoolean();
+            if (option == true) {
+                continue;
+            } else {
+                break;
+            }
+        }
+        return total;
+    }
+
     public static void main(String[] args) throws IOException {
-        createOrder();
+        orderHash();
     }
 }

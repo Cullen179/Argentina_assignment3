@@ -6,11 +6,11 @@ public class Order {
     private String orderDate;
     private String orderAddress;
     private String orderProduct;
-    private int productNum;
+    private String productNum;
     private double price;
     private String status;
 
-    public Order(String orderID, String customerID, String orderDate, String orderAddress, String orderProduct, int productNum, double price, String status) {
+    public Order(String orderID, String customerID, String orderDate, String orderAddress, String orderProduct, String productNum, double price, String status) {
         this.orderID = orderID;
         this.customerID = customerID;
         this.orderDate = orderDate;
@@ -30,11 +30,13 @@ public class Order {
         String orderDate = orderAttrs[2];
         String orderAddress = orderAttrs[3];
         String orderProducts = orderAttrs[4];
-        int orderProductsNum = Integer.parseInt(orderAttrs[5]);
+        String orderProductsNum = (orderAttrs[5]);
         double orderTotal = Double.parseDouble(orderAttrs[6]);
         String orderStatus = orderAttrs[7];
         return new Order(orderId, customerId, orderDate, orderAddress, orderProducts, orderProductsNum, orderTotal, orderStatus);
     }
+
+
 
     public String getOrderID() {
         return orderID;
@@ -56,9 +58,9 @@ public class Order {
         return orderProduct;
     }
 
-    public int getProductNum() {
-        return productNum;
-    }
+//    public int getProductNum() {
+//        return productNum;
+//    }
 
     public double getPrice() {
         return price;
