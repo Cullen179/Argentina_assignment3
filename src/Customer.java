@@ -168,7 +168,7 @@ public class Customer {
         String lastOrder = "";
         // Loop through orders.txt file
         if (!sc.hasNextLine()) {
-            return "Order001";
+            return "O001";
         } else {
             while (sc.hasNextLine()) {
                 String order = sc.nextLine();
@@ -182,7 +182,7 @@ public class Customer {
             // Get number of order ID
             int idNumber = Integer.parseInt(orderID.substring(5, 8));
             // Return ID
-            return String.format("Order%03d", idNumber + 1);
+            return String.format("O%03d", idNumber + 1);
         }
     }
     public static void createOrder() throws IOException {
@@ -344,7 +344,7 @@ public class Customer {
         }
 
         // append the line for the new order to the end of the orders.txt file
-        String newOrder = String.join(",", orderId,orderDate,customerId,username,address,
+        String newOrder = String.join(",", orderId,customerId,username,orderDate,address,
                 currentOrderProducts.toString(), currentOrderProductQuantity.toString(), String.valueOf(totalAfterDiscount), "delivered");
         PrintWriter pw = new PrintWriter(new FileWriter("./src/File/orders.txt",true));
         pw.println(newOrder);
