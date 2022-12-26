@@ -3,7 +3,7 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 
 public class Customer {
-    private String ID;
+    private int ID;
     private String name;
     private String email;
     private String adress;
@@ -12,7 +12,9 @@ public class Customer {
     private String username;
     private String password;
 
-    public Customer(String ID, String name,String email, String adress, String phoneNumb, String membership, String username, String password) {
+    public  Customer(){
+    }
+    public Customer(int ID, String name,String email, String adress, String phoneNumb, String membership, String username, String password) {
         this.ID = ID;
         this.name = name;
         this.email = email;
@@ -30,7 +32,41 @@ public class Customer {
 
     public void registerMember() throws IOException {
         String line, ID, username, password, fileName, name, email, adress, phoneNumb;
-        String inputUsername = getUsername();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter name:");
+        name = scanner.nextLine();
+        while (true){
+            System.out.println("Enter email");
+            email = scanner.nextLine();
+            if(email.matches("^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$")){
+                break;
+            }else{
+                System.out.println("Wrong format for an email. Please enter email again");
+            }
+        }
+        System.out.println("Enter adress: ");
+        adress = scanner.nextLine();
+        while (true){
+            System.out.println("Enter phone number:");
+            phoneNumb = scanner.nextLine();
+            if(phoneNumb.matches("^\\d{10}$")){
+                break;
+            } else {
+                System.out.println("Wrong format for a phone number. Please enter phone number again");
+            }
+        }
+        while (true){
+            System.out.println("Enter username:");
+            username = scanner.nextLine();
+            if(!checkUsername(username)){
+                break;
+            } else {
+                System.out.println("This username has already used! Please enter different username");
+            }
+        }
+        System.out.println("Enter password:");
+        password = scanner.nextLine();
+        System.out.println("Register successful");
         int count = 0;
         fileName = "D:/Java project/group asm/customer.txt";
         PrintWriter pw = new PrintWriter(new FileWriter(fileName,true));
@@ -41,9 +77,7 @@ public class Customer {
             count++;
         }
         count += 1;
-        if (!checkUsername(inputUsername)){
-            pw.println(count +","+getName() + "," + getEmail() + "," + getAdress() + "," + getPhoneNumb() + "," + getMembership() + "," + getUsername() + "," + getPassword());
-        }
+        pw.println(count +","+name + "," + email + "," + adress + "," + phoneNumb + "," + "none" + "," + username + "," + password);
         pw.close();
         fileScanner.close();
     }
@@ -257,11 +291,11 @@ public class Customer {
 
     }
 
-    public String getID() {
+    public int getID() {
         return ID;
     }
 
-    public void setID(String ID) {
+    public void setID(int ID) {
         this.ID = ID;
     }
 
