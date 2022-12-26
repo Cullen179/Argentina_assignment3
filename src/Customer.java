@@ -151,22 +151,13 @@ public class Customer {
         fileScanner.close();
     }
     private boolean checkUsername (String inputUsername) throws IOException {
-        String line, ID, username, password, fileName, name, email, address, phoneNumb, membership;
         Boolean usernameExist = false;
-        fileName = "./src/File/customers.txt";
+        String fileName = "./src/File/customers.txt";
         Scanner fileScanner = new Scanner(new File(fileName));
         while (fileScanner.hasNext()) {
-            line = fileScanner.nextLine();
-            StringTokenizer inReader = new StringTokenizer(line, ",");
-            ID = inReader.nextToken();
-            name = inReader.nextToken();
-            email = inReader.nextToken();
-            address = inReader.nextToken();
-            phoneNumb = inReader.nextToken();
-            membership = inReader.nextToken();
-            username = inReader.nextToken();
-            password = inReader.nextToken();
-            if (inputUsername.equals(username)) {
+            String line = fileScanner.nextLine();
+            Customer customer = generateCus(line);
+            if (inputUsername.equals(customer.getUsername())) {
                 usernameExist = true;
                 System.out.println("Username already exist");
                 break;
