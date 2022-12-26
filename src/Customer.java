@@ -306,7 +306,6 @@ public class Customer {
 
     public static void viewProduct() throws IOException {
         Scanner scannerProduct = new Scanner(new File("./src/items.txt"));
-
         System.out.println("VIEW PRODUCT");
         while (scannerProduct.hasNextLine()) {
             String items = scannerProduct.nextLine();
@@ -401,7 +400,7 @@ public class Customer {
     }
 
     public static void viewProducts() throws IOException {
-        File file = new File("./src/File/products.txt");
+        File file = new File("./src/File/items.txt");
         Scanner fileScanner = new Scanner(file);
         String line;
 
@@ -414,7 +413,7 @@ public class Customer {
 
     public static void searchProduct() throws IOException {
         // Open and read each line of the Product file
-        File file = new File("./src/File/products.txt");
+        File file = new File("./src/File/items.txt");
         Scanner fileScanner = new Scanner(file);
         String line;
 
@@ -489,13 +488,13 @@ public class Customer {
                 System.out.println("Wrong input! Enter 0 or 1 only. Please try again");
         } while (!correctInput);
 
-        File file = new File("./src/File/products.txt");
+        File file = new File("./src/File/items.txt");
         Scanner productScanner = new Scanner(file);
 
         // initialise an array list storing the products
         List<Product> productsList = new ArrayList<>();
 
-        // Reading products.txt file and create new Product to put in Array List productsList
+        // Reading items.txt file and create new Product to put in Array List productsList
         while (productScanner.hasNextLine()) {
             String product = productScanner.nextLine();
             String[] productInfo = product.split(",");
@@ -585,7 +584,7 @@ public class Customer {
             System.out.println("Enter the number of the item you want to buy:");
             itemNum = customerInput.nextInt();
 
-            File productFile = new File("./src/File/products.txt");
+            File productFile = new File("./src/File/items.txt");
             Scanner productFileScanner = new Scanner(productFile);
 
             while (productFileScanner.hasNextLine()) {
@@ -802,5 +801,9 @@ public class Customer {
             }
             count++;
         }
+    }
+
+    public static void main(String[] args) throws IOException {
+        createOrder();
     }
 }

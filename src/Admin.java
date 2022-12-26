@@ -298,9 +298,9 @@ public class Admin {
             Customer customer = Customer.generateCus(customerLine);
 
             // Get the highest bought product(s) and the quantity
-            if (customer.getMemberId().equals(id)) {
+            if (customer.getID().equals(id)) {
                 System.out.println("-".repeat(17));
-                System.out.println("The highest bought item(s) of customer" + customer.getMemberId() + ": ");
+                System.out.println("The highest bought item(s) of customer" + customer.getID() + ": ");
                 System.out.println(customer.highestBoughtProduct());
                 System.out.println("The total number bought is " + customer.highBoughtAmount());
                 System.out.println("-".repeat(17));
