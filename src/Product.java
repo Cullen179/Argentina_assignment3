@@ -61,7 +61,7 @@ public class Product {
 
     public static Product createProduct() throws IOException{
         Scanner sc = new Scanner(System.in);
-        String name = checkName();
+        String name = checkProductName();
         System.out.println("What is the price of the product:");
         double price = sc.nextDouble();
         String category = checkCategory();
@@ -99,7 +99,7 @@ public class Product {
         return categoryList;
     }
 
-    public static String checkName() throws IOException {
+    public static String checkProductName() throws IOException {
         Scanner sc = new Scanner(System.in);
         String name;
         while (true) {
