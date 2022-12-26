@@ -336,50 +336,7 @@ public class Admin {
         // Rename remove item file to item file
         removeCus.renameTo(customerFile);
     }
-    public static void updatePrice() throws IOException {
-        System.out.println("\nUPDATE THE PRICE OF PRODUCT");
-        // Create a scanner object to be ready to get input information (nameItem) from users via keyboard.
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Enter item's name: ");
-        String nameInput = sc.nextLine();
-        // Create a scanner object to read from an item text file.
-        Scanner scannerProduct = new Scanner(new File("./src/File/items.txt"));
-        // Create a writer for a temporary file to store updated data
-        File tempFile = new File("tempFile.txt");
-        BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-        // A boolean value to check the item's name existed or not.
-        boolean checkItem = false;
-        // Continue to loop through each line of items.txt file to find the name of item.
-        while (scannerProduct.hasNextLine()) {
-            String currentItem = scannerProduct.nextLine();
-            String[] currentItemInfo = currentItem.split(",");
-            String currentItemName = currentItemInfo[1];
-            // In case the name from input is not equivalent to the name of item in the file, it would add the new line.
-            if (!nameInput.equals(currentItemName)) {
-                writer.write(currentItem + (scannerProduct.hasNextLine() ? System.lineSeparator() : ""));
-                continue;
-            }
-            // In case an item is found, it would prompt user to input the new price of item.
-            checkItem = true;
-            String updatePrice = String.valueOf(InputValidator.validateDoubleInput(
-                    "Type the new item's price: ",
-                    "The price should be a natural or decimal number. Please try again."));
-            // Updated the new price for item.
-            String itemPrice = currentItem.split(",")[2];
-            String updateItem = currentItem.replace(itemPrice, updatePrice);
-            // Write the updated line to the temporary file.
-            writer.write(updateItem + (scannerProduct.hasNextLine() ? System.lineSeparator() : ""));
-            // Prompt a message to users.
-            System.out.println("Update the price of product successfully");
-        }
-        // Rename the temporary file to the original one.
-        tempFile.renameTo(new File("./src/File/items.txt"));
-        // In case an item is not found, it would prompt user an unsuccessful message.
-        if (!checkItem) {
-            System.out.println("\nThis item's name cannot found. Please try with another one.");
-        }
-        writer.close();
-    }
+
     public static void getOrderByCustomerID() throws IOException {
         System.out.println("\nGET ORDER BY CUSTOMER ID");
         // Create a scanner object to be ready to get input information (customer ID) from users via keyboard.
