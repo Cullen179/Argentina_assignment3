@@ -207,7 +207,14 @@ public class Customer {
             Customer customer = generateCus(line);
 
             if (this.getUsername().equals(customer.getUsername())) {
-                System.out.println("ID:" + ID + " Name:" + name + " Email:" + email + " Adress:" + address + " Phone number:" + phoneNumb + " Membership:" + membership + " Username:" + username);
+                System.out.println("ID:" + customer.getID());
+                System.out.println("Name:" + customer.getName());
+                System.out.println("Email:" + customer.getEmail());
+                System.out.println("Adress:" + customer.getAddress());
+                System.out.println("Phone number:" + customer.getPhoneNumb());
+                System.out.println("Membership:" + customer.getMembership());
+                System.out.println("Username:" + customer.getUsername());
+
                 break;
             }
         }
