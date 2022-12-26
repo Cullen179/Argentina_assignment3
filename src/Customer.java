@@ -64,8 +64,15 @@ public class Customer {
                 System.out.println("This username has already used! Please enter different username");
             }
         }
-        System.out.println("Enter password:");
-        password = scanner.nextLine();
+        while (true){
+            System.out.println("Enter password:");
+            password = scanner.nextLine();
+            if(!checkPassword(password)){
+                break;
+            } else {
+                System.out.println("This password has already used! Please enter different username");
+            }
+        }
         System.out.println("Register successful");
         int count = 0;
         fileName = "D:/Java project/group asm/customer.txt";
@@ -106,6 +113,30 @@ public class Customer {
         return usernameExist;
     }
 
+    private boolean checkPassword(String inputPassword) throws IOException {
+        String line, ID, username, password, fileName, name, email, adress, phoneNumb, membership;
+        Boolean passwordExist = false;
+        fileName = "D:/Java project/group asm/customer.txt";
+        Scanner fileScanner = new Scanner(new File(fileName));
+        while (fileScanner.hasNext()){
+            line = fileScanner.nextLine();
+            StringTokenizer inReader = new StringTokenizer(line,",");
+            ID = inReader.nextToken();
+            name = inReader.nextToken();
+            email = inReader.nextToken();
+            adress = inReader.nextToken();
+            phoneNumb = inReader.nextToken();
+            membership = inReader.nextToken();
+            username = inReader.nextToken();
+            password = inReader.nextToken();
+            if (inputPassword.equals(password)) {
+                passwordExist = true;
+                System.out.println("Password already exist");
+                break;
+            }
+        }
+        return passwordExist;
+    }
     public void login(String inputUsername, String inputPassword) throws IOException {
         String line, ID, username, password, fileName, name, email, adress, phoneNumb, membership;
         Boolean loggedin = false;
