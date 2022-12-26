@@ -308,7 +308,7 @@ public class Admin {
         scannerOrder.close();
     }
     public static boolean calculateTotalRevenue(String date) throws IOException {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         Scanner scannerOrder = new Scanner(new File("./src/File/order.txt"));
         try {
             formatter.parse(date);
@@ -316,10 +316,10 @@ public class Admin {
             while (scannerOrder.hasNextLine()) {
                 String order = scannerOrder.nextLine();
                 String[] orderInfo = order.split(",");
-                String orderDate = orderInfo[4];
+                String orderDate = orderInfo[2];
 
                 if (orderDate.equals(date)) {
-                    double orderTotal = Double.parseDouble(orderInfo[8]);
+                    double orderTotal = Double.parseDouble(orderInfo[6]);
                     revenue += orderTotal;
                 }
             }
@@ -335,7 +335,7 @@ public class Admin {
         System.out.println("\nCALCULATE THE STORE TOTAL REVENUE IN A PARTICULAR DAY");
         Scanner scannerOrder = new Scanner(new File("./src/File/order.txt"));
         Scanner sc = new Scanner(System.in);
-        System.out.print("\nEnter the formatted date (dd/MM/yyyy) that you want to calculate the revenue: ");
+        System.out.print("\nEnter the formatted date (yyyy-MM-dd) that you want to calculate the revenue: ");
         String date = sc.nextLine();
         calculateTotalRevenue(date);
         scannerOrder.close();
@@ -351,7 +351,7 @@ public class Admin {
         while (scannerOrder.hasNextLine()) {
             String order = scannerOrder.nextLine();
             String[] orderInfo = order.split(",");
-            String orderDate = orderInfo[4];
+            String orderDate = orderInfo[2];
 
             if (orderDate.equals(date)) {
                 Order.orderDetail(order);
@@ -363,5 +363,10 @@ public class Admin {
             System.out.printf("There isn't any orders in %s, please try with another date", date);
         }
     }
+    public static void main(String[] args) throws IOException {
+//        checkOrderInfoInADay();
+        totalRevenue();
+    }
+
 }
 

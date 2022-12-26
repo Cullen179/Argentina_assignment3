@@ -6,14 +6,13 @@ public class Order {
         String[] orderInfo = productInfo.split(",");
         String orderId = orderInfo[0];
         String customerId = orderInfo[1];
-        String customerName = orderInfo[2];
-        String customerPhone = orderInfo[3];
-        String orderDate = orderInfo[4];
+        String customerUsername = orderInfo[2];
+        String orderDate = orderInfo[3];
+        String orderAddress = orderInfo[4];
         String orderItem = orderInfo[5];
-        String orderAdd = orderInfo[6];
-        String numberOfItems = orderInfo[7];
-        String orderTotal = orderInfo[8];
-        String orderStatus = orderInfo[9];
+        String numberOfItems = orderInfo[6];
+        String orderTotal = orderInfo[7];
+        String orderStatus = orderInfo[8];
 
         // Getting each product name and number from the order.
         String[] orderProductList = orderItem.split(":");
@@ -22,10 +21,9 @@ public class Order {
         System.out.println("-----------------");
         System.out.println("ORDER ID: " + orderId);
         System.out.println("Customer ID: "  + customerId);
-        System.out.println("Customer Name: "  + customerName);
-        System.out.println("Customer Phone: " + customerPhone);
+        System.out.println("Customer Username: " + customerUsername);
         System.out.println("Order date: " + orderDate);
-        System.out.println("Delivery Address: " + orderAdd);
+        System.out.println("Delivery Address: " + orderAddress);
         System.out.println("Order products: ");
 
         for (int i = 0; i < orderProductList.length; i++) {
