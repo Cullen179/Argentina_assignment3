@@ -30,11 +30,19 @@ public class Customer {
         this.password = password;
     }
 
+    // Function for customer to register new account
     public void registerMember() throws IOException {
+        //Declare attribute
         String line, ID, username, password, fileName, name, email, adress, phoneNumb;
+
+        //create a scanner setup for user inputs
         Scanner scanner = new Scanner(System.in);
+
+        //get customer's name
         System.out.println("Enter name:");
         name = scanner.nextLine();
+
+        //a loop to get customer's email
         while (true){
             System.out.println("Enter email");
             email = scanner.nextLine();
@@ -44,6 +52,7 @@ public class Customer {
                 System.out.println("Wrong format for an email. Please enter email again");
             }
         }
+        //get customer's adress
         System.out.println("Enter adress: ");
         adress = scanner.nextLine();
         while (true){
