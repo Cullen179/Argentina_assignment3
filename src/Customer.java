@@ -68,7 +68,7 @@ public class Customer {
         password = scanner.nextLine();
         System.out.println("Register successful");
         int count = 0;
-        fileName = "D:/Java project/group asm/customer.txt";
+        fileName = "./src/File/customers.txt";
         PrintWriter pw = new PrintWriter(new FileWriter(fileName,true));
         Scanner fileScanner = new Scanner(new File(fileName));
         while (fileScanner.hasNext()){
@@ -84,7 +84,7 @@ public class Customer {
     private boolean checkUsername(String inputUsername) throws IOException {
         String line, ID, username, password, fileName, name, email, adress, phoneNumb, membership;
         Boolean usernameExist = false;
-        fileName = "D:/Java project/group asm/customer.txt";
+        fileName = "./src/File/customers.txt";
         Scanner fileScanner = new Scanner(new File(fileName));
         while (fileScanner.hasNext()){
             line = fileScanner.nextLine();
@@ -109,7 +109,7 @@ public class Customer {
     public void login(String inputUsername, String inputPassword) throws IOException {
         String line, ID, username, password, fileName, name, email, adress, phoneNumb, membership;
         Boolean loggedin = false;
-        fileName = "D:/Java project/group asm/customer.txt";
+        fileName = "./src/File/customers.txt";
         Scanner fileScanner = new Scanner(new File(fileName));
         while (fileScanner.hasNextLine()){
             line = fileScanner.nextLine();
@@ -135,7 +135,7 @@ public class Customer {
     }
     public void displayAccountInfo() throws IOException{
         String line, ID, username, password, fileName, name, email, adress, phoneNumb,membership;
-        fileName = "D:/Java project/group asm/customer.txt";
+        fileName = "./src/File/customers.txt";
         Scanner fileScanner = new Scanner(new File(fileName));
         while (fileScanner.hasNext()){
             line = fileScanner.nextLine();
@@ -212,7 +212,7 @@ public class Customer {
     }
     public void updateAccountInfo()throws IOException{
         String line, ID, username, password, fileName, name, email, adress, phoneNumb, membership, newData, newName, newEmail, newAdress, newPhoneNumb ;
-        fileName = "D:/Java project/group asm/customer.txt";
+        fileName = "./src/File/customers.txt";
         Scanner scanner = new Scanner(System.in);
         Scanner fileScanner = new Scanner(new File(fileName));
         while (fileScanner.hasNext()){
@@ -270,7 +270,7 @@ public class Customer {
 
     public void checkMembership()throws IOException{
         String line, ID, username, password, fileName, name, email, adress, phoneNumb,membership;
-        fileName = "D:/Java project/group asm/customer.txt";
+        fileName = "./src/File/customers.txt";
         Scanner fileScanner = new Scanner(new File(fileName));
         while (fileScanner.hasNext()) {
             line = fileScanner.nextLine();
