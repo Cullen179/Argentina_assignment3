@@ -5,26 +5,39 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 
 public class Customer {
-    private int ID;
+    private String ID;
     private String name;
     private String email;
-    private String adress;
+    private String address;
     private String phoneNumb;
     private String membership;
     private String username;
     private String password;
     private static HashMap<String, Integer> productBought = new HashMap<String, Integer>();
 
+    public Customer(String ID, String name, String email, String address, String phoneNumb, String membership, String username, String password) {
+        this.ID = ID;
+        this.name = name;
+        this.email = email;
+        this.address = address;
+        this.phoneNumb = phoneNumb;
+        this.membership = membership;
+        this.username = username;
+        this.password = password;
+    }
+
+
     public static Customer generateCus(String customer) {
         String[] customerInfo = customer.split(",");
-        String customerID = customerInfo[0];
-        String customerName = customerInfo[1];
-        String phone = customerInfo[2];
-        String customerAddress = customerInfo[3];
-        String username = customerInfo[4];
-        String customerPass = customerInfo[5];
-        String membership = customerInfo[6];
-        return new Customer(customerID, customerName, phone,customerAddress, username, customerPass, membership);
+        String ID = customerInfo[0];
+        String name = customerInfo[1];
+        String email = customerInfo[2];
+        String address = customerInfo[3];
+        String phoneNumb = customerInfo[4];
+        String membership = customerInfo[5];
+        String username = customerInfo[6];
+        String password = customerInfo[7];
+        return new Customer(ID, name, email, address, phoneNumb, membership, username, password);
     }
 
     public HashMap<String, Integer> getProductBought() throws IOException{
@@ -32,8 +45,8 @@ public class Customer {
         Scanner sc = new Scanner(new File("./src/File/orders.txt"));
         while (sc.hasNextLine()) {
             String orderLine = sc.nextLine();
-            Order order = Order.displayOrderDetail(orderLine);
-            if (order.getCustomerID().equals(this.memberId)) {
+            Order order = Order.generateOrderDetail(orderLine);
+            if (order.getCustomerID().equals(this.ID)) {
                 if (productBought.get(order.getOrderProduct()) == null) {
                     productBought.put(order.getOrderProduct(), order.getProductNum());
                 } else {
@@ -69,91 +82,11 @@ public class Customer {
         }
         return maxNum;
     }
-    public static void registerCustomer() throws IOException {
-        Scanner input = new Scanner(System.in);
-
-        String username;
-        System.out.println("Please type your username: ");
-        while (true) {
-            username = input.nextLine();
-
-            if (!checkCustomerUsernameExisted(username)) break;
-            else {
-                System.out.println("This username already existed. Please try with another one.");
-            }
-        }
-
-        String password;
-        System.out.print("Please type your password: ");
-        while (true) {
-            password = input.nextLine();
-
-            if (!checkCustomerPasswordExisted(password)) break;
-            else {
-                System.out.println("This password already existed. Please try with another one.");
-            }
-        }
-
-        System.out.print("Please type your full name: ");
-        String fullName = input.nextLine();
-
-        String phoneNum;
-        System.out.print("Please type your phone number: ");
-        while (true) {
-            phoneNum = input.nextLine();
-
-            if (phoneNum.matches("^\\d{10}$")) break;
-            else {
-                System.out.println("Please enter the correct 10 digit phone number format. Try again.");
-            }
-        }
-
-        String email;
-        System.out.println("Please type your email, eg: abc@gmail.com ");
-//        while (true) {
-//            email = input.nextLine();
-//
-//            if (email.matches("[A-Z]+[a-zA-Z_]+@\b([a-zA-Z]+.){2}\b?.[a-zA-Z]+")) {
-//                break;
-//            } else {
-//                System.out.println("Invalid email. Try again.");
-//            }
-//        }
-        email = input.nextLine();
-
-        System.out.print("Please type your address: ");
-        String add = input.nextLine();
-
-        String newMember = String.join(",", fullName, add, phoneNum, "Normal", username, password);
-
-        Writer output = new BufferedWriter(new FileWriter("./src/customers.txt", true));
-        output.append(System.lineSeparator() + newMember);
-
-        System.out.println("Successfully registered.");
-        output.close();
-
-    public  Customer(){
-    }
-    public Customer(int ID, String name,String email, String adress, String phoneNumb, String membership, String username, String password) {
-        this.ID = ID;
-        this.name = name;
-        this.email = email;
-        this.adress = adress;
-        this.phoneNumb = phoneNumb;
-        this.membership = membership;
-        this.username = username;
-        this.password = password;
-    }
-
-    public Customer(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
 
     // Function for customer to register new account
-    public void registerMember() throws IOException {
+    public void registerMember () throws IOException {
         //Declare attribute
-        String line, ID, username, password, fileName, name, email, adress, phoneNumb;
+        String line, ID, username, password, fileName, name, email, address, phoneNumb;
 
         //create a scanner setup for user inputs
         Scanner scanner = new Scanner(System.in);
@@ -163,40 +96,40 @@ public class Customer {
         name = scanner.nextLine();
 
         //a loop to get customer's email
-        while (true){
+        while (true) {
             System.out.println("Enter email");
             email = scanner.nextLine();
-            if(email.matches("^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$")){
+            if (email.matches("^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$")) {
                 break;
-            }else{
+            } else {
                 System.out.println("Wrong format for an email. Please enter email again");
             }
         }
-        //get customer's adress
-        System.out.println("Enter adress: ");
-        adress = scanner.nextLine();
-        while (true){
+        //get customer's address
+        System.out.println("Enter address: ");
+        address = scanner.nextLine();
+        while (true) {
             System.out.println("Enter phone number:");
             phoneNumb = scanner.nextLine();
-            if(phoneNumb.matches("^\\d{10}$")){
+            if (phoneNumb.matches("^\\d{10}$")) {
                 break;
             } else {
                 System.out.println("Wrong format for a phone number. Please enter phone number again");
             }
         }
-        while (true){
+        while (true) {
             System.out.println("Enter username:");
             username = scanner.nextLine();
-            if(!checkUsername(username)){
+            if (!checkUsername(username)) {
                 break;
             } else {
                 System.out.println("This username has already used! Please enter different username");
             }
         }
-        while (true){
+        while (true) {
             System.out.println("Enter password:");
             password = scanner.nextLine();
-            if(!checkPassword(password)){
+            if (!checkPassword(password)) {
                 break;
             } else {
                 System.out.println("This password has already used! Please enter different username");
@@ -205,30 +138,30 @@ public class Customer {
         System.out.println("Register successful");
         int count = 0;
         fileName = "./src/File/customers.txt";
-        PrintWriter pw = new PrintWriter(new FileWriter(fileName,true));
+        PrintWriter pw = new PrintWriter(new FileWriter(fileName, true));
         Scanner fileScanner = new Scanner(new File(fileName));
-        while (fileScanner.hasNext()){
+        while (fileScanner.hasNext()) {
             line = fileScanner.nextLine();
-            StringTokenizer inReader = new StringTokenizer(line,",");
+            StringTokenizer inReader = new StringTokenizer(line, ",");
             count++;
         }
         count += 1;
-        pw.println(count +","+name + "," + email + "," + adress + "," + phoneNumb + "," + "none" + "," + username + "," + password);
+        pw.println(count + "," + name + "," + email + "," + address + "," + phoneNumb + "," + "none" + "," + username + "," + password);
         pw.close();
         fileScanner.close();
     }
-    private boolean checkUsername(String inputUsername) throws IOException {
-        String line, ID, username, password, fileName, name, email, adress, phoneNumb, membership;
+    private boolean checkUsername (String inputUsername) throws IOException {
+        String line, ID, username, password, fileName, name, email, address, phoneNumb, membership;
         Boolean usernameExist = false;
         fileName = "./src/File/customers.txt";
         Scanner fileScanner = new Scanner(new File(fileName));
-        while (fileScanner.hasNext()){
+        while (fileScanner.hasNext()) {
             line = fileScanner.nextLine();
-            StringTokenizer inReader = new StringTokenizer(line,",");
+            StringTokenizer inReader = new StringTokenizer(line, ",");
             ID = inReader.nextToken();
             name = inReader.nextToken();
             email = inReader.nextToken();
-            adress = inReader.nextToken();
+            address = inReader.nextToken();
             phoneNumb = inReader.nextToken();
             membership = inReader.nextToken();
             username = inReader.nextToken();
@@ -242,18 +175,18 @@ public class Customer {
         return usernameExist;
     }
 
-    private boolean checkPassword(String inputPassword) throws IOException {
-        String line, ID, username, password, fileName, name, email, adress, phoneNumb, membership;
+    private boolean checkPassword (String inputPassword) throws IOException {
+        String line, ID, username, password, fileName, name, email, address, phoneNumb, membership;
         Boolean passwordExist = false;
         fileName = "D:/Java project/group asm/customer.txt";
         Scanner fileScanner = new Scanner(new File(fileName));
-        while (fileScanner.hasNext()){
+        while (fileScanner.hasNext()) {
             line = fileScanner.nextLine();
-            StringTokenizer inReader = new StringTokenizer(line,",");
+            StringTokenizer inReader = new StringTokenizer(line, ",");
             ID = inReader.nextToken();
             name = inReader.nextToken();
             email = inReader.nextToken();
-            adress = inReader.nextToken();
+            address = inReader.nextToken();
             phoneNumb = inReader.nextToken();
             membership = inReader.nextToken();
             username = inReader.nextToken();
@@ -266,18 +199,18 @@ public class Customer {
         }
         return passwordExist;
     }
-    public void login(String inputUsername, String inputPassword) throws IOException {
-        String line, ID, username, password, fileName, name, email, adress, phoneNumb, membership;
+    public void login (String inputUsername, String inputPassword) throws IOException {
+        String line, ID, username, password, fileName, name, email, address, phoneNumb, membership;
         Boolean loggedin = false;
         fileName = "./src/File/customers.txt";
         Scanner fileScanner = new Scanner(new File(fileName));
-        while (fileScanner.hasNextLine()){
+        while (fileScanner.hasNextLine()) {
             line = fileScanner.nextLine();
-            StringTokenizer inReader = new StringTokenizer(line,",");
+            StringTokenizer inReader = new StringTokenizer(line, ",");
             ID = inReader.nextToken();
             name = inReader.nextToken();
             email = inReader.nextToken();
-            adress = inReader.nextToken();
+            address = inReader.nextToken();
             phoneNumb = inReader.nextToken();
             membership = inReader.nextToken();
             username = inReader.nextToken();
@@ -288,34 +221,34 @@ public class Customer {
                 break;
             }
         }
-        if(!loggedin){
+        if (!loggedin) {
             System.out.println("Incorrect username or password");
         }
         fileScanner.close();
     }
-    public void displayAccountInfo() throws IOException{
-        String line, ID, username, password, fileName, name, email, adress, phoneNumb,membership;
+    public void displayAccountInfo () throws IOException {
+        String line, ID, username, password, fileName, name, email, address, phoneNumb, membership;
         fileName = "./src/File/customers.txt";
         Scanner fileScanner = new Scanner(new File(fileName));
-        while (fileScanner.hasNext()){
+        while (fileScanner.hasNext()) {
             line = fileScanner.nextLine();
-            StringTokenizer inReader = new StringTokenizer(line,",");
+            StringTokenizer inReader = new StringTokenizer(line, ",");
             ID = inReader.nextToken();
             name = inReader.nextToken();
             email = inReader.nextToken();
-            adress = inReader.nextToken();
+            address = inReader.nextToken();
             phoneNumb = inReader.nextToken();
             membership = inReader.nextToken();
             username = inReader.nextToken();
             password = inReader.nextToken();
             if (getUsername().equals(username)) {
-                System.out.println("ID:"+ ID + " Name:" + name + " Email:" + email + " Adress:" + adress + " Phone number:" + phoneNumb + " Membership:"+ membership + " Username:" + username);
+                System.out.println("ID:" + ID + " Name:" + name + " Email:" + email + " Adress:" + address + " Phone number:" + phoneNumb + " Membership:" + membership + " Username:" + username);
                 break;
             }
         }
     }
 
-    static void modifyFile(String filePath, String oldString, String newString)
+    static void modifyFile (String filePath, String oldString, String newString)
     {
         File fileToBeModified = new File(filePath);
 
@@ -325,16 +258,14 @@ public class Customer {
 
         FileWriter writer = null;
 
-        try
-        {
+        try {
             reader = new BufferedReader(new FileReader(fileToBeModified));
 
             //Reading all the lines of input text file into oldContent
 
             String line = reader.readLine();
 
-            while (line != null)
-            {
+            while (line != null) {
                 oldContent = oldContent + line + System.lineSeparator();
 
                 line = reader.readLine();
@@ -349,39 +280,32 @@ public class Customer {
             writer = new FileWriter(fileToBeModified);
 
             writer.write(newContent);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
-        }
-        finally
-        {
-            try
-            {
+        } finally {
+            try {
                 //Closing the resources
 
                 reader.close();
 
                 writer.close();
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
-    public void updateAccountInfo()throws IOException{
-        String line, ID, username, password, fileName, name, email, adress, phoneNumb, membership, newData, newName, newEmail, newAdress, newPhoneNumb ;
+    public void updateAccountInfo ()throws IOException {
+        String line, ID, username, password, fileName, name, email, address, phoneNumb, membership, newData, newName, newEmail, newAdress, newPhoneNumb;
         fileName = "./src/File/customers.txt";
         Scanner scanner = new Scanner(System.in);
         Scanner fileScanner = new Scanner(new File(fileName));
-        while (fileScanner.hasNext()){
+        while (fileScanner.hasNext()) {
             line = fileScanner.nextLine();
-            StringTokenizer inReader = new StringTokenizer(line,",");
+            StringTokenizer inReader = new StringTokenizer(line, ",");
             ID = inReader.nextToken();
             name = inReader.nextToken();
             email = inReader.nextToken();
-            adress = inReader.nextToken();
+            address = inReader.nextToken();
             phoneNumb = inReader.nextToken();
             membership = inReader.nextToken();
             username = inReader.nextToken();
@@ -391,7 +315,7 @@ public class Customer {
                 System.out.println("(1) Yes");
                 System.out.println("(2) No");
                 String askName = scanner.nextLine();
-                if(askName.equals("1")){
+                if (askName.equals("1")) {
                     System.out.println("Enter new name");
                     name = scanner.nextLine();
                 }
@@ -399,76 +323,28 @@ public class Customer {
                 System.out.println("(1) Yes");
                 System.out.println("(2) No");
                 String askEmail = scanner.nextLine();
-                if(askEmail.equals("1")){
+                if (askEmail.equals("1")) {
                     System.out.println("Enter new email");
                     email = scanner.nextLine();
                 }
-                System.out.println("Do you want to update your adress?");
+                System.out.println("Do you want to update your address?");
                 System.out.println("(1) Yes");
                 System.out.println("(2) No");
                 String askAdress = scanner.nextLine();
-                if(askAdress.equals("1")){
-                    System.out.println("Enter new adress");
-                    adress = scanner.nextLine();
+                if (askAdress.equals("1")) {
+                    System.out.println("Enter new address");
+                    address = scanner.nextLine();
                 }
                 System.out.println("Do you want to update your phone number?");
                 System.out.println("(1) Yes");
                 System.out.println("(2) No");
                 String askPhoneNumb = scanner.nextLine();
-                if(askPhoneNumb.equals("1")){
+                if (askPhoneNumb.equals("1")) {
                     System.out.println("Enter new phone number");
                     phoneNumb = scanner.nextLine();
                 }
-
-
-    public void checkMembership()throws IOException{
-        Scanner scannerCustomer = new Scanner(new File("./src/customers.txt"));
-        while (scannerCustomer.hasNextLine()) {
-            String currentCustomer = scannerCustomer.nextLine();
-            String[] currentCustomerInfo = currentCustomer.split(",");
-            String currentCustomerUsername = currentCustomerInfo[5];
-            String currentCustomerPassword = currentCustomerInfo[6];
-
-            if (usernameCus.equals(currentCustomerUsername) && passwordCus.equals(currentCustomerPassword)) {
-                System.out.println("LOGIN SUCCESSFULLY");
-                scannerCustomer.close();
-                return true;
             }
         }
-
-        System.out.println("Login unsuccessfully, please check your username and password and try again");
-        scannerCustomer.close();
-
-        return false;
-    }
-
-    public static boolean checkCustomerUsernameExisted(String username) throws IOException {
-        Scanner scannerCustomer = new Scanner(new File("./src/customers.txt"));
-
-        while (scannerCustomer.hasNextLine()) {
-            String currentCustomer = scannerCustomer.nextLine();
-            String[] currentCustomerInfo = currentCustomer.split(",");
-            String currentMemberUsername = currentCustomerInfo[5];
-
-            if (username.equals(currentMemberUsername)) {
-                return true;
-            }
-        }
-        return false;
-    }
-    public static boolean checkCustomerPasswordExisted(String password) throws IOException {
-        Scanner scannerCustomer = new Scanner(new File("./src/customers.txt"));
-
-        while (scannerCustomer.hasNextLine()) {
-            String currentCustomer = scannerCustomer.nextLine();
-            String[] currentCustomerInfo = currentCustomer.split(",");
-            String currentCustomerPassword = currentCustomerInfo[6];
-
-            if (password.equals(currentCustomerPassword)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public static void viewProduct() throws IOException {
@@ -503,115 +379,11 @@ public class Customer {
         }
     }
 
-    public static void listProductInPriceRange() throws IOException {
-        System.out.println("Listing all the available products in a price range");
-        Scanner scannerProduct = new Scanner(new File("./src/items.txt"));
-        System.out.print("Type your category to search for the needed product: ");
-        Scanner input = new Scanner(System.in);
-        String categoryInput = input.nextLine();
-    }
-
-//    public static List<Product> filterProducts(BigInteger minPrice, BigInteger maxPrice){
-//        List<Product> results = new ArrayList();
-//        products.stream().filter(p -> p.getPrice() > minPrice && p.getPrice() < maxPrice).forEach(results::add);
-//        return results;
-//    }
-
-    public static void sortProduct() throws IOException {
-        System.out.println("Sorting all products by product price following an increasing or decreasing order.");
-        Scanner scannerProduct = new Scanner(new File("./src/items.txt"));
-        ArrayList<Product> productList = new ArrayList<>();
-
-        while (scannerProduct.hasNextLine()) {
-            String items = scannerProduct.nextLine();
-            String[] itemsInfo = items.split(",");
-            String itemID = itemsInfo[0];
-            String itemTitle = itemsInfo[1];
-            double itemPrice = Double.parseDouble(itemsInfo[2]);
-            String itemCategory = itemsInfo[3];
-
-            Product sortedProduct = new Product(itemID, itemTitle, itemPrice, itemCategory);
-            productList.add(sortedProduct);
-        }
-
-        while (true) {
-            System.out.print("Enter 'up' or 'down' to sort: ");
-            Scanner input = new Scanner(System.in);
-            String sort = input.nextLine();
-            if (!(sort.equals("up") || sort.equals("down"))) {
-                System.out.print("Please only enter 'up' or 'down': \n");
-                continue;
-            }
-
-            productList.sort(new Comparator<Product>() {
-                @Override
-                public int compare(Product o1, Product o2) {
-                    if (sort.equals("up")) {
-                        return (int) (o1.getPrice() - o2.getPrice());
-                    } else {
-                        return (int) (o2.getPrice() - o1.getPrice());
-                    }
-                }
-            });
-            break;
-        }
-        for (Product product : productList
-        ) {
-            System.out.println("Id: " + product.getId());
-            System.out.println("Name: " + product.getName());
-            System.out.println("Price: " + product.getPrice());
-            System.out.println("Category: " + product.getCategory());
-            System.out.println("-----------------");
-        }
-    }
-    public static void createOrder() throws IOException {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Welcome to our store");
-        System.out.print("Type your address for delivering: ");
-        String orderAdd = sc.nextLine();
-
-        HashMap<String, Integer> orderItemDetail = new HashMap<>();
-
-        boolean buyMoreItem = false;
-        double total = 0;
-
-        while (!buyMoreItem) {
-            String itemName = null;
-            double itemPrice = 0.0;
-            boolean itemCheck = false;
-
-            while (!itemCheck) {
-                Scanner scannerProduct = new Scanner(new File("./src/items.txt"));
-                System.out.print("\nPlease type the name of the item you want to buy: ");
-                String nameInput = sc.nextLine();
-
-                while (scannerProduct.hasNextLine()) {
-                    String currentProduct = scannerProduct.nextLine();
-                    String[] currentProductInfo = currentProduct.split(",");
-                    String currentProductName = currentProductInfo[1];
-
-                    if (currentProductName.equals(nameInput)) {
-                        itemName = currentProductName;
-                        itemPrice = Double.parseDouble(currentProductInfo[2]);
-                        itemCheck = true;
-                    }
-                }
-                if (!itemCheck) {
-                    System.out.println("This item cannot found. Please try with another one.");
-                }
-            }
-
-            int numbersOfItem = InputValidator.getIntInput(
-                    "How many this items you would like to buy?", "Please type only number.");
-            total += itemPrice * numbersOfItem;
-            orderItemDetail.put(itemName, numbersOfItem);
-        }
-    }
-    public int getID() {
+    public String getID() {
         return ID;
     }
 
-    public void setID(int ID) {
+    public void setID(String ID) {
         this.ID = ID;
     }
 
@@ -631,12 +403,12 @@ public class Customer {
         this.email = email;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getPhoneNumb() {
@@ -1074,5 +846,4 @@ public class Customer {
             count++;
         }
     }
-
 }
