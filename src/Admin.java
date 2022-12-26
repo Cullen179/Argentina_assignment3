@@ -307,14 +307,7 @@ public class Admin {
         }
         scannerOrder.close();
     }
-
-    public static void listProductWithHighestQuantity() throws IOException {
-        System.out.println("\nLIST THE PRODUCT WITH THE HIGHEST QUANTITY BOUGHT BY A CUSTOMER/ MEMBER");
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Enter the customer ID: ");
-        String cusID = sc.nextLine();
-    }
-    public static boolean validateDateInput(String date) throws IOException {
+    public static boolean calculateTotalRevenue(String date) throws IOException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         Scanner scannerOrder = new Scanner(new File("./src/File/order.txt"));
         try {
@@ -331,29 +324,44 @@ public class Admin {
                 }
             }
             System.out.printf("\nThe total revenue in %s is %.2f", date, revenue);
+            scannerOrder.close();
         }
         catch (Exception e) {
-            System.out.println("\nInvalid input, please try again.");
+            System.out.println("\nInvalid input, please try with another one.");
         }
         return true;
     }
-    public static void calculateTotalRevenue() throws IOException {
+    public static void totalRevenue() throws IOException {
         System.out.println("\nCALCULATE THE STORE TOTAL REVENUE IN A PARTICULAR DAY");
+        Scanner scannerOrder = new Scanner(new File("./src/File/order.txt"));
         Scanner sc = new Scanner(System.in);
-        System.out.print("Enter the date that you want to calculate the revenue: ");
+        System.out.print("\nEnter the formatted date (dd/MM/yyyy) that you want to calculate the revenue: ");
         String date = sc.nextLine();
-        validateDateInput(date);
+        calculateTotalRevenue(date);
+        scannerOrder.close();
     }
-
     public static void checkOrderInfoInADay() throws IOException {
         System.out.println("\nCHECK THE INFORMATION OF ALL ORDERS EXECUTED IN A PARTICULAR DAY");
+        Scanner scannerOrder = new Scanner(new File("./src/File/order.txt"));
         Scanner sc = new Scanner(System.in);
-        System.out.print("Enter the date that you want to check info of all orders: ");
-    }
+        System.out.print("Enter the formatted date (dd/MM/yyyy) that you want to check the information of all orders: ");
+        String date = sc.nextLine();
+        boolean checkOrderExisted = false;
 
-    public static void main(String[] args) throws IOException {
-//        login();
-        calculateTotalRevenue();
+        while (scannerOrder.hasNextLine()) {
+            String order = scannerOrder.nextLine();
+            String[] orderInfo = order.split(",");
+            String orderDate = orderInfo[4];
+
+            if (orderDate.equals(date)) {
+                Order.orderDetail(order);
+                checkOrderExisted = true;
+
+            }
+        }
+        if (!checkOrderExisted) {
+            System.out.printf("There isn't any orders in %s, please try with another date", date);
+        }
     }
 }
 
