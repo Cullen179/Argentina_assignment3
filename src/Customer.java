@@ -167,22 +167,13 @@ public class Customer {
     }
 
     private boolean checkPassword (String inputPassword) throws IOException {
-        String line, ID, username, password, fileName, name, email, address, phoneNumb, membership;
         Boolean passwordExist = false;
-        fileName = "D:/Java project/group asm/customer.txt";
+        String fileName = "./src/File/customers.txt";
         Scanner fileScanner = new Scanner(new File(fileName));
         while (fileScanner.hasNext()) {
-            line = fileScanner.nextLine();
-            StringTokenizer inReader = new StringTokenizer(line, ",");
-            ID = inReader.nextToken();
-            name = inReader.nextToken();
-            email = inReader.nextToken();
-            address = inReader.nextToken();
-            phoneNumb = inReader.nextToken();
-            membership = inReader.nextToken();
-            username = inReader.nextToken();
-            password = inReader.nextToken();
-            if (inputPassword.equals(password)) {
+            String line = fileScanner.nextLine();
+            Customer customer = generateCus(line);
+            if (inputPassword.equals(customer.getPassword())) {
                 passwordExist = true;
                 System.out.println("Password already exist");
                 break;
@@ -191,22 +182,13 @@ public class Customer {
         return passwordExist;
     }
     public void login (String inputUsername, String inputPassword) throws IOException {
-        String line, ID, username, password, fileName, name, email, address, phoneNumb, membership;
         Boolean loggedin = false;
-        fileName = "./src/File/customers.txt";
+        String fileName = "./src/File/customers.txt";
         Scanner fileScanner = new Scanner(new File(fileName));
         while (fileScanner.hasNextLine()) {
-            line = fileScanner.nextLine();
-            StringTokenizer inReader = new StringTokenizer(line, ",");
-            ID = inReader.nextToken();
-            name = inReader.nextToken();
-            email = inReader.nextToken();
-            address = inReader.nextToken();
-            phoneNumb = inReader.nextToken();
-            membership = inReader.nextToken();
-            username = inReader.nextToken();
-            password = inReader.nextToken();
-            if (inputUsername.equals(username) && inputPassword.equals(password)) {
+            String line = fileScanner.nextLine();
+            Customer customer = generateCus(line);
+            if (inputUsername.equals(customer.getUsername()) && inputPassword.equals(customer.getPassword())) {
                 loggedin = true;
                 System.out.println("successful login");
                 break;
@@ -218,21 +200,13 @@ public class Customer {
         fileScanner.close();
     }
     public void displayAccountInfo () throws IOException {
-        String line, ID, username, password, fileName, name, email, address, phoneNumb, membership;
-        fileName = "./src/File/customers.txt";
+        String fileName = "./src/File/customers.txt";
         Scanner fileScanner = new Scanner(new File(fileName));
         while (fileScanner.hasNext()) {
-            line = fileScanner.nextLine();
-            StringTokenizer inReader = new StringTokenizer(line, ",");
-            ID = inReader.nextToken();
-            name = inReader.nextToken();
-            email = inReader.nextToken();
-            address = inReader.nextToken();
-            phoneNumb = inReader.nextToken();
-            membership = inReader.nextToken();
-            username = inReader.nextToken();
-            password = inReader.nextToken();
-            if (getUsername().equals(username)) {
+            String line = fileScanner.nextLine();
+            Customer customer = generateCus(line);
+
+            if (this.getUsername().equals(customer.getUsername())) {
                 System.out.println("ID:" + ID + " Name:" + name + " Email:" + email + " Adress:" + address + " Phone number:" + phoneNumb + " Membership:" + membership + " Username:" + username);
                 break;
             }
@@ -286,22 +260,14 @@ public class Customer {
         }
     }
     public void updateAccountInfo ()throws IOException {
-        String line, ID, username, password, fileName, name, email, address, phoneNumb, membership, newData, newName, newEmail, newAdress, newPhoneNumb;
-        fileName = "./src/File/customers.txt";
+        String  newData, newName, newEmail, newAdress, newPhoneNumb;
+        String fileName = "./src/File/customers.txt";
         Scanner scanner = new Scanner(System.in);
         Scanner fileScanner = new Scanner(new File(fileName));
         while (fileScanner.hasNext()) {
-            line = fileScanner.nextLine();
-            StringTokenizer inReader = new StringTokenizer(line, ",");
-            ID = inReader.nextToken();
-            name = inReader.nextToken();
-            email = inReader.nextToken();
-            address = inReader.nextToken();
-            phoneNumb = inReader.nextToken();
-            membership = inReader.nextToken();
-            username = inReader.nextToken();
-            password = inReader.nextToken();
-            if (getUsername().equals(username)) {
+            String line = fileScanner.nextLine();
+            Customer customer = generateCus(line);
+            if (this.getUsername().equals(customer.getUsername())) {
                 System.out.println("Do you want to update your name?");
                 System.out.println("(1) Yes");
                 System.out.println("(2) No");
