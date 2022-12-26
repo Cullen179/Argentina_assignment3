@@ -85,15 +85,16 @@ public class Admin {
         Scanner sc = new Scanner(System.in);
         System.out.println("What is the product you want to update");
         String productName = sc.next();
+
+        // Add new file
         File updatePrice = new File("./src/File/update_items.txt");
         File itemFile = new File("./src/File/items.txt");
         Scanner fileScanner = new Scanner(itemFile);
         PrintWriter pw = new PrintWriter(new FileWriter(updatePrice, true));
         boolean matchProduct = false;
-        // Add new file
+
         // Initiate line number
         int line = 0;
-//        String productName = "I007-2003";
 
         // Loop through items file
         while (fileScanner.hasNextLine()) {
@@ -279,9 +280,41 @@ public class Admin {
         System.out.println(listProduct);
         System.out.println("Highest number bought: " + maxNum);
     }
+
+    public void customerHighestProduct() throws IOException{
+        System.out.println("-".repeat(17));
+        System.out.println("Get the highest product bought of a customer");
+        System.out.println("-".repeat(17));
+        Scanner sc = new Scanner(System.in);
+        System.out.println("What is the ID of the customer you want to view ?");
+        String id = sc.next();
+        // If the id of the customer
+        boolean matchCustomer = false;
+
+        Scanner fileScanner = new Scanner(new File("./src/File/customers.txt"));
+        // Loop through customer file
+        while(fileScanner.hasNextLine()) {
+            String customerLine = fileScanner.nextLine();
+            Customer customer = Customer.generateCus(customerLine);
+
+            // Get the highest bought product(s) and the quantity
+            if (customer.getMemberId().equals(id)) {
+                System.out.println("-".repeat(17));
+                System.out.println("The highest bought item(s) of customer" + customer.getMemberId() + ": ");
+                System.out.println(customer.highestBoughtProduct());
+                System.out.println("The total number bought is " + customer.highBoughtAmount());
+                System.out.println("-".repeat(17));
+            }
+        }
+
+        // Print error if customer ID not matched
+        if (!matchCustomer) {
+            System.out.println("Customer ID not valid. Please try again");
+        }
+    }
     public static void main(String[] args) throws IOException {
         Admin admin = new Admin();
-        admin.highestProduct();
+        admin.customerHighestProduct();
     }
 
 }

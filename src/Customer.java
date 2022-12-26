@@ -337,6 +337,34 @@ public class Customer {
         }
     }
 
+    public String getMemberId() {
+        return memberId;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public String getPhoneNumb() {
+        return phoneNumb;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getMembership() {
+        return membership;
+    }
+
     public static void main(String[] args) throws IOException {
         Customer lam = Customer.generateCus("C001,Minh Hoang,18 Irwin Street,0421473243,Silver,minhhoang,123456");
         System.out.println(lam.getProductBought());
