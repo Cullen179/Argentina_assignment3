@@ -17,12 +17,11 @@ public class Product {
         this.category = category;
     }
 
-    public static void productDetails(String item) {
-        Product product = Product.generateProduct(item);
-        System.out.println("ID: " + product.getId());
-        System.out.println("Title: " + product.getName());
-        System.out.println("Price: " + product.getPrice());
-        System.out.println("Category: " + product.getCategory());
+    public void getProductDetails() {
+        System.out.println("ID: " + this.getId());
+        System.out.println("Title: " + this.getName());
+        System.out.println("Price: " + this.getPrice());
+        System.out.println("Category: " + this.getCategory());
         System.out.println("-----------------");
     }
 
@@ -54,19 +53,17 @@ public class Product {
         // Get item ID
         String itemID = lastItem.split(",")[0];
         // Get number of item ID
-        int idNumber = Integer.parseInt(itemID.substring(1, 4));
+        int idNumber = Integer.parseInt(itemID.replace("I", ""));
         // Return ID
         return String.format("I%03d-%d", idNumber + 1, year);
     }
 
     public static Product createProduct() throws IOException{
-        Scanner sc = new Scanner(System.in);
         String name = checkProductName();
-        System.out.println("What is the price of the product:");
-        double price = sc.nextDouble();
+        // Validate price input
+        double price = InputValidator.getDoubleInput("What is the price of the product:", "Price must be of integer or double value");
         String category = checkCategory();
-        System.out.println("What is the year of the product:");
-        int year = sc.nextInt();
+        int year = InputValidator.getIntInput("What is the year of the product:", "Year must be of integer value");
         return new Product(newIDNumber(year), name, price, category);
     }
 

@@ -40,6 +40,7 @@ public class Customer {
         return new Customer(ID, name, email, address, phoneNumb, membership, username, password);
     }
 
+    // Rewrite
     public HashMap<String, Integer> getProductBought() throws IOException{
         HashMap<String, Integer> productBought = new HashMap<String, Integer>();
         Scanner sc = new Scanner(new File("./src/File/orders.txt"));
@@ -58,6 +59,7 @@ public class Customer {
         return this.productBought;
     }
 
+    // REWRITE
     public ArrayList<String> highestBoughtProduct() throws IOException {
         ArrayList<String> list = new ArrayList<String>();
         int maxNum = 0;
@@ -73,6 +75,7 @@ public class Customer {
         return list;
     }
 
+    // REWRITE
     public int highBoughtAmount() throws IOException {
         int maxNum = 0;
         for (String product: getProductBought().keySet()) {
@@ -199,25 +202,17 @@ public class Customer {
         }
         fileScanner.close();
     }
-    public void displayAccountInfo () throws IOException {
-        String fileName = "./src/File/customers.txt";
-        Scanner fileScanner = new Scanner(new File(fileName));
-        while (fileScanner.hasNext()) {
-            String line = fileScanner.nextLine();
-            Customer customer = generateCus(line);
-
-            if (this.getUsername().equals(customer.getUsername())) {
-                System.out.println("ID:" + customer.getID());
-                System.out.println("Name:" + customer.getName());
-                System.out.println("Email:" + customer.getEmail());
-                System.out.println("Adress:" + customer.getAddress());
-                System.out.println("Phone number:" + customer.getPhoneNumb());
-                System.out.println("Membership:" + customer.getMembership());
-                System.out.println("Username:" + customer.getUsername());
-
-                break;
-            }
-        }
+    // Written
+    public void displayAccountInfo() throws IOException {
+        System.out.println("-".repeat(17));
+        System.out.println("ID:" + this.getID());
+        System.out.println("Name:" + this.getName());
+        System.out.println("Email:" + this.getEmail());
+        System.out.println("Adress:" + this.getAddress());
+        System.out.println("Phone number:" + this.getPhoneNumb());
+        System.out.println("Membership:" + this.getMembership());
+        System.out.println("Username:" + this.getUsername());
+        System.out.println("-".repeat(17));
     }
 
     static void modifyFile (String filePath, String oldString, String newString)
@@ -316,7 +311,7 @@ public class Customer {
         System.out.println("VIEW PRODUCT");
         while (scannerProduct.hasNextLine()) {
             String items = scannerProduct.nextLine();
-            Product.productDetails(items);
+            Product.getproductDetails(items);
         }
     }
 
@@ -334,7 +329,7 @@ public class Customer {
 
             if (categoryInput.equals(category)) {
                 checkCategory = true;
-                Product.productDetails(items);
+                Product.getproductDetails(items);
             }
         }
         if (!checkCategory) {

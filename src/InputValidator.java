@@ -14,11 +14,11 @@ public class InputValidator {
         }
     }
 
-    public static double getDoubleInput(String promptUser, String errorMessage) {
+    public static double getDoubleInput(String userInput, String errorMessage) {
         Scanner sc = new Scanner(System.in);
         while (true) {
             try {
-                System.out.print(promptUser);
+                System.out.print(userInput);
                 return Double.parseDouble(sc.nextLine());
             }
             catch (Exception e) {

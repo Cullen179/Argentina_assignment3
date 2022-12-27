@@ -85,10 +85,12 @@ public class Admin {
         // Loop through items file
         while (sc.hasNextLine()) {
             String item = sc.nextLine();
-            Product.productDetails(item);
+            Product product = Product.generateProduct(item);
+            product.getProductDetails();
         }
     }
 
+    // Rewrite
     // This method is used to view orders for admin.
     public static void viewOrders() throws IOException {
         // Create a scanner object to read from an item text file.
@@ -102,16 +104,20 @@ public class Admin {
         scannerOrder.close();
     }
 
+    // Written
     public static void viewMembers() throws IOException {
+        System.out.println("\nVIEW MEMBERS \n");
         // Create a scanner object to read from a member text file.
-        Scanner scannerMember = new Scanner(new File("./src/File/member.txt"));
-        System.out.println("\nVIEW MEMBER");
+        Scanner sc = new Scanner(new File("./src/File/member.txt"));
         // A loop is used to display detailed information of each member.
-        while (scannerMember.hasNextLine()) {
-            String member = scannerMember.nextLine();
-//            Customer.(member);
+        while (sc.hasNextLine()) {
+            String memberInfo = sc.nextLine();
+            Customer member = Customer.generateCus(memberInfo);
+            if (member.getMembership() != "Normal") {
+                member.displayAccountInfo();
+            }
         }
-        scannerMember.close();
+        sc.close();
     }
 
     public void addProduct() throws IOException{
@@ -173,7 +179,8 @@ public class Admin {
         }
     }
 
-    public void updateProduct() throws IOException{
+    // Written
+    public void updateProductPrice() throws IOException{
         Scanner sc = new Scanner(System.in);
         System.out.println("What is the product you want to update");
         String productName = sc.next();
@@ -196,8 +203,12 @@ public class Admin {
 
             if (product.getName().equals(productName)) {
                 matchProduct = true;
-                product.setPrice(100);
-                // Update item to new product
+
+                // Check new price input
+                double newPrice = InputValidator.getDoubleInput("New price of the product: ", "Product price must be of integer or double value");
+                product.setPrice(newPrice);
+
+                // Update item info line from new product
                 item = Product.generateItem(product);
             }
 
@@ -230,13 +241,7 @@ public class Admin {
         if (!Product.getCategoryList().contains(newCategory)) {
             Product.addCategory(newCategory);
         } else {
-            System.out.println("Category is already available. Do you want to retry ?");
-            boolean retry = sc.nextBoolean();
-
-            // Call addCategory method if admin want to retry
-            if (retry) {
-                addCategory();
-            }
+            System.out.println("Category is already available. Please try again");
         }
     }
 
@@ -281,6 +286,7 @@ public class Admin {
         }
         sc.close();
         bufferedWriter.close();
+
         // Delete the items file
         items.delete();
         // Rename remove item file to item file
@@ -296,6 +302,9 @@ public class Admin {
         Scanner sc = new Scanner(System.in);
         System.out.println("What is the ID of the customer you want to remove?");
         String id = sc.next();
+
+        // Boolean variable if customer ID exists
+        boolean matchCus = false;
         // Add new file
         File removeCus = new File("./src/File/removeCustomers.txt");
         File customerFile = new File("./src/File/customers.txt");
@@ -308,25 +317,27 @@ public class Admin {
 
         // Loop through customer file
         while (fileScanner.hasNextLine()) {
-            String item = fileScanner.nextLine();
             line++;
-            Product product = Product.generateProduct(item);
+            String customerInfo = fileScanner.nextLine();
+            Customer customer = Customer.generateCus(customerInfo);
 
             // Check if product id equal remove item id, and line number is 1
-            if (product.getId().equals(id) && line == 1) {
+            if (customer.getID().equals(id) && line == 1) {
                 matchedLine1 = true;
+                matchCus = true;
                 continue;
 
                 // Check if product id equal remove item id,
-            } else if (product.getId().equals(id)) {
+            } else if (customer.getID().equals(id)) {
+                matchCus = true;
                 continue;
             }
 
             // if line number is 1 or 2 with remove item in line 1, avoid adding new line
             if (line == 1 || (line == 2 && matchedLine1)) {
-                pw.printf(item);
+                pw.printf(customerInfo);
             } else {
-                pw.printf("\n" + item);
+                pw.printf("\n" + customerInfo);
             }
         }
         fileScanner.close();
@@ -335,8 +346,14 @@ public class Admin {
         customerFile.delete();
         // Rename remove item file to item file
         removeCus.renameTo(customerFile);
+
+        // Print error if customer ID doesn't exist
+        if (!matchCus) {
+            System.out.println("Customer ID doesn't exist. Please try again");
+        }
     }
 
+    // Rewrite
     public static void getOrderByCustomerID() throws IOException {
         System.out.println("\nGET ORDER BY CUSTOMER ID");
         // Create a scanner object to be ready to get input information (customer ID) from users via keyboard.
@@ -364,6 +381,8 @@ public class Admin {
         }
         scannerOrder.close();
     }
+
+    // Rewrite
     public static void changeOrderStatus() throws IOException {
         System.out.println("\nCHANGE STATUS OF THE ORDER");
         // Create a scanner object to be ready to get input information (order ID) from users via keyboard.
@@ -438,9 +457,9 @@ public class Admin {
         System.out.println("Highest number bought: " + maxNum);
     }
 
-    public void customerHighestProduct() throws IOException{
+    public void getHighesBoughttProduct() throws IOException{
         System.out.println("-".repeat(17));
-        System.out.println("Get the highest product bought of a customer");
+        System.out.println("GET THE HIGHEST BOUGHT PRODUCT OF A CUSTOMER");
         System.out.println("-".repeat(17));
         Scanner sc = new Scanner(System.in);
         System.out.println("What is the ID of the customer you want to view ?");
@@ -451,8 +470,8 @@ public class Admin {
         Scanner fileScanner = new Scanner(new File("./src/File/customers.txt"));
         // Loop through customer file
         while(fileScanner.hasNextLine()) {
-            String customerLine = fileScanner.nextLine();
-            Customer customer = Customer.generateCus(customerLine);
+            String customerInfo = fileScanner.nextLine();
+            Customer customer = Customer.generateCus(customerInfo);
 
             // Get the highest bought product(s) and the quantity
             if (customer.getID().equals(id)) {
@@ -469,6 +488,8 @@ public class Admin {
             System.out.println("Customer ID not valid. Please try again");
         }
     }
+
+    // REWRITE
     public static boolean calculateTotalRevenue(String date) throws IOException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         Scanner scannerOrder = new Scanner(new File("./src/File/order.txt"));
@@ -493,15 +514,19 @@ public class Admin {
         }
         return true;
     }
+
+    // REWRITE
     public static void totalRevenue() throws IOException {
         System.out.println("\nCALCULATE THE STORE TOTAL REVENUE IN A PARTICULAR DAY");
         Scanner scannerOrder = new Scanner(new File("./src/File/order.txt"));
         Scanner sc = new Scanner(System.in);
-        System.out.print("\nEnter the formatted date (yyyy-MM-dd) that you want to calculate the revenue: ");
+        System.out.print("\nEnter date(yyyy-MM-dd) that you want to calculate the revenue: ");
         String date = sc.nextLine();
         calculateTotalRevenue(date);
         scannerOrder.close();
     }
+
+    // REWRITE
     public static void checkOrderInfoInADay() throws IOException {
         System.out.println("\nCHECK THE INFORMATION OF ALL ORDERS EXECUTED IN A PARTICULAR DAY");
         Scanner scannerOrder = new Scanner(new File("./src/File/order.txt"));
@@ -527,7 +552,7 @@ public class Admin {
     }
     public static void main(String[] args) throws IOException {
         Admin admin = new Admin();
-        admin.customerHighestProduct();
+        admin.getCustomerHighesBoughttProduct();
     }
 
 }

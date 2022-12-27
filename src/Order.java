@@ -1,22 +1,21 @@
 import java.io.IOException;
+import java.util.HashMap;
 
 public class Order {
-    private String orderID;
+    private String ID;
     private String customerID;
-    private String orderDate;
-    private String orderAddress;
-    private String orderProduct;
-    private String productNum;
+    private String date;
+    private String address;
+    private HashMap<String, Integer> productList;
     private double price;
     private String status;
 
-    public Order(String orderID, String customerID, String orderDate, String orderAddress, String orderProduct, String productNum, double price, String status) {
-        this.orderID = orderID;
+    public Order(String ID, String customerID, String date, String address, HashMap<String, Integer> productList, double price, String status) {
+        this.ID = ID;
         this.customerID = customerID;
-        this.orderDate = orderDate;
-        this.orderAddress = orderAddress;
-        this.orderProduct = orderProduct;
-        this.productNum = productNum;
+        this.date = date;
+        this.address = address;
+        this.productList = productList;
         this.price = price;
         this.status = status;
     }
@@ -27,19 +26,23 @@ public class Order {
         String[] orderAttrs = productInfo.split(",");
         String orderId = orderAttrs[0];
         String customerId = orderAttrs[1];
-        String orderDate = orderAttrs[2];
-        String orderAddress = orderAttrs[3];
-        String orderProducts = orderAttrs[4];
-        String orderProductsNum = (orderAttrs[5]);
+        String date = orderAttrs[2];
+        String address = orderAttrs[3];
+        String[] product = orderAttrs[4].split(":");
+        String[] quantity = orderAttrs[5].split(":");
+        HashMap<String, Integer> productList = new HashMap<String, Integer>();
+        for (int i = 0; i < productList.size(); i++) {
+            productList.put(product[i], Integer.parseInt(quantity[i]);
+        }
         double orderTotal = Double.parseDouble(orderAttrs[6]);
         String orderStatus = orderAttrs[7];
-        return new Order(orderId, customerId, orderDate, orderAddress, orderProducts, orderProductsNum, orderTotal, orderStatus);
+        return new Order(orderId, customerId, date, address, productList, orderTotal, orderStatus);
     }
 
 
 
     public String getOrderID() {
-        return orderID;
+        return ID;
     }
 
     public String getCustomerID() {
@@ -47,20 +50,16 @@ public class Order {
     }
 
     public String getOrderDate() {
-        return orderDate;
+        return date;
     }
 
     public String getOrderAddress() {
-        return orderAddress;
+        return address;
     }
 
-    public String getOrderProduct() {
-        return orderProduct;
+    public HashMap<String, Integer> getProductList() {
+        return productList;
     }
-
-//    public int getProductNum() {
-//        return productNum;
-//    }
 
     public double getPrice() {
         return price;
@@ -69,16 +68,16 @@ public class Order {
     public String getStatus() {
         return status;
     }
-    public static void displayOrderInfo(String orderLine) throws IOException {
+
+    public void displayOrderInfo() throws IOException {
             System.out.println("-----------------");
             System.out.println("Order detail");
             System.out.println("-----------------");
-            System.out.println("OrderID: " + orderLine.split(",")[0]);
-            System.out.println("Order date: " + orderLine.split(",")[3]);
-            System.out.println("Customer name:" + orderLine.split(",")[2]);
-            System.out.println("Shipping address: " + orderLine.split(",")[4]);
-            System.out.println("Items: " + orderLine.split(",")[5]);
-            System.out.println("Quantity: " + orderLine.split(",")[6]);
-            System.out.println("Total: " + orderLine.split(",")[7]);
+            System.out.println("OrderID: " + this.getOrderID());
+            System.out.println("Order date: " + this.getOrderDate());
+            System.out.println("Customer ID:" + this.getCustomerID());
+            System.out.println("Shipping address: " + this.getOrderAddress());
+            System.out.println("Product list: " + this.getProductList());
+            System.out.println("Total: " + this.getPrice());
         }
     }
