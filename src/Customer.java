@@ -187,7 +187,7 @@ public class Customer {
     public void login () throws IOException {
         Boolean loggedin = false;
         Scanner scanner = new Scanner(System.in);
-        String fileName = "D:\\Java project\\group asm\\customer.txt";
+        String fileName = "./src/File/customers.txt";
         Scanner fileScanner = new Scanner(new File(fileName));
         System.out.println("Enter username:");
         String username = scanner.nextLine();
