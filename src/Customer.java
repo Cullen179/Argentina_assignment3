@@ -184,20 +184,25 @@ public class Customer {
         }
         return passwordExist;
     }
-    public void login (String inputUsername, String inputPassword) throws IOException {
+    public void login () throws IOException {
         Boolean loggedin = false;
-        String fileName = "./src/File/customers.txt";
+        Scanner scanner = new Scanner(System.in);
+        String fileName = "D:\\Java project\\group asm\\customer.txt";
         Scanner fileScanner = new Scanner(new File(fileName));
+        System.out.println("Enter username:");
+        String username = scanner.nextLine();
+        System.out.println("Enter password:");
+        String password = scanner.nextLine();
         while (fileScanner.hasNextLine()) {
             String line = fileScanner.nextLine();
             Customer customer = generateCus(line);
-            if (inputUsername.equals(customer.getUsername()) && inputPassword.equals(customer.getPassword())) {
+            if (username.equals(customer.getUsername()) && password.equals(customer.getPassword())) {
                 loggedin = true;
                 System.out.println("successful login");
                 break;
             }
         }
-        if (!loggedin) {
+        if(loggedin.equals(false)){
             System.out.println("Incorrect username or password");
         }
         fileScanner.close();
