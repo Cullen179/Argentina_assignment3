@@ -603,14 +603,28 @@ public class Customer {
             return String.format("O%03d", idNumber + 1);
         }
     }
-    public static void createOrder() throws IOException {
+
+    // apply membership discount
+    private double applyDiscount(double beforeDiscount) throws IOException {
+        switch (this.getMembership()) {
+            case "platinum":
+                return beforeDiscount * 85 / 100;
+            case "gold":
+                return beforeDiscount * 90 / 100;
+            case "silver":
+                return beforeDiscount * 95 / 100;
+
+        }
+
+    // Create order
+    public void createOrder() throws IOException {
         // initialize the needed variables
         Scanner customerInput = new Scanner(System.in);
         boolean continueToBuy = true;
-        int quantity, itemNum;
-        double chosenItemPrice = 0, total = 0, totalAfterDiscount = 0;
-        HashMap<String, ArrayList<Integer>> orderProducts = new HashMap<>();
-        String chosenProductName = null;
+        int quantity;
+        String itemName;
+        double total = 0, totalAfterDiscount = 0;
+        HashMap<String, Integer> orderProducts = new HashMap<>();
 
         // loop when customer still want to buy more products
         while (continueToBuy) {
@@ -619,126 +633,76 @@ public class Customer {
             System.out.println("--------------");
             viewProducts();
             System.out.println("--------------");
-            System.out.println("Enter the number of the item you want to buy:");
-            itemNum = customerInput.nextInt();
+            System.out.println("Enter the name of the item you want to buy:");
+            itemName = customerInput.nextLine();
 
-            File productFile = new File("./src/File/items.txt");
-            Scanner productFileScanner = new Scanner(productFile);
+            String chosenProductName = null;
+            double chosenItemPrice = 0;
+            boolean productMatched = false;
 
-            while (productFileScanner.hasNextLine()) {
-                String product = productFileScanner.nextLine();
-                String productId = product.split(",")[0];
-                int idNumber = Integer.parseInt(productId.substring(1, 4));
-                String productName = product.split(",")[1];
-                double productPrice = Double.parseDouble(product.split(",")[2]);
+            while (!productMatched) {
+                File productFile = new File("./src/File/items.txt");
+                Scanner productFileScanner = new Scanner(productFile);
 
-                // when the item number that the user enters equal to the ID number of the product, use that product name and price
-                if (itemNum == idNumber) {
-                    chosenItemPrice = productPrice;
-                    chosenProductName = productName;
-                    break;
+                while (productFileScanner.hasNextLine()) {
+                    String product = productFileScanner.nextLine();
+                    String productName = product.split(",")[1];
+                    double productPrice = Double.parseDouble(product.split(",")[2]);
+
+                    // when the name that the user entered equals to the name of the product, take that product's name and price
+                    if (itemName.equals(productName)) {
+                        chosenItemPrice = productPrice;
+                        chosenProductName = productName;
+                        productMatched = true;
+                    }
+                }
+                // notice the user when the input product name was not found
+                if (!productMatched) {
+                    System.out.println("Can't find the product. Please enter another name.");
                 }
             }
 
-            System.out.println("How many do you want to buy?");
-            quantity = customerInput.nextInt();
+            quantity = InputValidator.getIntInput("How many do you want to buy?\n",
+                    "Only enter int number!");
+
 
             // update hash map with the product and its quantity.
-            // Use array list in case customers want to add the product that is already in their cart
+            // Use if-else condition in case customers want to add the product that is already in their cart
 
             if (orderProducts.containsKey(chosenProductName)) {
-                ArrayList<Integer> quantityArrayList;
-                quantityArrayList = orderProducts.get(chosenProductName);
-                quantityArrayList.add(quantity);
-                orderProducts.put(chosenProductName, quantityArrayList);
+                orderProducts.put(chosenProductName, quantity + orderProducts.get(chosenProductName));
             } else {
-                ArrayList<Integer> quantityArrayList = new ArrayList<Integer>();
-                quantityArrayList.add(quantity);
-                orderProducts.put(chosenProductName,quantityArrayList);
+                orderProducts.put(chosenProductName, quantity);
             }
 
             total = total + (chosenItemPrice * quantity);
 
+            boolean validInput = false;
+
             System.out.println("Do you want to continue to buy? (Y or N)");
-            String isContinue = customerInput.next();
 
-            // prevent the case customer enters something apart from Y or N.
-            if (isContinue.equalsIgnoreCase("Y"))
-                System.out.println("-----------------");
-            else if (isContinue.equalsIgnoreCase("N")) {
-                System.out.println("-----------------");
-                continueToBuy = false;
-            }  else
-                System.out.println("Wrong input! Y or N only! Please try again");
-        }
+            while (!validInput) {
+                String isContinue = customerInput.nextLine();
 
+                // prevent the case customer enters something apart from Y or N.
+                if (isContinue.equalsIgnoreCase("Y")) {
+                    System.out.println("-----------------");
+                    validInput = true;
+                } else if (isContinue.equalsIgnoreCase("N")) {
+                    System.out.println("-----------------");
+                    continueToBuy = false;
+                    validInput = true;
+                } else {
+                    System.out.println("Wrong input! Y or N only! Please try again");
 
-        String customerId = "", username ="";
-
-        boolean usernameNotFound = true;
-
-        int count = 0;
-
-        while (usernameNotFound) {
-            // find the customer ID by asking the customer(s) their username
-            if (count == 0)
-                System.out.println("Your username is: ");
-            else
-                System.out.println("Invalid username. Please enter another username: ");
-
-            username = customerInput.next();
-
-            File customerFile = new File("./src/File/customers.txt");
-            Scanner customerFileScanner = new Scanner(customerFile);
-
-            while (customerFileScanner.hasNext()) {
-                String customerLine = customerFileScanner.nextLine();
-                String[] customerInfo = customerLine.split(",");
-                if (customerInfo[6].equals(username)) {
-                    customerId = customerInfo[0];
-                    System.out.printf("Thank you %s!\n", username);
-                    String membership = customerInfo[5];
-
-                    // apply membership
-                    if(membership.equals("silver"))
-                        totalAfterDiscount = total * 95/100;
-                    else if (membership.equals("gold"))
-                        totalAfterDiscount = total * 90/100;
-                    else if (membership.equals("platinum"))
-                        totalAfterDiscount = total * 85/100;
-                    else
-                        totalAfterDiscount = total;
-
-                    usernameNotFound = false;
+                    System.out.println("Do you want to continue to buy? (Y or N)");
                 }
             }
-            count ++;
         }
 
-
-        // let the customer enter and confirm the shipping address
+        // let the customer enter the shipping address
         System.out.println("Your shipping address is:");
-        String address = customerInput.next();
-
-        System.out.println("Please re-check your address. Is it correct?(Y or N) :");
-        String addressConfirm = customerInput.next();
-        while (true) {
-            if (addressConfirm.equalsIgnoreCase("Y")) {
-                System.out.println("-----------------");
-                System.out.println("Thank you! You have successfully placed your order");
-                break;
-            }
-
-            if (addressConfirm.equalsIgnoreCase("N")) {
-                System.out.println("Please re-enter your address!");
-                System.out.println("Your shipping address is:");
-                address = customerInput.next();
-            } else {
-                System.out.println("Only enter Y or N");
-            }
-            System.out.println("Please re-check your address. Is it correct? (Y or N) :");
-            addressConfirm = customerInput.next();
-        }
+        String shippingAddress = customerInput.nextLine();
 
         // generate orderID
         String orderId = newOrderId();
@@ -761,8 +725,11 @@ public class Customer {
             currentOrderProductQuantity.append(":").append(quantityList[i].toString());
         }
 
+        // apply membership discount
+        totalAfterDiscount = applyDiscount(total);
+
         // append the line for the new order to the end of the orders.txt file
-        String newOrder = String.join(",", orderId,customerId,username,orderDate,address,
+        String newOrder = String.join(",", orderId,this.getID(),this.getUsername(),orderDate,shippingAddress,
                 currentOrderProducts.toString(), currentOrderProductQuantity.toString(), String.valueOf(totalAfterDiscount), "delivered");
         PrintWriter pw = new PrintWriter(new FileWriter("./src/File/orders.txt",true));
         pw.println(newOrder);
@@ -771,19 +738,21 @@ public class Customer {
         pw.close();
 
         // display order details
-        System.out.println("Your order detail");
+        System.out.println("\nYour order detail");
         System.out.println("-----------------");
         System.out.println("OrderID: " + orderId);
         System.out.println("Order date: "+ orderDate);
-        System.out.println("Customer name:"+ username);
-        System.out.println("Shipping address: "+ address);
+        System.out.println("Customer name:"+ this.getUsername());
+        System.out.println("Shipping address: "+ shippingAddress);
         System.out.println("Items: "+ currentOrderProducts );
         System.out.println("Quantity: "+ currentOrderProductQuantity);
-        System.out.println("Total: " + total);
+        System.out.println("Total: " + totalAfterDiscount);
 
         // update membership by adding the order total to total spending
 
     }
+
+
 
     public static void findOrderDetails() throws IOException {
         boolean notMatched = true;
