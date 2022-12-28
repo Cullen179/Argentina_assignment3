@@ -334,6 +334,27 @@ public class Customer {
             }
         }
     }
+    public void updateMembership() throws IOException{
+        String fileName = "./src/File/customers.txt";
+        Scanner fileScanner = new Scanner(new File(fileName));
+        while (fileScanner.hasNext()) {
+            String line = fileScanner.nextLine();
+            Customer customer = generateCus(line);
+            if (this.getUsername().equals(customer.getUsername())){
+                String newMembership = customer.getMembership();
+                if(customer.getTotalSpending() >= 300000){
+                    newMembership = "platinum";
+                } else if(customer.getTotalSpending() >= 200000){
+                    newMembership = "gold";
+                } else if (customer.getTotalSpending() >= 100000){
+                    newMembership = "silver";
+                }
+                String newData = customer.getID() + "," + customer.getName() + "," + customer.getEmail() + "," + customer.getAddress() + "," + customer.getPhoneNumb() + ","+ newMembership + "," + customer.getUsername() + "," + customer.getPassword() + "," + customer.getTotalSpending();
+                modifyFile(fileName,line,newData);
+                break;
+            }
+        }
+    }
     public static void viewProduct() throws IOException {
         Scanner scannerProduct = new Scanner(new File("./src/items.txt"));
         System.out.println("VIEW PRODUCT");
