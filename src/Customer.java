@@ -272,7 +272,7 @@ public class Customer {
         }
     }
     public void updateAccountInfo ()throws IOException {
-        String  newData, newName, newEmail, newAdress, newPhoneNumb;
+        String  newData;
         String fileName = "./src/File/customers.txt";
         Scanner scanner = new Scanner(System.in);
         Scanner fileScanner = new Scanner(new File(fileName));
@@ -280,37 +280,44 @@ public class Customer {
             String line = fileScanner.nextLine();
             Customer customer = generateCus(line);
             if (this.getUsername().equals(customer.getUsername())) {
-                System.out.println("Do you want to update your name?");
-                System.out.println("(1) Yes");
-                System.out.println("(2) No");
-                String askName = scanner.nextLine();
-                if (askName.equals("1")) {
-                    System.out.println("Enter new name");
-                    name = scanner.nextLine();
-                }
-                System.out.println("Do you want to update your email?");
-                System.out.println("(1) Yes");
-                System.out.println("(2) No");
-                String askEmail = scanner.nextLine();
-                if (askEmail.equals("1")) {
-                    System.out.println("Enter new email");
-                    email = scanner.nextLine();
-                }
-                System.out.println("Do you want to update your address?");
-                System.out.println("(1) Yes");
-                System.out.println("(2) No");
-                String askAdress = scanner.nextLine();
-                if (askAdress.equals("1")) {
-                    System.out.println("Enter new address");
-                    address = scanner.nextLine();
-                }
-                System.out.println("Do you want to update your phone number?");
-                System.out.println("(1) Yes");
-                System.out.println("(2) No");
-                String askPhoneNumb = scanner.nextLine();
-                if (askPhoneNumb.equals("1")) {
-                    System.out.println("Enter new phone number");
-                    phoneNumb = scanner.nextLine();
+                while (true) {
+                    String name = customer.getName();
+                    String email = customer.getEmail();
+                    String adress = customer.getAddress();
+                    String phoneNumb = customer.getPhoneNumb();
+                    System.out.println("Choose the number to change the information you want to change:");
+                    System.out.println("(1)Name");
+                    System.out.println("(2)Email");
+                    System.out.println("(3)Adress");
+                    System.out.println("(4)Phone number");
+                    String askCustomer = scanner.nextLine();
+                    switch (askCustomer) {
+                        case "1":
+                            System.out.println("Enter new name");
+                            name = scanner.nextLine();
+                            break;
+                        case "2":
+                            System.out.println("Enter new email");
+                            email = scanner.nextLine();
+                            break;
+                        case "3":
+                            System.out.println("Enter new address");
+                            adress = scanner.nextLine();
+                            break;
+                        case "4":
+                            System.out.println("Enter new phone number");
+                            phoneNumb = scanner.nextLine();
+                            break;
+                    }
+                    newData = customer.getID() + "," + name + "," + email + "," + adress + "," + phoneNumb + "," + customer.getMembership() + "," + customer.getUsername() + "," + customer.getPassword() + "," + customer.getTotalSpending();
+                    modifyFile(fileName, line, newData);
+                    System.out.println("Do you want to change information again");
+                    System.out.println("(1) Yes");
+                    System.out.println("(2) No");
+                    String continueChange = scanner.nextLine();
+                    if (continueChange.equals("2")){
+                        break;
+                    }
                 }
             }
         }
