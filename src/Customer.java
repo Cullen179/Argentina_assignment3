@@ -13,9 +13,11 @@ public class Customer {
     private String membership;
     private String username;
     private String password;
+
+    private double totalSpending;
     private static HashMap<String, Integer> productBought = new HashMap<String, Integer>();
 
-    public Customer(String ID, String name, String email, String address, String phoneNumb, String membership, String username, String password) {
+    public Customer(String ID, String name, String email, String address, String phoneNumb, String membership, String username, String password, double totalSpending) {
         this.ID = ID;
         this.name = name;
         this.email = email;
@@ -24,6 +26,7 @@ public class Customer {
         this.membership = membership;
         this.username = username;
         this.password = password;
+        this.totalSpending = totalSpending;
     }
 
 
@@ -37,7 +40,8 @@ public class Customer {
         String membership = customerInfo[5];
         String username = customerInfo[6];
         String password = customerInfo[7];
-        return new Customer(ID, name, email, address, phoneNumb, membership, username, password);
+        double totalSpending = Double.parseDouble(customerInfo[8]);
+        return new Customer(ID, name, email, address, phoneNumb, membership, username, password, totalSpending);
     }
 
     // Rewrite
@@ -90,7 +94,7 @@ public class Customer {
     public void registerMember () throws IOException {
         //Declare attribute
         String line, ID, username, password, fileName, name, email, address, phoneNumb;
-
+        double totalSpending = 0;
         //create a scanner setup for user inputs
         Scanner scanner = new Scanner(System.in);
 
@@ -149,7 +153,7 @@ public class Customer {
             count++;
         }
         count += 1;
-        pw.println(count + "," + name + "," + email + "," + address + "," + phoneNumb + "," + "none" + "," + username + "," + password);
+        pw.println(count + "," + name + "," + email + "," + address + "," + phoneNumb + "," + "none" + "," + username + "," + password + "," + totalSpending);
         pw.close();
         fileScanner.close();
     }
@@ -217,6 +221,7 @@ public class Customer {
         System.out.println("Phone number:" + this.getPhoneNumb());
         System.out.println("Membership:" + this.getMembership());
         System.out.println("Username:" + this.getUsername());
+        System.out.println("Total spending:" + this.getTotalSpending());
         System.out.println("-".repeat(17));
     }
 
@@ -311,6 +316,24 @@ public class Customer {
         }
     }
 
+    public void updateTotalSpending(double inputTotalSpeding) throws IOException {
+        String newData;
+        double newTotalSpending = 0;
+        String fileName = "./src/File/customers.txt";
+        Scanner fileScanner = new Scanner(new File(fileName));
+        while (fileScanner.hasNext()) {
+            String line = fileScanner.nextLine();
+            Customer customer = generateCus(line);
+            if (this.getUsername().equals(customer.getUsername())){
+                System.out.println(customer.getTotalSpending());
+                newTotalSpending = customer.getTotalSpending() + inputTotalSpeding;
+                System.out.println(newTotalSpending);
+                newData = customer.getID() + "," + customer.getName() + "," + customer.getEmail() + "," + customer.getAddress() + "," + customer.getPhoneNumb() + ","+ customer.getMembership() + "," + customer.getUsername() + "," + customer.getPassword() + "," + newTotalSpending;
+                modifyFile(fileName,line,newData);
+                break;
+            }
+        }
+    }
     public static void viewProduct() throws IOException {
         Scanner scannerProduct = new Scanner(new File("./src/items.txt"));
         System.out.println("VIEW PRODUCT");
@@ -404,6 +427,14 @@ public class Customer {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public double getTotalSpending() {
+        return totalSpending;
+    }
+
+    public void setTotalSpending(double totalSpending) {
+        this.totalSpending = totalSpending;
     }
 
     public static void viewProducts() throws IOException {
