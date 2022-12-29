@@ -226,7 +226,7 @@ public class Customer {
 //        System.out.println("ID:" + this.getID());
 //        System.out.println("Name:" + this.getName());
 //        System.out.println("Email:" + this.getEmail());
-//        System.out.println("Adress:" + this.getAddress());
+//        System.out.println("Address:" + this.getAddress());
 //        System.out.println("Phone number:" + this.getPhoneNumb());
 //        System.out.println("Membership:" + this.getMembership());
 //        System.out.println("Username:" + this.getUsername());
@@ -385,18 +385,20 @@ public class Customer {
 //            }
 //        }
 //    }
-//    public static void viewProduct() throws IOException {
-//        Scanner scannerProduct = new Scanner(new File("./src/items.txt"));
-//        System.out.println("VIEW PRODUCT");
-//        while (scannerProduct.hasNextLine()) {
-//            String items = scannerProduct.nextLine();
-//            Product.getproductDetails(items);
-//        }
-//    }
-//
-//    public static void listProductByCategory() throws IOException {
-//        Scanner scannerProduct = new Scanner(new File("./src/items.txt"));
-//        System.out.print("Type your category to search for the needed product: ");
+
+    public static void viewProduct() throws IOException {
+        Scanner scannerProduct = new Scanner(new File("./src/File/items.txt"));
+        System.out.println("VIEW PRODUCT");
+        while (scannerProduct.hasNextLine()) {
+            String items = scannerProduct.nextLine();
+            Product product = Product.generateProduct(items);
+            product.getProductDetails();
+        }
+    }
+
+    // public static void listProductByCategory() throws IOException {
+    // Scanner scannerProduct = new Scanner(new File("./src/items.txt"));
+    // System.out.print("Type your category to search for the needed product: ");
 //        Scanner input = new Scanner(System.in);
 //        String categoryInput = input.nextLine();
 //
@@ -487,35 +489,17 @@ public class Customer {
     public void setTotalSpending(double totalSpending) {
         this.totalSpending = totalSpending;
     }
-//
-//    public static void viewProducts() throws IOException {
-//        File file = new File("./src/File/items.txt");
-//        Scanner fileScanner = new Scanner(file);
-//        String line;
-//
-//        while (fileScanner.hasNext()) {
-//            // Read the whole line of the file
-//            line = fileScanner.nextLine();
-//            System.out.println(line);
-//        }
+
+//    public static void main(String[] args) throws IOException {
+//        searchProduct();
 //    }
-//
+
 //    public static void searchProduct() throws IOException {
-//        // Open and read each line of the Product file
-//        File file = new File("./src/File/items.txt");
-//        Scanner fileScanner = new Scanner(file);
-//        String line;
-//
-//        // A scanner to take user input (category)
-//        Scanner sc = new Scanner(System.in);
-//
-//        String searchCategory = "";
+//        String category = Product.checkCategory();
 //        double minimum = 0;
 //        double maximum = 10000000;
-//
 //        try {
-//            System.out.println("Enter the category you want to search: ");
-//            searchCategory = sc.nextLine();
+//            Scanner sc = new Scanner(System.in);
 //            System.out.println("Enter the minimum price: ");
 //            String minimumString = sc.nextLine();
 //            try {
@@ -536,29 +520,14 @@ public class Customer {
 //            maximum = 10000000;
 //        }
 //
-//        // variable to count whether there is any matches
-//        int matched = 0;
 //
-//        // Loop until the scanner reading the whole file
-//        while (fileScanner.hasNext()) {
-//            // Read the whole line of the file
-//            line = fileScanner.nextLine();
-//
-//            String[] product = line.split(",");
-//
-//            Double price = Double.valueOf(product[2]);
-//            String category = product[3];
-//
-//            // if the search category matches the category and the price range => display the product(s)
-//            if (category.equals(searchCategory) && minimum < price && price < maximum) {
-//                System.out.println(line);
-//                matched += 1;
-//            }
+//        // if the search category matches the category and the price range => display the product(s)
+//        if (minimum < price  && price < maximum) {
+//            System.out.println(line);
 //        }
-//        // display message to notify user
-//        if (matched == 0)
-//            System.out.println("No matched category. Please try again!");
 //    }
+
+
 //
 //    public static void sortProducts() throws IOException {
 //        boolean correctInput = false;

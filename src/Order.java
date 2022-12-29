@@ -22,10 +22,10 @@ public class Order {
         this.status = status;
     }
 
-    public static Order generateOrder(String productInfo) {
+    public static Order generateOrder(String line) {
 
         // getting all the details from the product line
-        String[] orderAttrs = productInfo.split(",");
+        String[] orderAttrs = line.split(",");
         String orderId = orderAttrs[0];
         String customerId = orderAttrs[1];
         String date = orderAttrs[2];
