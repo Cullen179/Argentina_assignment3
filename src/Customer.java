@@ -277,7 +277,7 @@ public class Customer {
 
         //Replacing oldString with newString in the oldContent
         String newContent = oldContent.replaceAll(oldString, newString);
-        System.out.println(newContent);
+
         //Rewriting the input text file with newContent
         PrintWriter pw = new PrintWriter(new FileWriter(file, false));
         pw.printf(newContent);
@@ -392,10 +392,8 @@ public class Customer {
                 } else if (customer.getTotalSpending() > 5000000) {
                     newMembership = "silver";
                 }
-                System.out.println(newMembership);
-                customer.setMembership(newMembership);
-                System.out.println(customer.getMembership());
-                String newData = customer.generateCustomerInfo();
+                this.setMembership(newMembership);
+                String newData = this.generateCustomerInfo();
                 modifyFile(fileName, line, newData);
                 break;
             }
@@ -759,13 +757,6 @@ public class Customer {
                 order.displayOrderInfo();
             }
         }
-    }
-
-    public static void main(String[] args) throws IOException {
-        Customer customer = Customer.generateCus("C001,Minh Hoang,test@gmail.com,18 Irwin Street,0421473243,Silver,minhhoang,123456,200");
-        customer.updateMembership();
-        System.out.println(customer.getMembership());
-        System.out.println(customer.getMembership());
     }
 }
 
