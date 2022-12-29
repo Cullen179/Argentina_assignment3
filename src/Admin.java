@@ -534,7 +534,7 @@ public class Admin {
         scannerOrder.close();
     }
 
-    public static void checkOrderInfoInADay() throws IOException {
+    public void checkOrderInfoInADay() throws IOException {
         System.out.println("\nCHECK THE INFORMATION OF ALL ORDERS EXECUTED IN A PARTICULAR DAY");
         Scanner scannerOrder = new Scanner(new File("./src/File/orders.txt"));
         Scanner sc = new Scanner(System.in);
@@ -557,7 +557,10 @@ public class Admin {
     }
     public static void main(String[] args) throws IOException {
         Admin admin2 = new Admin();
-        admin2.removeCustomer();
+//        admin2.removeCategory();
+//        admin2.removeCustomer();
+//        admin2.changeOrderStatus();
+//        admin2.getOrderByCustomerID();
+        admin2.checkOrderInfoInADay();
     }
-
 }

@@ -2,4 +2,3 @@ C001,Minh Hoang,test@gmail.com,18 Irwin Street,0421473243,Silver,minhhoang,12345
 C002,Hong Wang,test@gmail.com,20 Irwin Street,0424173255,Gold,wanghong98,987654,200
 C003,Linh Nguyen,test@gmail.com,12 Brunswick Street,0424173255,Silver,linhtb,linhlinh,200
 C004,Antony Zinc,test@gmail.com,114 Fraser Avenue,0424512345,Gold,abookworm,booklover,200
-C005,John Cain,test@gmail.com,45 Sydney Road,0424325123,Platinum,johnthebaby,123456,200

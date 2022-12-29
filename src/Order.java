@@ -91,6 +91,6 @@ public class Order {
     }
 
     public String generateOrderLine() throws IOException {
-        return String.format("%s, %s, %s, %s, %s, %s, %.1f, %s", ID, customerID, date, address, productName, quantity, price, status);
+        return String.format("%s,%s,%s,%s,%s,%s,%.1f,%s", ID, customerID, date, address, productName, quantity, price, status);
     }
 }
