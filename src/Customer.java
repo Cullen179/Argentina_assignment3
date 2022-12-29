@@ -370,11 +370,11 @@ public class Customer {
             Customer customer = generateCus(line);
             if (this.getUsername().equals(customer.getUsername())){
                 String newMembership = customer.getMembership();
-                if(customer.getTotalSpending() >= 25000000){
+                if(customer.getTotalSpending() > 25000000){
                     newMembership = "platinum";
-                } else if(customer.getTotalSpending() >= 10000000){
+                } else if(customer.getTotalSpending() > 10000000){
                     newMembership = "gold";
-                } else if (customer.getTotalSpending() >= 5000000){
+                } else if (customer.getTotalSpending() > 5000000){
                     newMembership = "silver";
                 }
                 String newData = customer.getID() + "," + customer.getName() + "," + customer.getEmail() + "," + customer.getAddress() + "," + customer.getPhoneNumb() + ","+ newMembership + "," + customer.getUsername() + "," + customer.getPassword() + "," + customer.getTotalSpending();
