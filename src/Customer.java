@@ -45,7 +45,7 @@ public class Customer {
     }
 
     // Rewrite
-    public HashMap<String, Integer> getBoughtList() throws IOException{
+    public HashMap<String, Integer> getBoughtList() throws IOException {
         HashMap<String, Integer> productBought = new HashMap<String, Integer>();
 
         // Scan orders file
@@ -62,7 +62,7 @@ public class Customer {
             if (order.getCustomerID().equals(ID)) {
 
                 // Loop through product name from order product list key set
-                for (String productName: order.getProductList().keySet()) {
+                for (String productName : order.getProductList().keySet()) {
 
                     // Check if product name is in product bought
                     if (productBought.get(productName) == null) {
@@ -80,7 +80,7 @@ public class Customer {
 
     public int getHighestBoughtQuantity() throws IOException {
         int maxQuan = 0;
-        for (int quantity: getBoughtList().values()) {
+        for (int quantity : getBoughtList().values()) {
             if (quantity > maxQuan) {
                 maxQuan = quantity;
             }
@@ -91,7 +91,7 @@ public class Customer {
     public ArrayList<String> getHighestBoughtProduct() throws IOException {
         ArrayList<String> list = new ArrayList<String>();
         int highestQuantity = getHighestBoughtQuantity();
-        for (String product: getBoughtList().keySet()) {
+        for (String product : getBoughtList().keySet()) {
             if (getBoughtList().get(product) == highestQuantity) {
                 list.add(product);
             }
@@ -494,38 +494,45 @@ public class Customer {
 //        searchProduct();
 //    }
 
-//    public static void searchProduct() throws IOException {
-//        String category = Product.checkCategory();
-//        double minimum = 0;
-//        double maximum = 10000000;
-//        try {
-//            Scanner sc = new Scanner(System.in);
-//            System.out.println("Enter the minimum price: ");
-//            String minimumString = sc.nextLine();
-//            try {
-//                if (minimumString == null)
-//                    minimum = 0;
-//                else
-//                    minimum = Double.parseDouble(minimumString);
-//            } catch (NumberFormatException nfe) {
-//                minimum = 0;
-//            }
-//            System.out.println("Enter the maximum price: ");
-//            String maximumString = sc.nextLine();
-//            System.out.println("--------------");
-//            if (maximumString != null)
-//                maximum = Double.parseDouble(maximumString);
-//            System.out.println("--------------");
-//        } catch (NumberFormatException nfe) {
-//            maximum = 10000000;
-//        }
-//
-//
-//        // if the search category matches the category and the price range => display the product(s)
-//        if (minimum < price  && price < maximum) {
-//            System.out.println(line);
-//        }
-//    }
+    public static void searchProduct() throws IOException {
+        String category = "";
+        double minimum = 0;
+        double maximum = 10000000;
+
+        try {
+            category = Product.checkCategory();
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Enter the minimum price: ");
+            String minimumString = sc.nextLine();
+            try {
+                if (minimumString == null)
+                    minimum = 0;
+                else
+                    minimum = Double.parseDouble(minimumString);
+            } catch (NumberFormatException nfe) {
+                minimum = 0;
+            }
+            System.out.println("Enter the maximum price: ");
+            String maximumString = sc.nextLine();
+            System.out.println("--------------");
+            if (maximumString != null)
+                maximum = Double.parseDouble(maximumString);
+            System.out.println("--------------");
+        } catch (NumberFormatException nfe) {
+            maximum = 10000000;
+        }
+
+        Scanner scannerProduct = new Scanner(new File("./src/File/items.txt"));
+        while (scannerProduct.hasNext()) {
+            String items = scannerProduct.nextLine();
+            Product product = Product.generateProduct(items);
+            // if the search category matches the category and the price range => display the product(s)
+            if (product.getCategory().equals(category) && minimum < product.getPrice() && product.getPrice() < maximum) {
+                product.getProductDetails();
+            }
+        }
+    }
+}
 
 
 //
@@ -922,4 +929,3 @@ public class Customer {
 //    public static void main(String[] args) throws IOException {
 //        orderHash();
 //    }
-}
