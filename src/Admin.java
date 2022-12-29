@@ -124,6 +124,7 @@ public class Admin {
     public void addProduct() throws IOException{
         PrintWriter pw = new PrintWriter(new FileWriter("./src/File/items.txt", true));
         // Get new product information
+        System.out.println("\nADDING NEW PRODUCT\n");
         Product newProduct = Product.createProduct();
         // Add new item line to file
         pw.printf("\n%s,%s,%.1f,%s", newProduct.getId(), newProduct.getName(), newProduct.getPrice(), newProduct.getCategory());
@@ -184,7 +185,7 @@ public class Admin {
         removeItem.renameTo(itemFile);
 
         // Print error if product name doesn't match
-        if (!Product.checkProductExisted(productName)) {
+        if (Product.checkProductExisted(productName)) {
             System.out.println("Product doesn't exist.Please try again");
         }
     }
@@ -520,7 +521,13 @@ public class Admin {
     }
     public static void main(String[] args) throws IOException {
         Admin admin = new Admin();
-        admin.addProduct();
+        System.out.println(Product.getCategoryList());
+        admin.addCategory();
+        System.out.println(Product.getCategoryList());
+        Admin admin2 = new Admin();
+        System.out.println(Product.getCategoryList());
+        admin2.removeCategory();
+        System.out.println(Product.getCategoryList());
     }
 
 }

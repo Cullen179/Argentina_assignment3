@@ -40,20 +40,25 @@ public class Product {
 
     public static String newIDNumber(int year) throws IOException{
         Scanner sc = new Scanner(new File("./src/File/items.txt"));
+
         // Initialize lastItem
         String lastItem = "";
+
         // Loop through items file
         while (sc.hasNextLine()) {
             String item = sc.nextLine();
+
             // Check if the current line is the last line
             if (!sc.hasNextLine()) {
                 lastItem = item;
             }
         }
+
         // Get item ID
         String itemID = lastItem.split(",")[0];
         // Get number of item ID
-        int idNumber = Integer.parseInt(itemID.replace("I", ""));
+        int idNumber = Integer.parseInt(itemID.split("-")[0].replace("I", ""));
+
         // Return ID
         return String.format("I%03d-%d", idNumber + 1, year);
     }
@@ -61,9 +66,9 @@ public class Product {
     public static Product createProduct() throws IOException{
         String name = checkNewProductName();
         // Validate price input
-        double price = InputValidator.getDoubleInput("What is the price of the product:", "Price must be of integer or double value");
+        double price = InputValidator.getDoubleInput("What is the price of the product:\n", "Price must be of integer or double value");
         String category = checkCategory();
-        int year = InputValidator.getIntInput("What is the year of the product:", "Year must be of integer value");
+        int year = InputValidator.getIntInput("What is the year of the product:\n", "Year must be of integer value");
         return new Product(newIDNumber(year), name, price, category);
     }
 
@@ -160,7 +165,6 @@ public class Product {
     }
 
     public static void main(String[] args) throws IOException{
-//        String name = createName();
-//        System.out.println(name);
+        System.out.println(Product.newIDNumber(2003));
     }
 }
