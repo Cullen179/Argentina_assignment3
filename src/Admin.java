@@ -190,7 +190,6 @@ public class Admin {
         }
     }
 
-    // Written
     public void updateProductPrice() throws IOException{
         Scanner sc = new Scanner(System.in);
         System.out.println("What is the product you want to update");
@@ -257,13 +256,14 @@ public class Admin {
         // Check if remove category is in category list
         if (categoryList.contains(removeCategory)) {
             matchCategory = true;
+            categoryList.remove(removeCategory);
         }
 
         // Update category in item file to None
         File update = new File("./src/File/update.txt");
-        File items = new File("src/File/items.txt");
-        Scanner fileScanner = new Scanner(new File("src/File/items.txt"));
-        PrintWriter pw = new PrintWriter(new FileWriter(update));
+        File items = new File("./src/File/items.txt");
+        Scanner fileScanner = new Scanner(items);
+        PrintWriter pw = new PrintWriter(new FileWriter(update, true));
 
         // Loop through items file
         while (fileScanner.hasNextLine()) {
@@ -282,14 +282,14 @@ public class Admin {
             // If the item reach last line, don't add new line
             pw.printf(item + (fileScanner.hasNextLine() ? "\n" : ""));
         }
+
         fileScanner.close();
         pw.close();
 
         // Delete the items file
         items.delete();
         // Rename remove item file to item file
-        update.renameTo(new File("src/File/items.txt"));
-
+        update.renameTo(items);
         // Print error if category doesn't exist
         if (!matchCategory) {
             System.out.println("Category doesn't exist. Please try again.");
@@ -520,14 +520,8 @@ public class Admin {
         }
     }
     public static void main(String[] args) throws IOException {
-        Admin admin = new Admin();
-        System.out.println(Product.getCategoryList());
-        admin.addCategory();
-        System.out.println(Product.getCategoryList());
         Admin admin2 = new Admin();
-        System.out.println(Product.getCategoryList());
         admin2.removeCategory();
-        System.out.println(Product.getCategoryList());
     }
 
 }
