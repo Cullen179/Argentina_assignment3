@@ -102,7 +102,7 @@ public class Customer {
         System.out.println("Enter name:");
         name = scanner.nextLine();
 
-        //a loop to get customer's email
+        // a loop to get customer's email
         while (true) {
             System.out.println("Enter email");
             email = scanner.nextLine();
@@ -115,6 +115,8 @@ public class Customer {
         //get customer's address
         System.out.println("Enter address: ");
         address = scanner.nextLine();
+
+        // a loop to get customer's phone number
         while (true) {
             System.out.println("Enter phone number:");
             phoneNumb = scanner.nextLine();
@@ -124,6 +126,8 @@ public class Customer {
                 System.out.println("Wrong format for a phone number. Please enter phone number again");
             }
         }
+
+        // a loop to get customer's username
         while (true) {
             System.out.println("Enter username:");
             username = scanner.nextLine();
@@ -133,6 +137,8 @@ public class Customer {
                 System.out.println("This username has already used! Please enter different username");
             }
         }
+
+        // a loop to get customer's password
         while (true) {
             System.out.println("Enter password:");
             password = scanner.nextLine();
@@ -356,6 +362,7 @@ public class Customer {
         }
     }
     public void updateMembership() throws IOException{
+        //
         String fileName = "./src/File/customers.txt";
         Scanner fileScanner = new Scanner(new File(fileName));
         while (fileScanner.hasNext()) {
