@@ -98,9 +98,33 @@ public class Customer {
         }
         return list;
     }
+    public static String newCustomerID() throws IOException{
+        Scanner sc = new Scanner(new File("D:\\Java project\\group asm\\customer.txt"));
+
+        // Initialize lastItem
+        String lastCustomer = "";
+
+        // Loop through items file
+        while (sc.hasNextLine()) {
+            String customer = sc.nextLine();
+
+            // Check if the current line is the last line
+            if (!sc.hasNextLine()) {
+                lastCustomer = customer;
+            }
+        }
+
+        // Get item ID
+        String customerID = lastCustomer.split(",")[0];
+        // Get number of item ID
+        int idNumber = Integer.parseInt(customerID.replace("C", ""));
+
+        // Return ID
+        return String.format("C%03d", idNumber + 1);
+    }
 
     // Function for customer to register new account
-    public void registerMember() throws IOException {
+    public void registerMember () throws IOException {
         //Declare attribute
         String line, ID, username, password, fileName, name, email, address, phoneNumb;
         double totalSpending = 0;
@@ -152,22 +176,12 @@ public class Customer {
             }
         }
         System.out.println("Register successful");
-        int count = 0;
         fileName = "./src/File/customers.txt";
         PrintWriter pw = new PrintWriter(new FileWriter(fileName, true));
-        Scanner fileScanner = new Scanner(new File(fileName));
-        while (fileScanner.hasNext()) {
-            line = fileScanner.nextLine();
-            StringTokenizer inReader = new StringTokenizer(line, ",");
-            count++;
-        }
-        count += 1;
-        pw.println(count + "," + name + "," + email + "," + address + "," + phoneNumb + "," + "none" + "," + username + "," + password + "," + totalSpending);
+        pw.println(newCustomerID() + "," + name + "," + email + "," + address + "," + phoneNumb + "," + "none" + "," + username + "," + password + "," + totalSpending);
         pw.close();
-        fileScanner.close();
     }
-
-    private boolean checkUsername(String inputUsername) throws IOException {
+    private boolean checkUsername (String inputUsername) throws IOException {
         Boolean usernameExist = false;
         String fileName = "./src/File/customers.txt";
         Scanner fileScanner = new Scanner(new File(fileName));
@@ -183,7 +197,7 @@ public class Customer {
         return usernameExist;
     }
 
-    private boolean checkPassword(String inputPassword) throws IOException {
+    private boolean checkPassword (String inputPassword) throws IOException {
         Boolean passwordExist = false;
         String fileName = "./src/File/customers.txt";
         Scanner fileScanner = new Scanner(new File(fileName));
@@ -198,8 +212,7 @@ public class Customer {
         }
         return passwordExist;
     }
-
-    public void login() throws IOException {
+    public void login () throws IOException {
         Boolean loggedin = false;
         Scanner scanner = new Scanner(System.in);
         String fileName = "./src/File/customers.txt";
@@ -217,12 +230,11 @@ public class Customer {
                 break;
             }
         }
-        if (loggedin.equals(false)) {
+        if(loggedin.equals(false)){
             System.out.println("Incorrect username or password");
         }
         fileScanner.close();
     }
-
     // Written
     public void displayAccountInfo() throws IOException {
         System.out.println("-".repeat(17));
@@ -237,7 +249,8 @@ public class Customer {
         System.out.println("-".repeat(17));
     }
 
-    static void modifyFile(String filePath, String oldString, String newString) {
+    static void modifyFile (String filePath, String oldString, String newString)
+    {
         File fileToBeModified = new File(filePath);
 
         String oldContent = "";
@@ -282,9 +295,8 @@ public class Customer {
             }
         }
     }
-
-    public void updateAccountInfo() throws IOException {
-        String newData;
+    public void updateAccountInfo ()throws IOException {
+        String  newData;
         String fileName = "./src/File/customers.txt";
         Scanner scanner = new Scanner(System.in);
         Scanner fileScanner = new Scanner(new File(fileName));
@@ -341,7 +353,7 @@ public class Customer {
                     System.out.println("(1) Yes");
                     System.out.println("(2) No");
                     String continueChange = scanner.nextLine();
-                    if (continueChange.equals("2")) {
+                    if (continueChange.equals("2")){
                         break;
                     }
                 }
@@ -349,21 +361,21 @@ public class Customer {
         }
     }
 
-    public double getTotalSpending() throws IOException {
-        double totalSpending = 0;
-        String fileName = "./src/File/orders.txt";
-        Scanner fileScanner = new Scanner(new File(fileName));
-        while (fileScanner.hasNext()) {
-            String line = fileScanner.nextLine();
-            Order order = Order.generateOrder(line);
-            if (this.getID().equals(order.getCustomerID()) && (order.getStatus().equals("paid"))) {
-                totalSpending += order.getPrice();
-            }
+public double getTotalSpending() throws IOException {
+    double totalSpending = 0;
+    String fileName = "./src/File/orders.txt";
+    Scanner fileScanner = new Scanner(new File(fileName));
+    while (fileScanner.hasNext()) {
+        String line = fileScanner.nextLine();
+        Order order = Order.generateOrder(line);
+        if (this.getID().equals(order.getCustomerID()) && (order.getStatus().equals("paid"))) {
+            totalSpending += order.getPrice();
         }
-        this.totalSpending = totalSpending;
-        return this.totalSpending;
-
     }
+    this.totalSpending = totalSpending;
+    return this.totalSpending;
+
+}
 
     public void updateTotalSpending() throws IOException {
         // get total spending of the customer
@@ -376,34 +388,34 @@ public class Customer {
         while (fileScanner.hasNext()) {
             String line = fileScanner.nextLine();
             Customer customer = generateCus(line);
-            if (this.getUsername().equals(customer.getUsername())) {
+            if (this.getUsername().equals(customer.getUsername())){
                 System.out.println(customer.getTotalSpending());
                 newTotalSpending = customer.getTotalSpending() + inputTotalSpeding;
                 System.out.println(newTotalSpending);
-                newData = customer.getID() + "," + customer.getName() + "," + customer.getEmail() + "," + customer.getAddress() + "," + customer.getPhoneNumb() + "," + customer.getMembership() + "," + customer.getUsername() + "," + customer.getPassword() + "," + newTotalSpending;
-                modifyFile(fileName, line, newData);
+                newData = customer.getID() + "," + customer.getName() + "," + customer.getEmail() + "," + customer.getAddress() + "," + customer.getPhoneNumb() + ","+ customer.getMembership() + "," + customer.getUsername() + "," + customer.getPassword() + "," + newTotalSpending;
+                modifyFile(fileName,line,newData);
                 break;
             }
         }
     }
 
-    public void updateMembership() throws IOException {
+    public void updateMembership() throws IOException{
         String fileName = "./src/File/customers.txt";
         Scanner fileScanner = new Scanner(new File(fileName));
         while (fileScanner.hasNext()) {
             String line = fileScanner.nextLine();
             Customer customer = generateCus(line);
-            if (this.getUsername().equals(customer.getUsername())) {
+            if (this.getUsername().equals(customer.getUsername())){
                 String newMembership = customer.getMembership();
-                if (customer.getTotalSpending() >= 300000) {
+                if(customer.getTotalSpending() >= 300000){
                     newMembership = "platinum";
-                } else if (customer.getTotalSpending() >= 200000) {
+                } else if(customer.getTotalSpending() >= 200000){
                     newMembership = "gold";
-                } else if (customer.getTotalSpending() >= 100000) {
+                } else if (customer.getTotalSpending() >= 100000){
                     newMembership = "silver";
                 }
-                String newData = customer.getID() + "," + customer.getName() + "," + customer.getEmail() + "," + customer.getAddress() + "," + customer.getPhoneNumb() + "," + newMembership + "," + customer.getUsername() + "," + customer.getPassword() + "," + customer.getTotalSpending();
-                modifyFile(fileName, line, newData);
+                String newData = customer.getID() + "," + customer.getName() + "," + customer.getEmail() + "," + customer.getAddress() + "," + customer.getPhoneNumb() + ","+ newMembership + "," + customer.getUsername() + "," + customer.getPassword() + "," + customer.getTotalSpending();
+                modifyFile(fileName,line,newData);
                 break;
             }
         }
@@ -419,6 +431,28 @@ public class Customer {
         }
     }
 
+    // public static void listProductByCategory() throws IOException {
+    // Scanner scannerProduct = new Scanner(new File("./src/items.txt"));
+    // System.out.print("Type your category to search for the needed product: ");
+//        Scanner input = new Scanner(System.in);
+//        String categoryInput = input.nextLine();
+//
+//        boolean checkCategory = false;
+//        while (scannerProduct.hasNextLine()) {
+//            String items = scannerProduct.nextLine();
+//            String[] itemsInfo = items.split(",");
+//            String category = itemsInfo[3];
+//
+//            if (categoryInput.equals(category)) {
+//                checkCategory = true;
+//                Product.getproductDetails(items);
+//            }
+//        }
+//        if (!checkCategory) {
+//            System.out.println("There isn't any products belong to this category.");
+//        }
+//    }
+//
     public String getID() {
         return ID;
     }
@@ -488,10 +522,14 @@ public class Customer {
         this.totalSpending = totalSpending;
     }
 
+    public static void main(String[] args) throws IOException {
+        sortProducts();
+    }
+
     public static void searchProduct() throws IOException {
         String category = "";
         double minimum = 0;
-        double maximum = Double.POSITIVE_INFINITY;
+        double maximum = 10000000;
 
         try {
             category = Product.checkCategory();
@@ -513,7 +551,7 @@ public class Customer {
                 maximum = Double.parseDouble(maximumString);
             System.out.println("--------------");
         } catch (NumberFormatException nfe) {
-            maximum = Double.POSITIVE_INFINITY;
+            maximum = 10000000;
         }
 
         Scanner scannerProduct = new Scanner(new File("./src/File/items.txt"));
@@ -587,196 +625,210 @@ public class Customer {
             product.getProductDetails();
         }
     }
-
-
-    // apply membership discount
-    private double applyDiscount(double beforeDiscount) throws IOException {
-        switch (this.getMembership()) {
-            case "platinum":
-                return beforeDiscount * 85 / 100;
-            case "gold":
-                return beforeDiscount * 90 / 100;
-            case "silver":
-                return beforeDiscount * 95 / 100;
-            default:
-                return beforeDiscount;
-        }
-    }
-
-    public void createOrder() throws IOException {
-
-        // create a scanner to receive customer's input
-        Scanner customerInput = new Scanner(System.in);
-
-        // a hash map to store each product and its quantity
-        HashMap<String, Integer> orderProducts = new HashMap<>();
-
-        // total cost of the order
-        double total = 0;
-
-        boolean continueToBuy = true;
-
-        // loop when customer still want to buy more products
-        while (continueToBuy) {
-            // display all the products
-            viewProduct();
-
-            String chosenProductName = null;
-            double chosenProductPrice = 0;
-            boolean productMatched = false;
-
-            // if the customer's input does not match any products in items.txt file, ask the user to re-enter the product name
-            while (!productMatched) {
-
-                // a scanner for items.txt file
-                Scanner productFileScanner = new Scanner(new File("./src/File/items.txt"));
-
-                // getting the product name from users
-                System.out.println("Enter the name of the item you want to buy:");
-                String itemName = customerInput.nextLine();
-
-                // a loop to go through each line in the items.txt file
-                while (productFileScanner.hasNextLine()) {
-
-                    // getting the name of each product
-                    String items = productFileScanner.nextLine();
-                    Product product = Product.generateProduct(items);
-
-                    // if the current product's name match with the input, set the product variables
-                    if (product.getName().equals(itemName)) {
-                        chosenProductName = product.getName();
-                        chosenProductPrice = product.getPrice();
-                        productMatched = true;
-                    }
-                }
-
-                // notify the user when there was no matching product
-                if (!productMatched) {
-                    System.out.println("Can't find the product with matching name. Please try again.");
-                }
-            }
-
-            // ask the user for the quantity of the product they want to purchase
-            int quantity = InputValidator.getIntInput("How many do you want to buy?\n",
-                    "Only enter int number!");
-
-            // update the total cost of the order
-            total += chosenProductPrice * quantity;
-
-            // update hash map with the product and its quantity.
-            // Use if-else condition in case customers want to add the product that is already in their cart
-
-            if (orderProducts.containsKey(chosenProductName)) {
-                orderProducts.put(chosenProductName, quantity + orderProducts.get(chosenProductName));
-            } else {
-                orderProducts.put(chosenProductName, quantity);
-            }
-
-
-            // a boolean to track if the user enter the right option
-            boolean validInput = false;
-
-            System.out.println("Do you want to continue to buy? (Y or N)");
-            while (!validInput) {
-                String isContinue = customerInput.nextLine();
-
-                // prevent the case customer enters something apart from Y or N.
-                if (isContinue.equalsIgnoreCase("Y")) {
-                    System.out.println("-----------------");
-                    validInput = true;
-                } else if (isContinue.equalsIgnoreCase("N")) {
-                    System.out.println("-----------------");
-                    continueToBuy = false;
-                    validInput = true;
-                } else {
-                    System.out.println("Wrong input! Y or N only! Please try again");
-
-                    System.out.println("Do you want to continue to buy? (Y or N)");
-                }
-            }
-        }
-
-        // let the customer enter the shipping address
-        System.out.println("Your shipping address is:");
-        String shippingAddress = customerInput.nextLine();
-
-
-        // generate new order id
-        String orderId = Order.newOrderId();
-
-        // getting the date for the order
-        String orderDate = LocalDate.now().toString();
-
-        // getting the list of all products in the order and their quantities
-        Object[] productsList = orderProducts.keySet().toArray();
-        Object[] quantityList = orderProducts.values().toArray();
-
-
-        // generate strings to store the list of products and their quantities
-        StringBuilder currentOrderProducts = new StringBuilder(productsList[0].toString());
-        StringBuilder currentOrderProductQuantities = new StringBuilder(quantityList[0].toString());
-        for (int i = 1; i < orderProducts.size(); i++) {
-            currentOrderProducts.append(":").append(productsList[i].toString());
-        }
-        for (int i = 1; i < orderProducts.size(); i++) {
-            currentOrderProductQuantities.append(":").append(quantityList[i].toString());
-        }
-
-        // applying discount to the total cost of the order
-        double totalAfterDiscount = applyDiscount(total);
-
-
-        // append the line for the new order to the end of the orders.txt file
-        String newOrder = String.join(",", orderId, this.getID(), orderDate, shippingAddress,
-                currentOrderProducts.toString(), currentOrderProductQuantities.toString(), String.valueOf(totalAfterDiscount), "delivered");
-        Order order = Order.generateOrder(newOrder);
-        PrintWriter pw = new PrintWriter(new FileWriter("./src/File/orders.txt", true));
-        pw.println(order.generateOrderLine());
-
-        pw.flush();
-        pw.close();
-
-        // display order details
-        order.displayOrderInfo();
-
-        // update the membership for the user
-    }
-
-    public static void main(String[] args) throws IOException {
-//        Customer cus = new Customer("C001", "Ngoc", "fafaf@gmail.com", "454540", "009909", "silver", "hiii", "hello", 133);
-//        cus.createOrder();
-        findOrderDetails();
-    }
-
-
-    public static void findOrderDetails() throws IOException {
-        boolean notMatched = true;
-
-        // notify the user about wrong input when necessary
-        int count = 0;
-
-        while (notMatched) {
-            Scanner userInput = new Scanner(System.in);
-            if (count == 0)
-                System.out.println("Please enter the orderID: ");
-            else
-                System.out.println("Can't find the order ID. Please enter another order ID");
-            String inputOrderID = userInput.nextLine();
-
-            Scanner orderFileScanner = new Scanner(new File("./src/File/orders.txt"));
-            while (orderFileScanner.hasNext()) {
-                String orderLine = orderFileScanner.nextLine();
-                Order order = Order.generateOrder(orderLine);
-
-                if (inputOrderID.equals(order.getOrderID())) {
-                    order.displayOrderInfo();
-                    notMatched = false;
-                }
-            }
-            count++;
-        }
-    }
 }
+//
+//    // generating the order ID while still maintaining the format
+//    public static String newOrderId() throws IOException {
+//        Scanner sc = new Scanner(new File("./src/File/orders.txt"));
+//        // Initialize last order
+//        String lastOrder = "";
+//        // Loop through orders.txt file
+//        if (!sc.hasNextLine()) {
+//            return "O001";
+//        } else {
+//            while (sc.hasNextLine()) {
+//                String order = sc.nextLine();
+//                // Check if the current line is the last line
+//                if (!sc.hasNextLine()) {
+//                    lastOrder = order;
+//                }
+//            }
+//            // Get order ID
+//            String orderID = lastOrder.split(",")[0];
+//            // Get number of order ID
+//            int idNumber = Integer.parseInt(orderID.substring(5, 8));
+//            // Return ID
+//            return String.format("O%03d", idNumber + 1);
+//        }
+//    }
+//
+//    // apply membership discount
+//    private double applyDiscount(double beforeDiscount) throws IOException {
+//        switch (this.getMembership()) {
+//            case "platinum":
+//                return beforeDiscount * 85 / 100;
+//            case "gold":
+//                return beforeDiscount * 90 / 100;
+//            case "silver":
+//                return beforeDiscount * 95 / 100;
+//
+//        }
+//
+//    // Create order
+//    public void createOrder() throws IOException {
+//        // initialize the needed variables
+//        Scanner customerInput = new Scanner(System.in);
+//        boolean continueToBuy = true;
+//        int quantity;
+//        String itemName;
+//        double total = 0, totalAfterDiscount = 0;
+//        HashMap<String, Integer> orderProducts = new HashMap<>();
+//
+//        // loop when customer still want to buy more products
+//        while (continueToBuy) {
+//            // display all the products
+//            System.out.println("PRODUCT");
+//            System.out.println("--------------");
+//            viewProducts();
+//            System.out.println("--------------");
+//            System.out.println("Enter the name of the item you want to buy:");
+//            itemName = customerInput.nextLine();
+//
+//            String chosenProductName = null;
+//            double chosenItemPrice = 0;
+//            boolean productMatched = false;
+//
+//            while (!productMatched) {
+//                File productFile = new File("./src/File/items.txt");
+//                Scanner productFileScanner = new Scanner(productFile);
+//
+//                while (productFileScanner.hasNextLine()) {
+//                    String product = productFileScanner.nextLine();
+//                    String productName = product.split(",")[1];
+//                    double productPrice = Double.parseDouble(product.split(",")[2]);
+//
+//                    // when the name that the user entered equals to the name of the product, take that product's name and price
+//                    if (itemName.equals(productName)) {
+//                        chosenItemPrice = productPrice;
+//                        chosenProductName = productName;
+//                        productMatched = true;
+//                    }
+//                }
+//                // notice the user when the input product name was not found
+//                if (!productMatched) {
+//                    System.out.println("Can't find the product. Please enter another name.");
+//                }
+//            }
+//
+//            quantity = InputValidator.getIntInput("How many do you want to buy?\n",
+//                    "Only enter int number!");
+//
+//
+//            // update hash map with the product and its quantity.
+//            // Use if-else condition in case customers want to add the product that is already in their cart
+//
+//            if (orderProducts.containsKey(chosenProductName)) {
+//                orderProducts.put(chosenProductName, quantity + orderProducts.get(chosenProductName));
+//            } else {
+//                orderProducts.put(chosenProductName, quantity);
+//            }
+//
+//            total = total + (chosenItemPrice * quantity);
+//
+//            boolean validInput = false;
+//
+//            System.out.println("Do you want to continue to buy? (Y or N)");
+//
+//            while (!validInput) {
+//                String isContinue = customerInput.nextLine();
+//
+//                // prevent the case customer enters something apart from Y or N.
+//                if (isContinue.equalsIgnoreCase("Y")) {
+//                    System.out.println("-----------------");
+//                    validInput = true;
+//                } else if (isContinue.equalsIgnoreCase("N")) {
+//                    System.out.println("-----------------");
+//                    continueToBuy = false;
+//                    validInput = true;
+//                } else {
+//                    System.out.println("Wrong input! Y or N only! Please try again");
+//
+//                    System.out.println("Do you want to continue to buy? (Y or N)");
+//                }
+//            }
+//        }
+//
+//        // let the customer enter the shipping address
+//        System.out.println("Your shipping address is:");
+//        String shippingAddress = customerInput.nextLine();
+//
+//        // generate orderID
+//        String orderId = newOrderId();
+//
+//        // order date
+//        String orderDate = LocalDate.now().toString();
+//
+//
+//        // get the list of all products in the order and their quantities
+//        Object[] productsList = orderProducts.keySet().toArray();
+//        Object[] quantityList = orderProducts.values().toArray();
+//
+//        // generate strings to store the list of products and their quantities
+//        StringBuilder currentOrderProducts = new StringBuilder(productsList[0].toString());
+//        StringBuilder currentOrderProductQuantity = new StringBuilder(quantityList[0].toString());
+//        for (int i = 1; i < orderProducts.size(); i++) {
+//            currentOrderProducts.append(":").append(productsList[i].toString());
+//        }
+//        for (int i = 1; i < orderProducts.size(); i++) {
+//            currentOrderProductQuantity.append(":").append(quantityList[i].toString());
+//        }
+//
+//        // apply membership discount
+//        totalAfterDiscount = applyDiscount(total);
+//
+//        // append the line for the new order to the end of the orders.txt file
+//        String newOrder = String.join(",", orderId,this.getID(),this.getUsername(),orderDate,shippingAddress,
+//                currentOrderProducts.toString(), currentOrderProductQuantity.toString(), String.valueOf(totalAfterDiscount), "delivered");
+//        PrintWriter pw = new PrintWriter(new FileWriter("./src/File/orders.txt",true));
+//        pw.println(newOrder);
+//
+//        pw.flush();
+//        pw.close();
+//
+//        // display order details
+//        System.out.println("\nYour order detail");
+//        System.out.println("-----------------");
+//        System.out.println("OrderID: " + orderId);
+//        System.out.println("Order date: "+ orderDate);
+//        System.out.println("Customer name:"+ this.getUsername());
+//        System.out.println("Shipping address: "+ shippingAddress);
+//        System.out.println("Items: "+ currentOrderProducts );
+//        System.out.println("Quantity: "+ currentOrderProductQuantity);
+//        System.out.println("Total: " + totalAfterDiscount);
+//
+//        // update membership by adding the order total to total spending
+//
+//    }
+//
+//
+//
+//    public static void findOrderDetails() throws IOException {
+//        boolean notMatched = true;
+//
+//        // notify the user about wrong input when necessary
+//        int count = 0;
+//
+//        while (notMatched) {
+//            Scanner userInput = new Scanner(System.in);
+//            if (count == 0)
+//                System.out.println("Please enter the orderID:");
+//            else
+//                System.out.println("Can't find the order ID. Please enter another order ID");
+//            String inputOrderID = userInput.nextLine();
+//
+//            Scanner orderFileScanner = new Scanner(new File("./src/File/orders.txt"));
+//            while (orderFileScanner.hasNext()) {
+//                String orderLine = orderFileScanner.nextLine();
+//                String[] orderInfo = orderLine.split(",");
+//                String orderID = orderInfo[0];
+//                if (inputOrderID.equals(orderID)) {
+//                    Order.displayOrderInfo(orderLine);
+//                    notMatched = false;
+//                }
+//            }
+//            count++;
+//        }
+//    }
 //
 //    public static void displayPreviousOrders() throws IOException {
 //        boolean notMatched = true;
@@ -830,7 +882,46 @@ public class Customer {
 //        System.out.println(total);
 //    }
 //
-
+//    public void order2() throws IOException {
+//        System.out.println("Creating order");
+//        HashMap<String, Integer> total = buyProduct();
+//        double price = 0;
+//        Product product;
+//        Scanner file = new Scanner(new File("./src/File/items.txt"));
+//        while (file.hasNextLine()) {
+//            String line = file.nextLine();
+//            product = Product.generateProduct(line);
+//            if (total.get(product.getName()) != null) {
+//                price += total.get(product.getName()) * product.getPrice();
+//            }
+//
+//        }
+//        Scanner sc = new Scanner(System.in);
+//        System.out.println("What is your address");
+//        String address = sc.next();
+//        String list = "";
+//        int index = 0;
+//        for (String item: total.keySet()) {
+//            if (index == 0) {
+//                list += item;
+//            } else {
+//                list += ":" + item;
+//            }
+//            index++;
+//        }
+//        String listQuan = "";
+//        int indexQuan = 0;
+//        for (int item: total.values()) {
+//            if (indexQuan == 0) {
+//                listQuan += item;
+//            } else {
+//                listQuan += ":" + item;
+//            }
+//            indexQuan++;
+//        }
+//        Order order = new Order(newOrderId(), getID(), LocalDate.now().toString(), address, list, listQuan, price, "delivered");
+//        order.getOrderProduct();
+//    }
 //
 //    public HashMap<String, Integer> buyProduct() {
 //        HashMap<String, Integer> total = new HashMap<String, Integer>();
