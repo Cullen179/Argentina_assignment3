@@ -297,16 +297,30 @@ public class Customer {
                             name = scanner.nextLine();
                             break;
                         case "2":
-                            System.out.println("Enter new email");
-                            email = scanner.nextLine();
+                            while (true) {
+                                System.out.println("Enter email");
+                                email = scanner.nextLine();
+                                if (email.matches("^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$")) {
+                                    break;
+                                } else {
+                                    System.out.println("Wrong format for an email. Please enter email again");
+                                }
+                            }
                             break;
                         case "3":
                             System.out.println("Enter new address");
                             adress = scanner.nextLine();
                             break;
                         case "4":
-                            System.out.println("Enter new phone number");
-                            phoneNumb = scanner.nextLine();
+                            while (true) {
+                                System.out.println("Enter phone number:");
+                                phoneNumb = scanner.nextLine();
+                                if (phoneNumb.matches("^\\d{10}$")) {
+                                    break;
+                                } else {
+                                    System.out.println("Wrong format for a phone number. Please enter phone number again");
+                                }
+                            }
                             break;
                     }
                     newData = customer.getID() + "," + name + "," + email + "," + adress + "," + phoneNumb + "," + customer.getMembership() + "," + customer.getUsername() + "," + customer.getPassword() + "," + customer.getTotalSpending();
