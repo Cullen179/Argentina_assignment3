@@ -360,7 +360,7 @@ public class Admin {
         System.out.print("Enter the Customer ID: ");
         String customerID = sc.nextLine();
         // Create a scanner object to read from an order text file.
-        Scanner scannerOrder = new Scanner(new File("./src/File/order.txt"));
+        Scanner scannerOrder = new Scanner(new File("./src/File/orders.txt"));
         // A boolean value to check the item's name existed or not.
         boolean checkCustomerIDExisted = false;
 
@@ -381,7 +381,7 @@ public class Admin {
         scannerOrder.close();
     }
 
-    public static void changeOrderStatus() throws IOException {
+    public void changeOrderStatus() throws IOException {
         System.out.println("\nCHANGE STATUS OF THE ORDER");
 
         // Get order id
@@ -421,6 +421,12 @@ public class Admin {
             // If the order line reach last line, don't add new line
             pw.printf(order.generateOrderLine() + (fileScanner.hasNextLine() ? "\n" : ""));
         }
+
+        fileScanner.close();
+        pw.close();
+
+        orders.delete();
+        changeStatus.renameTo(orders);
 
         // In case the order's id is not existed, prompt user a message.
         if (!matchOrderID) {
@@ -521,7 +527,7 @@ public class Admin {
     }
     public static void main(String[] args) throws IOException {
         Admin admin2 = new Admin();
-        admin2.removeCategory();
+        admin2.getHighestBoughtProduct();
     }
 
 }
