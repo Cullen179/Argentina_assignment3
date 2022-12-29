@@ -1,5 +1,7 @@
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class Order {
     private String ID;
@@ -92,5 +94,30 @@ public class Order {
 
     public String generateOrderLine() throws IOException {
         return String.format("%s,%s,%s,%s,%s,%s,%.1f,%s", ID, customerID, date, address, productName, quantity, price, status);
+    }
+
+        // generating the order ID while still maintaining the format
+    public static String newOrderId() throws IOException {
+        Scanner sc = new Scanner(new File("./src/File/orders.txt"));
+        // Initialize last order
+        String lastOrder = "";
+        // Loop through orders.txt file
+        if (!sc.hasNextLine()) {
+            return "O001";
+        } else {
+            while (sc.hasNextLine()) {
+                String order = sc.nextLine();
+                // Check if the current line is the last line
+                if (!sc.hasNextLine()) {
+                    lastOrder = order;
+                }
+            }
+            // Get order ID
+            String orderID = lastOrder.split(",")[0];
+            // Get number of order ID
+            int idNumber = Integer.parseInt(orderID.substring(1, 4));
+            // Return ID
+            return String.format("O%03d", idNumber + 1);
+        }
     }
 }
