@@ -490,9 +490,9 @@ public class Customer {
         this.totalSpending = totalSpending;
     }
 
-//    public static void main(String[] args) throws IOException {
-//        searchProduct();
-//    }
+    public static void main(String[] args) throws IOException {
+        sortProducts();
+    }
 
     public static void searchProduct() throws IOException {
         String category = "";
@@ -525,6 +525,7 @@ public class Customer {
         Scanner scannerProduct = new Scanner(new File("./src/File/items.txt"));
         while (scannerProduct.hasNext()) {
             String items = scannerProduct.nextLine();
+            // generate a product from each line
             Product product = Product.generateProduct(items);
             // if the search category matches the category and the price range => display the product(s)
             if (product.getCategory().equals(category) && minimum < product.getPrice() && product.getPrice() < maximum) {
@@ -532,79 +533,67 @@ public class Customer {
             }
         }
     }
+
+
+    public static void sortProducts() throws IOException {
+        boolean correctInput = false;
+        int sortOrder;
+
+        // Notify user that only input 0 and 1 is available
+        do {
+            System.out.println("Choose the way you want to sort");
+            System.out.println("0.Ascending");
+            System.out.println("1.Descending");
+            Scanner sort = new Scanner(System.in);
+            sortOrder = sort.nextInt();
+            if (sortOrder == 0 || sortOrder == 1)
+                correctInput = true;
+            else
+                System.out.println("Wrong input! Enter 0 or 1 only. Please try again");
+        } while (!correctInput);
+
+        File file = new File("./src/File/items.txt");
+        Scanner productScanner = new Scanner(file);
+
+        // initialise an array list storing the products
+        List<Product> productsList = new ArrayList<>();
+
+        // Reading items.txt file and create new Product to put in Array List productsList
+        while (productScanner.hasNextLine()) {
+            String item = productScanner.nextLine();
+            Product product = Product.generateProduct(item);
+            productsList.add(product);
+        }
+
+        int finalSortOrder = sortOrder;
+
+        // Sort products inside the productsList array using Comparator
+        productsList.sort(new Comparator<Product>() {
+            @Override
+            public int compare(Product o1, Product o2) {
+                if (finalSortOrder == 0) {
+                    if (o1.getPrice() == o2.getPrice())
+                        return 0;
+                    else if (o1.getPrice() > o2.getPrice())
+                        return 1;
+                    else
+                        return -1;
+                } else {
+                    if (o1.getPrice() == o2.getPrice())
+                        return 0;
+                    else if (o1.getPrice() > o2.getPrice())
+                        return -1;
+                    else
+                        return 1;
+                }
+            }
+        });
+
+        for (Product product : productsList) {
+            product.getProductDetails();
+        }
+    }
 }
-
-
-//
-//    public static void sortProducts() throws IOException {
-//        boolean correctInput = false;
-//        int sortOrder;
-//
-//        // Notify user that only input 0 and 1 is available
-//        do {
-//            System.out.println("Choose the way you want to sort");
-//            System.out.println("0.Ascending");
-//            System.out.println("1.Descending");
-//            Scanner sort = new Scanner(System.in);
-//            sortOrder = sort.nextInt();
-//            if (sortOrder == 0 || sortOrder == 1)
-//                correctInput = true;
-//            else
-//                System.out.println("Wrong input! Enter 0 or 1 only. Please try again");
-//        } while (!correctInput);
-//
-//        File file = new File("./src/File/items.txt");
-//        Scanner productScanner = new Scanner(file);
-//
-//        // initialise an array list storing the products
-//        List<Product> productsList = new ArrayList<>();
-//
-//        // Reading items.txt file and create new Product to put in Array List productsList
-//        while (productScanner.hasNextLine()) {
-//            String product = productScanner.nextLine();
-//            String[] productInfo = product.split(",");
-//            String productId = productInfo[0];
-//            String productName = productInfo[1];
-//            double productPrice = Double.parseDouble(productInfo[2]);
-//            String productCategory = productInfo[3];
-//
-//            Product sortedProduct = new Product(productId, productName, productPrice, productCategory);
-//            productsList.add(sortedProduct);
-//
-//            int finalSortOrder = sortOrder;
-//
-//            // Sort products inside the productsList array using Comparator
-//            productsList.sort(new Comparator<Product>() {
-//                @Override
-//                public int compare(Product o1, Product o2) {
-//                    if (finalSortOrder == 0) {
-//                        if (o1.getPrice() == o2.getPrice())
-//                            return 0;
-//                        else if (o1.getPrice() > o2.getPrice())
-//                            return 1;
-//                        else
-//                            return -1;
-//                    } else {
-//                        if (o1.getPrice() == o2.getPrice())
-//                            return 0;
-//                        else if (o1.getPrice() > o2.getPrice())
-//                            return -1;
-//                        else
-//                            return 1;
-//                    }
-//                }
-//            });
-//        }
-//
-//        for (Product product : productsList) {
-//            System.out.println("-----------------");
-//            System.out.println("ID: " + product.getId());
-//            System.out.println("Title: " + product.getName());
-//            System.out.println("Price: " + product.getPrice());
-//            System.out.println("Category: " + product.getCategory());
-//            System.out.println("-----------------");
-//        }
-//    }
 //
 //    // generating the order ID while still maintaining the format
 //    public static String newOrderId() throws IOException {
