@@ -152,20 +152,38 @@ public class Customer {
             }
         }
         System.out.println("Register successful");
-        int count = 0;
+
         fileName = "./src/File/customers.txt";
         PrintWriter pw = new PrintWriter(new FileWriter(fileName, true));
-        Scanner fileScanner = new Scanner(new File(fileName));
-        while (fileScanner.hasNext()) {
-            line = fileScanner.nextLine();
-            StringTokenizer inReader = new StringTokenizer(line, ",");
-            count++;
-        }
-        count += 1;
-        pw.println(count + "," + name + "," + email + "," + address + "," + phoneNumb + "," + "none" + "," + username + "," + password + "," + totalSpending);
+        pw.println(newCustomerID() + "," + name + "," + email + "," + address + "," + phoneNumb + "," + "none" + "," + username + "," + password + "," + totalSpending);
         pw.close();
-        fileScanner.close();
     }
+
+    public static String newCustomerID() throws IOException{
+        Scanner sc = new Scanner(new File("./src/File/customers.txt"));
+
+        // Initialize lastItem
+        String lastCustomer = "";
+
+        // Loop through items file
+        while (sc.hasNextLine()) {
+            String customer = sc.nextLine();
+
+            // Check if the current line is the last line
+            if (!sc.hasNextLine()) {
+                lastCustomer = customer;
+            }
+        }
+
+        // Get item ID
+        String customerID = lastCustomer.split(",")[0];
+        // Get number of item ID
+        int idNumber = Integer.parseInt(customerID.replace("C", ""));
+
+        // Return ID
+        return String.format("C%03d", idNumber + 1);
+    }
+
     private boolean checkUsername (String inputUsername) throws IOException {
         Boolean usernameExist = false;
         String fileName = "./src/File/customers.txt";
