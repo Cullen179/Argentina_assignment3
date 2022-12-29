@@ -15,7 +15,7 @@ public class Customer {
     private String password;
 
     private double totalSpending;
-    private HashMap<String, Integer> boughtList = new HashMap<String, Integer>();
+    private HashMap<String, Integer> boughtList = new HashMap<>();
 
     public Customer(String ID, String name, String email, String address, String phoneNumb, String membership, String username, String password, double totalSpending) {
         this.ID = ID;
@@ -46,7 +46,7 @@ public class Customer {
 
     // Rewrite
     public HashMap<String, Integer> getBoughtList() throws IOException {
-        HashMap<String, Integer> productBought = new HashMap<String, Integer>();
+        HashMap<String, Integer> productBought = new HashMap<>();
 
         // Scan orders file
         Scanner sc = new Scanner(new File("./src/File/orders.txt"));
@@ -89,7 +89,7 @@ public class Customer {
     }
 
     public ArrayList<String> getHighestBoughtProduct() throws IOException {
-        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<String> list = new ArrayList<>();
         int highestQuantity = getHighestBoughtQuantity();
         for (String product : getBoughtList().keySet()) {
             if (getBoughtList().get(product) == highestQuantity) {
@@ -101,7 +101,7 @@ public class Customer {
 
     // Rewrite
     // Function for customer to register new account
-    public void registerMember() throws IOException {
+    public static void registerMember() throws IOException {
         //Declare attribute
         String line, ID, username, password, fileName, name, email, address, phoneNumb;
         double totalSpending = 0;
@@ -153,22 +153,38 @@ public class Customer {
             }
         }
         System.out.println("Register successful");
-        int count = 0;
         fileName = "./src/File/customers.txt";
         PrintWriter pw = new PrintWriter(new FileWriter(fileName, true));
-        Scanner fileScanner = new Scanner(new File(fileName));
-        while (fileScanner.hasNext()) {
-            line = fileScanner.nextLine();
-            StringTokenizer inReader = new StringTokenizer(line, ",");
-            count++;
-        }
-        count += 1;
-        pw.println(count + "," + name + "," + email + "," + address + "," + phoneNumb + "," + "none" + "," + username + "," + password + "," + totalSpending);
+        pw.printf("%s,%s,%s,%s,%s,%s,%s,%s,%1.f" + (scanner.hasNextLine() ? "\n" : ""), newCustomerID(), name, email, address, phoneNumb, "Normal", username, password, totalSpending);
         pw.close();
-        fileScanner.close();
     }
 
-    private boolean checkUsername(String inputUsername) throws IOException {
+    public static String newCustomerID() throws IOException{
+        Scanner sc = new Scanner(new File("D:\\Java project\\group asm\\customer.txt"));
+
+        // Initialize lastItem
+        String lastCustomer = "";
+
+        // Loop through items file
+        while (sc.hasNextLine()) {
+            String customer = sc.nextLine();
+
+            // Check if the current line is the last line
+            if (!sc.hasNextLine()) {
+                lastCustomer = customer;
+            }
+        }
+
+        // Get item ID
+        String customerID = lastCustomer.split(",")[0];
+        // Get number of item ID
+        int idNumber = Integer.parseInt(customerID.replace("C", ""));
+
+        // Return ID
+        return String.format("C%03d", idNumber + 1);
+    }
+
+    private static boolean checkUsername(String inputUsername) throws IOException {
         Boolean usernameExist = false;
         String fileName = "./src/File/customers.txt";
         Scanner fileScanner = new Scanner(new File(fileName));
@@ -184,7 +200,7 @@ public class Customer {
         return usernameExist;
     }
 
-    private boolean checkPassword(String inputPassword) throws IOException {
+    private static boolean checkPassword(String inputPassword) throws IOException {
         Boolean passwordExist = false;
         String fileName = "./src/File/customers.txt";
         Scanner fileScanner = new Scanner(new File(fileName));
@@ -200,8 +216,8 @@ public class Customer {
         return passwordExist;
     }
 
-    public void login() throws IOException {
-        Boolean loggedin = false;
+    public Customer login() throws IOException {
+        Boolean loggedIn = false;
         Scanner scanner = new Scanner(System.in);
         String fileName = "./src/File/customers.txt";
         Scanner fileScanner = new Scanner(new File(fileName));
@@ -209,19 +225,25 @@ public class Customer {
         String username = scanner.nextLine();
         System.out.println("Enter password:");
         String password = scanner.nextLine();
+        
+        Customer user = null;
         while (fileScanner.hasNextLine()) {
             String line = fileScanner.nextLine();
             Customer customer = generateCus(line);
             if (username.equals(customer.getUsername()) && password.equals(customer.getPassword())) {
-                loggedin = true;
+                loggedIn = true;
                 System.out.println("Successfully login");
+
+                // Assign user to customer
+                user = customer;
                 break;
             }
         }
-        if (loggedin.equals(false)) {
+        if (loggedIn.equals(false)) {
             System.out.println("Incorrect username or password");
         }
         fileScanner.close();
+        return user;
     }
 
     public void displayAccountInfo() throws IOException {
@@ -238,50 +260,28 @@ public class Customer {
     }
 
     // Rewrite
-    static void modifyFile(String filePath, String oldString, String newString) {
-        File fileToBeModified = new File(filePath);
-
+    public static void modifyFile(String filePath, String oldString, String newString) throws IOException{
+        File file = new File(filePath);
         String oldContent = "";
+        BufferedReader reader = new BufferedReader(new FileReader(file));
 
-        BufferedReader reader = null;
+        //Reading all the lines of input text file into oldContent
+        String line = reader.readLine();
+        int lineIndex = 0;
 
-        FileWriter writer = null;
-
-        try {
-            reader = new BufferedReader(new FileReader(fileToBeModified));
-
-            //Reading all the lines of input text file into oldContent
-
-            String line = reader.readLine();
-
-            while (line != null) {
-                oldContent = oldContent + line + System.lineSeparator();
-
-                line = reader.readLine();
-            }
-
-            //Replacing oldString with newString in the oldContent
-
-            String newContent = oldContent.replaceAll(oldString, newString);
-
-            //Rewriting the input text file with newContent
-
-            writer = new FileWriter(fileToBeModified);
-
-            writer.write(newContent);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                //Closing the resources
-
-                reader.close();
-
-                writer.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        while (line != null) {
+            oldContent = oldContent + (lineIndex==0 ? "":"\n") + line;
+            line = reader.readLine();
+            lineIndex++;
         }
+
+        //Replacing oldString with newString in the oldContent
+        String newContent = oldContent.replaceAll(oldString, newString);
+        System.out.println(newContent);
+        //Rewriting the input text file with newContent
+        PrintWriter pw = new PrintWriter(new FileWriter(file, false));
+        pw.printf(newContent);
+        pw.close();
     }
 
     public void updateAccountInfo() throws IOException {
@@ -296,7 +296,7 @@ public class Customer {
                 while (true) {
                     String name = customer.getName();
                     String email = customer.getEmail();
-                    String adress = customer.getAddress();
+                    String address = customer.getAddress();
                     String phoneNumb = customer.getPhoneNumb();
                     System.out.println("Choose the number to change the information you want to change:");
                     System.out.println("(1) - Name");
@@ -322,7 +322,7 @@ public class Customer {
                             break;
                         case "3":
                             System.out.println("Enter new address");
-                            adress = scanner.nextLine();
+                            address = scanner.nextLine();
                             break;
                         case "4":
                             while (true) {
@@ -336,7 +336,7 @@ public class Customer {
                             }
                             break;
                     }
-                    newData = customer.getID() + "," + name + "," + email + "," + adress + "," + phoneNumb + "," + customer.getMembership() + "," + customer.getUsername() + "," + customer.getPassword() + "," + customer.getTotalSpending();
+                    newData = customer.getID() + "," + name + "," + email + "," + address + "," + phoneNumb + "," + customer.getMembership() + "," + customer.getUsername() + "," + customer.getPassword() + "," + customer.getTotalSpending();
                     modifyFile(fileName, line, newData);
                 }
             }
@@ -382,16 +382,19 @@ public class Customer {
         while (fileScanner.hasNext()) {
             String line = fileScanner.nextLine();
             Customer customer = generateCus(line);
+            System.out.println(customer.getTotalSpending());
             if (this.getUsername().equals(customer.getUsername())) {
                 String newMembership = customer.getMembership();
-                if (customer.getTotalSpending() >= 300000) {
+                if (customer.getTotalSpending() > 25000000) {
                     newMembership = "platinum";
-                } else if (customer.getTotalSpending() >= 200000) {
+                } else if (customer.getTotalSpending() > 10000000) {
                     newMembership = "gold";
-                } else if (customer.getTotalSpending() >= 100000) {
+                } else if (customer.getTotalSpending() > 5000000) {
                     newMembership = "silver";
                 }
+                System.out.println(newMembership);
                 customer.setMembership(newMembership);
+                System.out.println(customer.getMembership());
                 String newData = customer.generateCustomerInfo();
                 modifyFile(fileName, line, newData);
                 break;
@@ -580,7 +583,7 @@ public class Customer {
 
 
     // apply membership discount
-    private double applyDiscount(double beforeDiscount) throws IOException {
+    private double applyDiscount(double beforeDiscount) {
         switch (this.getMembership()) {
             case "platinum":
                 return beforeDiscount * 85 / 100;
@@ -695,7 +698,7 @@ public class Customer {
         String orderDate = LocalDate.now().toString();
 
         String currentOrderProducts = String.join(":", orderProducts.keySet());
-        ArrayList<String> quantityList = new ArrayList<String>();
+        ArrayList<String> quantityList = new ArrayList<>();
         for (int quantity : orderProducts.values()) {
             quantityList.add(Integer.toString(quantity));
         }
@@ -706,7 +709,7 @@ public class Customer {
 
         // append the line for the new order to the end of the orders.txt file
         String newOrder = String.join(",", orderId, this.getID(), orderDate, shippingAddress,
-                currentOrderProducts.toString(), currentOrderProductQuantities.toString(), String.valueOf(totalAfterDiscount), "delivered");
+                currentOrderProducts, currentOrderProductQuantities, String.valueOf(totalAfterDiscount), "delivered");
         Order order = Order.generateOrder(newOrder);
         PrintWriter pw = new PrintWriter(new FileWriter("./src/File/orders.txt", true));
         pw.println(newOrder);
@@ -716,16 +719,7 @@ public class Customer {
 
         // display order details
         order.displayOrderInfo();
-
-        // update the membership for the user
     }
-
-    public static void main(String[] args) throws IOException {
-//        Customer cus = new Customer("C001", "Ngoc", "fafaf@gmail.com", "454540", "009909", "silver", "hiii", "hello", 133);
-//        cus.createOrder();
-        findOrderDetails();
-    }
-
 
     public static void findOrderDetails() throws IOException {
         boolean matched = false;
@@ -749,11 +743,11 @@ public class Customer {
     }
 
     public String generateCustomerInfo() throws IOException {
-        return String.format("%s,%s,%s,%s,%s,%s,%s,%s,%1.f", ID, name, address, phoneNumb, membership, username, password, getTotalSpending());
+        return String.format("%s,%s,%s,%s,%s,%s,%s,%s,%.1f", ID, name, address, email, phoneNumb, getMembership(), username, password, getTotalSpending());
     }
 
     public void displayPreviousOrders() throws IOException {
-        Scanner sc = new Scanner(new File("./src/File/orders,txt"));
+        Scanner sc = new Scanner(new File("./src/File/orders.txt"));
 
         // Loop through order file
         while (sc.hasNextLine()) {
@@ -765,6 +759,13 @@ public class Customer {
                 order.displayOrderInfo();
             }
         }
+    }
+
+    public static void main(String[] args) throws IOException {
+        Customer customer = Customer.generateCus("C001,Minh Hoang,test@gmail.com,18 Irwin Street,0421473243,Silver,minhhoang,123456,200");
+        customer.updateMembership();
+        System.out.println(customer.getMembership());
+        System.out.println(customer.getMembership());
     }
 }
 
