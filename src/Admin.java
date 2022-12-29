@@ -90,7 +90,6 @@ public class Admin {
         }
     }
 
-    // Rewrite
     // This method is used to view orders for admin.
     public void viewOrders() throws IOException {
         // Create a scanner object to read from an item text file.
@@ -296,7 +295,41 @@ public class Admin {
         }
     }
 
-    // Rewrite
+    public void removeCategory2() throws IOException {
+        System.out.println("\nREMOVE CATEGORY\n");
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Which category do you want to remove ?");
+        String category = sc.next();
+        sc.close();
+        boolean matchCategory = false;
+        ArrayList<String> categoryList = Product.getCategoryList();
+        if (categoryList.contains(category)) {
+            matchCategory = true;
+            categoryList.remove(category);
+        }
+
+        File updateCategory = new File("./src/File/category.txt");
+        File items = new File("./src/File/items.txt");
+        Scanner fileScanner = new Scanner(items);
+        PrintWriter pw = new PrintWriter(new FileWriter(updateCategory, true));
+        while (fileScanner.hasNextLine()) {
+            String item = fileScanner.nextLine();
+            Product product = Product.generateProduct(item);
+            if (product.getCategory().equals(category)) {
+                product.setCategory("None");
+                item = Product.generateItem(product);
+            }
+            pw.printf(item + (fileScanner.hasNextLine() ? "\n" : ""));
+        }
+
+        fileScanner.close();
+        pw.close();
+
+        items.delete();
+        updateCategory.renameTo(items);
+
+    }
+
     public void removeCustomer() throws IOException{
         Scanner sc = new Scanner(System.in);
         System.out.println("What is the ID of the customer you want to remove?");
@@ -332,12 +365,11 @@ public class Admin {
                 continue;
             }
 
-            // if line number is 1 or 2 with remove item in line 1, avoid adding new line
-            if (line == 1 || (line == 2 && matchedLine1)) {
-                pw.printf(customerInfo);
-            } else {
-                pw.printf("\n" + customerInfo);
-            }
+            // Boolean variable if line number is 1 or 2 with remove item in line 1, avoid adding new line
+            boolean lineCheck = (line == 1 || (line == 2 && matchedLine1));
+
+            // Avoid adding new line at the start of the file if line check is true
+            pw.printf((lineCheck ? "" : "\n") + customerInfo);
         }
         fileScanner.close();
         pw.close();
@@ -352,7 +384,7 @@ public class Admin {
         }
     }
 
-    // Rewrite
+
     public void getOrderByCustomerID() throws IOException {
         System.out.println("\nGET ORDER BY CUSTOMER ID");
         // Create a scanner object to be ready to get input information (customer ID) from users via keyboard.
@@ -452,8 +484,9 @@ public class Admin {
 
             // Get the highest bought product(s) and the quantity
             if (customer.getID().equals(id)) {
+                matchCustomer = true;
                 System.out.println("-".repeat(17));
-                System.out.println("The highest bought item(s) of customer" + customer.getID() + ":");
+                System.out.println("The highest bought item(s) of customer " + customer.getID() + ":");
                 System.out.println(customer.getHighestBoughtProduct());
                 System.out.println("The total number bought is " + customer.getHighestBoughtQuantity());
                 System.out.println("-".repeat(17));
@@ -466,10 +499,9 @@ public class Admin {
         }
     }
 
-    // REWRITE
     public static boolean calculateTotalRevenue(String date) throws IOException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        Scanner scannerOrder = new Scanner(new File("./src/File/order.txt"));
+        Scanner scannerOrder = new Scanner(new File("./src/File/orders.txt"));
         try {
             formatter.parse(date);
             double revenue = 0;
@@ -492,8 +524,7 @@ public class Admin {
         return true;
     }
 
-    // REWRITE
-    public static void totalRevenue() throws IOException {
+    public void getTotalRevenue() throws IOException {
         System.out.println("\nCALCULATE THE STORE TOTAL REVENUE IN A PARTICULAR DAY");
         Scanner scannerOrder = new Scanner(new File("./src/File/orders.txt"));
         Scanner sc = new Scanner(System.in);
@@ -503,10 +534,9 @@ public class Admin {
         scannerOrder.close();
     }
 
-    // REWRITE
     public static void checkOrderInfoInADay() throws IOException {
         System.out.println("\nCHECK THE INFORMATION OF ALL ORDERS EXECUTED IN A PARTICULAR DAY");
-        Scanner scannerOrder = new Scanner(new File("./src/File/order.txt"));
+        Scanner scannerOrder = new Scanner(new File("./src/File/orders.txt"));
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter the formatted date (dd/MM/yyyy) that you want to check the information of all orders: ");
         String date = sc.nextLine();
@@ -527,7 +557,7 @@ public class Admin {
     }
     public static void main(String[] args) throws IOException {
         Admin admin2 = new Admin();
-        admin2.getHighestBoughtProduct();
+        admin2.removeCustomer();
     }
 
 }
