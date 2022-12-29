@@ -22,7 +22,7 @@ public class Order {
         this.status = status;
     }
 
-    public static Order generateOrderDetail(String productInfo) {
+    public static Order generateOrder(String productInfo) {
 
         // getting all the details from the product line
         String[] orderAttrs = productInfo.split(",");
@@ -34,9 +34,8 @@ public class Order {
         String quantity = orderAttrs[5];
         double orderTotal = Double.parseDouble(orderAttrs[6]);
         String orderStatus = orderAttrs[7];
-        return new Order(orderId, customerId, date,address, productName, quantity, orderTotal, orderStatus);
+        return new Order(orderId, customerId, date, address, productName, quantity, orderTotal, orderStatus);
     }
-
 
 
     public String getOrderID() {
@@ -75,15 +74,23 @@ public class Order {
         return status;
     }
 
-    public void displayOrderInfo() throws IOException {
-            System.out.println("-----------------");
-            System.out.println("Order detail");
-            System.out.println("-----------------");
-            System.out.println("OrderID: " + this.getOrderID());
-            System.out.println("Order date: " + this.getOrderDate());
-            System.out.println("Customer ID:" + this.getCustomerID());
-            System.out.println("Shipping address: " + this.getOrderAddress());
-            System.out.println("Product list: " + this.getProductList());
-            System.out.println("Total: " + this.getPrice());
-        }
+    public void setStatus(String status) {
+        this.status = status;
     }
+
+    public void displayOrderInfo() throws IOException {
+        System.out.println("-----------------");
+        System.out.println("Order detail");
+        System.out.println("-----------------");
+        System.out.println("OrderID: " + this.getOrderID());
+        System.out.println("Order date: " + this.getOrderDate());
+        System.out.println("Customer ID:" + this.getCustomerID());
+        System.out.println("Shipping address: " + this.getOrderAddress());
+        System.out.println("Product list: " + this.getProductList());
+        System.out.println("Total: " + this.getPrice());
+    }
+
+    public String generateOrderLine() throws IOException {
+        return String.format("%s, %s, %s, %s, %s, %s, %.1f, %s", ID, customerID, date, address, productName, quantity, price, status);
+    }
+}

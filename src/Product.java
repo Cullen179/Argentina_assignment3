@@ -59,7 +59,7 @@ public class Product {
     }
 
     public static Product createProduct() throws IOException{
-        String name = checkProductName();
+        String name = checkNewProductName();
         // Validate price input
         double price = InputValidator.getDoubleInput("What is the price of the product:", "Price must be of integer or double value");
         String category = checkCategory();
@@ -96,7 +96,7 @@ public class Product {
         return categoryList;
     }
 
-    public static String checkProductName() throws IOException {
+    public static String checkNewProductName() throws IOException {
         Scanner sc = new Scanner(System.in);
         String name;
         while (true) {
