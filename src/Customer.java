@@ -385,6 +385,7 @@ public class Customer {
 //            }
 //        }
 //    }
+
     public static void viewProduct() throws IOException {
         Scanner scannerProduct = new Scanner(new File("./src/File/items.txt"));
         System.out.println("VIEW PRODUCT");
