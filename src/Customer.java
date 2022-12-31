@@ -400,9 +400,14 @@ public class Customer {
         }
     }
 
+    public String generateCustomerInfo() throws IOException {
+        return String.format("%s,%s,%s,%s,%s,%s,%s,%s,%.1f", ID, name, address, email, phoneNumb, getMembership(), username, password, getTotalSpending());
+    }
+
     public static void viewProduct() throws IOException {
         Scanner scannerProduct = new Scanner(new File("./src/File/items.txt"));
         System.out.println("\nVIEW PRODUCT\n");
+        // Read each line in items.txt file, then generate and display the products.
         while (scannerProduct.hasNextLine()) {
             String items = scannerProduct.nextLine();
             Product product = Product.generateProduct(items);
@@ -410,98 +415,27 @@ public class Customer {
         }
     }
 
-    public String getID() {
-        return ID;
-    }
-
-    public void setID(String ID) {
-        this.ID = ID;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPhoneNumb() {
-        return phoneNumb;
-    }
-
-    public void setPhoneNumb(String phone) {
-        this.phoneNumb = phone;
-    }
-
-    public String getMembership() {
-        return membership;
-    }
-
-    public void setMembership(String membership) {
-        this.membership = membership;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-
-    public void setTotalSpending(double totalSpending) {
-        this.totalSpending = totalSpending;
-    }
-
     public static void searchProduct() throws IOException {
         String category = "";
         double minimum = 0;
-        double maximum = Double.POSITIVE_INFINITY;
+        double maximum;
 
+        // use try-catch in case the customer did not enter the minimum and/or the maximum
+        // the default minimum is 0 and that of maximum is positive infinity
         try {
             category = Product.checkCategory();
             Scanner sc = new Scanner(System.in);
             System.out.println("Enter the minimum price: ");
             String minimumString = sc.nextLine();
             try {
-                if (minimumString == null)
-                    minimum = 0;
-                else
-                    minimum = Double.parseDouble(minimumString);
+                minimum = Double.parseDouble(minimumString);
             } catch (NumberFormatException nfe) {
                 minimum = 0;
             }
             System.out.println("Enter the maximum price: ");
             String maximumString = sc.nextLine();
             System.out.println("--------------");
-            if (maximumString != null)
-                maximum = Double.parseDouble(maximumString);
+            maximum = Double.parseDouble(maximumString);
             System.out.println("--------------");
         } catch (NumberFormatException nfe) {
             maximum = Double.POSITIVE_INFINITY;
@@ -519,12 +453,11 @@ public class Customer {
         }
     }
 
-
     public static void sortProducts() throws IOException {
         boolean correctInput = false;
         int sortOrder;
 
-        // Notify user that only input 0 and 1 is available
+        // Notify user that only input 0 (for ascending order) and 1 (for descending order) is available
         do {
             System.out.println("Choose the way you want to sort");
             System.out.println("0.Ascending");
@@ -574,6 +507,7 @@ public class Customer {
             }
         });
 
+        // display the details of the products in the sorted order.
         for (Product product : productsList) {
             product.getProductDetails();
         }
@@ -726,24 +660,22 @@ public class Customer {
         Scanner userInput = new Scanner(System.in);
         String inputOrderID = userInput.nextLine();
         Scanner orderFileScanner = new Scanner(new File("./src/File/orders.txt"));
+        // read each line of orders.txt and generate the orders in that file.
         while (orderFileScanner.hasNext()) {
             String orderLine = orderFileScanner.nextLine();
             Order order = Order.generateOrder(orderLine);
 
+            // when the input equals to the order ID, display information of that order
             if (inputOrderID.equals(order.getOrderID())) {
                 order.displayOrderInfo();
                 matched = true;
             }
         }
+        // notify the customer when the order ID is incorrect
         if (!matched) {
-            System.out.println("Can't find the order ID. Please enter another order ID");
+            System.out.println("Can't find the order ID. Please try again.");
         }
     }
-
-    public String generateCustomerInfo() throws IOException {
-        return String.format("%s,%s,%s,%s,%s,%s,%s,%s,%.1f", ID, name, address, email, phoneNumb, getMembership(), username, password, getTotalSpending());
-    }
-
     public void displayPreviousOrders() throws IOException {
         Scanner sc = new Scanner(new File("./src/File/orders.txt"));
 
@@ -751,12 +683,81 @@ public class Customer {
         while (sc.hasNextLine()) {
             String orderInfo = sc.nextLine();
 
-            // Generate order from order info line
+            // Generate and display order(s) of that specific customer
             Order order = Order.generateOrder(orderInfo);
             if (order.getCustomerID().equals(this.ID)) {
                 order.displayOrderInfo();
             }
         }
+    }
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhoneNumb() {
+        return phoneNumb;
+    }
+
+    public void setPhoneNumb(String phone) {
+        this.phoneNumb = phone;
+    }
+
+    public String getMembership() {
+        return membership;
+    }
+
+    public void setMembership(String membership) {
+        this.membership = membership;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
+    public void setTotalSpending(double totalSpending) {
+        this.totalSpending = totalSpending;
     }
 }
 
