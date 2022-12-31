@@ -105,20 +105,20 @@ public class Admin {
     }
 
     // Rewrite
-//    public static void viewMembers() throws IOException {
-//        System.out.println("\nVIEW MEMBERS \n");
-//        // Create a scanner object to read from a member text file.
-//        Scanner sc = new Scanner(new File("./src/File/member.txt"));
-//        // A loop is used to display detailed information of each member.
-//        while (sc.hasNextLine()) {
-//            String memberInfo = sc.nextLine();
-//            Customer member = Customer.generateCus(memberInfo);
-//            if (member.getMembership() != "Normal") {
-//                member.displayAccountInfo();
-//            }
-//        }
-//        sc.close();
-//    }
+    public void viewMembers() throws IOException {
+        System.out.println("\nVIEW MEMBERS \n");
+        // Create a scanner object to read from a member text file.
+        Scanner sc = new Scanner(new File("./src/File/customers.txt"));
+        // A loop is used to display detailed information of each member.
+        while (sc.hasNextLine()) {
+            String memberInfo = sc.nextLine();
+            Customer member = Customer.generateCus(memberInfo);
+            if (member.getMembership() != "Normal") {
+                member.displayAccountInfo();
+            }
+        }
+        sc.close();
+    }
 
     public void addProduct() throws IOException{
         PrintWriter pw = new PrintWriter(new FileWriter("./src/File/items.txt", true));
@@ -515,7 +515,7 @@ public class Admin {
                     revenue += orderTotal;
                 }
             }
-            System.out.printf("\nThe total revenue in %s is %.1f", date, revenue);
+            System.out.printf("\nThe total revenue in %s is %.2f\n", date, revenue);
             scannerOrder.close();
         }
         catch (Exception e) {
