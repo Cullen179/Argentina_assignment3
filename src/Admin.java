@@ -177,9 +177,6 @@ public class Admin {
         fileScanner.close();
         pw.close();
 
-        // Delete current item file
-        itemFile.delete();
-
         // Rename remove item file to item file
         removeItem.renameTo(itemFile);
 
@@ -221,8 +218,6 @@ public class Admin {
         fileScanner.close();
         pw.close();
 
-        // Delete the item file
-        itemFile.delete();
         // Rename remove item file to item file
         updatePrice.renameTo(itemFile);
 
@@ -285,8 +280,6 @@ public class Admin {
         fileScanner.close();
         pw.close();
 
-        // Delete the items file
-        items.delete();
         // Rename remove item file to item file
         update.renameTo(items);
         // Print error if category doesn't exist
@@ -294,42 +287,6 @@ public class Admin {
             System.out.println("Category doesn't exist. Please try again.");
         }
     }
-
-    public void removeCategory2() throws IOException {
-        System.out.println("\nREMOVE CATEGORY\n");
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Which category do you want to remove ?");
-        String category = sc.next();
-        sc.close();
-        boolean matchCategory = false;
-        ArrayList<String> categoryList = Product.getCategoryList();
-        if (categoryList.contains(category)) {
-            matchCategory = true;
-            categoryList.remove(category);
-        }
-
-        File updateCategory = new File("./src/File/category.txt");
-        File items = new File("./src/File/items.txt");
-        Scanner fileScanner = new Scanner(items);
-        PrintWriter pw = new PrintWriter(new FileWriter(updateCategory, true));
-        while (fileScanner.hasNextLine()) {
-            String item = fileScanner.nextLine();
-            Product product = Product.generateProduct(item);
-            if (product.getCategory().equals(category)) {
-                product.setCategory("None");
-                item = Product.generateItem(product);
-            }
-            pw.printf(item + (fileScanner.hasNextLine() ? "\n" : ""));
-        }
-
-        fileScanner.close();
-        pw.close();
-
-        items.delete();
-        updateCategory.renameTo(items);
-
-    }
-
     public void removeCustomer() throws IOException{
         Scanner sc = new Scanner(System.in);
         System.out.println("What is the ID of the customer you want to remove?");
@@ -373,8 +330,7 @@ public class Admin {
         }
         fileScanner.close();
         pw.close();
-        // Delete the item file
-        customerFile.delete();
+
         // Rename remove item file to item file
         removeCus.renameTo(customerFile);
 
@@ -457,7 +413,6 @@ public class Admin {
         fileScanner.close();
         pw.close();
 
-        orders.delete();
         changeStatus.renameTo(orders);
 
         // In case the order's id is not existed, prompt user a message.
@@ -554,13 +509,5 @@ public class Admin {
         if (!checkOrderExisted) {
             System.out.printf("There isn't any orders in %s, please try with another date", date);
         }
-    }
-    public static void main(String[] args) throws IOException {
-        Admin admin2 = new Admin();
-//        admin2.removeCategory();
-//        admin2.removeCustomer();
-//        admin2.changeOrderStatus();
-//        admin2.getOrderByCustomerID();
-        admin2.checkOrderInfoInADay();
     }
 }
