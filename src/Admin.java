@@ -104,16 +104,19 @@ public class Admin {
         sc.close();
     }
 
-    // Rewrite
     public void viewMembers() throws IOException {
         System.out.println("\nVIEW MEMBERS \n");
+
         // Create a scanner object to read from a member text file.
         Scanner sc = new Scanner(new File("./src/File/customers.txt"));
+
         // A loop is used to display detailed information of each member.
         while (sc.hasNextLine()) {
             String memberInfo = sc.nextLine();
             Customer member = Customer.generateCus(memberInfo);
-            if (member.getMembership() != "Normal") {
+
+            // Display member only
+            if (!member.getMembership().equals("normal")) {
                 member.displayAccountInfo();
             }
         }
@@ -122,9 +125,11 @@ public class Admin {
 
     public void addProduct() throws IOException{
         PrintWriter pw = new PrintWriter(new FileWriter("./src/File/items.txt", true));
+
         // Get new product information
         System.out.println("\nADDING NEW PRODUCT\n");
         Product newProduct = Product.createProduct();
+
         // Add new item line to file
         pw.printf("\n%s,%s,%.1f,%s", newProduct.getId(), newProduct.getName(), newProduct.getPrice(), newProduct.getCategory());
         pw.close();
@@ -133,8 +138,9 @@ public class Admin {
     public void removeProduct() throws IOException{
         Scanner sc = new Scanner(System.in);
         System.out.println("What is name of the product you want to delete ?");
-        String productName = sc.next();
+        String productName = sc.nextLine();
         boolean matchProduct = false;
+
         // Add new file
         File removeItem = new File("./src/File/removeItems.txt");
         File itemFile = new File("./src/File/items.txt");
@@ -162,7 +168,7 @@ public class Admin {
                 matchedLine1 = true;
                 continue;
 
-                // Check if product id equal remove item id,
+            // Check if product id equal remove item id,
             } else if (product.getName().equals(productName)) {
                 continue;
             }
@@ -189,7 +195,7 @@ public class Admin {
     public void updateProductPrice() throws IOException{
         Scanner sc = new Scanner(System.in);
         System.out.println("What is the product you want to update");
-        String productName = sc.next();
+        String productName = sc.nextLine();
 
         // Add new file
         File updatePrice = new File("./src/File/update_items.txt");
@@ -229,7 +235,7 @@ public class Admin {
     public void addCategory() throws IOException{
         Scanner sc = new Scanner(System.in);
         System.out.println("What category do you want to add ?");
-        String newCategory = sc.next();
+        String newCategory = sc.nextLine();
 
         // Check if new category is in category list
         if (!Product.getCategoryList().contains(newCategory)) {
@@ -243,7 +249,7 @@ public class Admin {
         // Check if category exists
         Scanner sc = new Scanner(System.in);
         System.out.println("What category do you want to remove ?");
-        String removeCategory = sc.next();
+        String removeCategory = sc.nextLine();
         boolean matchCategory = false;
         ArrayList<String> categoryList = Product.getCategoryList();
 
@@ -343,12 +349,15 @@ public class Admin {
 
     public void getOrderByCustomerID() throws IOException {
         System.out.println("\nGET ORDER BY CUSTOMER ID");
+
         // Create a scanner object to be ready to get input information (customer ID) from users via keyboard.
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter the Customer ID: ");
-        String customerID = sc.nextLine();
+        String customerID = sc.next();
+
         // Create a scanner object to read from an order text file.
         Scanner scannerOrder = new Scanner(new File("./src/File/orders.txt"));
+
         // A boolean value to check the item's name existed or not.
         boolean checkCustomerIDExisted = false;
 
@@ -356,6 +365,7 @@ public class Admin {
         while (scannerOrder.hasNextLine()) {
             String orderInfo = scannerOrder.nextLine();
             Order order = Order.generateOrder(orderInfo);
+
             // In case the input ID is equivalent to the customerID from file, the following function would be executed.
             if (order.getCustomerID().equals(customerID)) {
                 order.displayOrderInfo();
@@ -428,10 +438,11 @@ public class Admin {
         Scanner sc = new Scanner(System.in);
         System.out.println("What is the ID of the customer you want to view ?");
         String id = sc.next();
+
         // If the id of the customer
         boolean matchCustomer = false;
-
         Scanner fileScanner = new Scanner(new File("./src/File/customers.txt"));
+
         // Loop through customer file
         while(fileScanner.hasNextLine()) {
             String customerInfo = fileScanner.nextLine();
@@ -497,10 +508,12 @@ public class Admin {
         String date = sc.nextLine();
         boolean checkOrderExisted = false;
 
+        // Loop through order file
         while (scannerOrder.hasNextLine()) {
             String orderInfo = scannerOrder.nextLine();
             Order order = Order.generateOrder(orderInfo);
 
+            // Check if order date match order date
             if (order.getOrderDate().equals(date)) {
                 order.displayOrderInfo();
                 checkOrderExisted = true;
