@@ -422,19 +422,20 @@ public class Customer {
 
         // use try-catch in case the customer did not enter the minimum and/or the maximum
         // the default minimum is 0 and that of maximum is positive infinity
+        
+        category = Product.checkCategory();
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the minimum price: ");
+        String minimumString = sc.nextLine();
         try {
-            category = Product.checkCategory();
-            Scanner sc = new Scanner(System.in);
-            System.out.println("Enter the minimum price: ");
-            String minimumString = sc.nextLine();
-            try {
-                minimum = Double.parseDouble(minimumString);
-            } catch (NumberFormatException nfe) {
-                minimum = 0;
-            }
+            minimum = Double.parseDouble(minimumString);
+        } catch (NumberFormatException nfe) {
+            minimum = 0;
+        }
             System.out.println("Enter the maximum price: ");
             String maximumString = sc.nextLine();
             System.out.println("--------------");
+        try {
             maximum = Double.parseDouble(maximumString);
             System.out.println("--------------");
         } catch (NumberFormatException nfe) {
@@ -447,7 +448,7 @@ public class Customer {
             // generate a product from each line
             Product product = Product.generateProduct(items);
             // if the search category matches the category and the price range => display the product(s)
-            if (product.getCategory().equals(category) && minimum < product.getPrice() && product.getPrice() < maximum) {
+            if (product.getCategory().equals(category) && minimum <= product.getPrice() && product.getPrice() <= maximum) {
                 product.getProductDetails();
             }
         }
@@ -643,12 +644,19 @@ public class Customer {
         String newOrder = String.join(",", orderId, this.getID(), orderDate, shippingAddress,
                 currentOrderProducts, currentOrderProductQuantities, String.valueOf(totalAfterDiscount), "delivered");
         Order order = Order.generateOrder(newOrder);
-        PrintWriter pw = new PrintWriter(new FileWriter("./src/File/orders.txt", true));
-        pw.println(newOrder);
-
-        pw.flush();
-        pw.close();
-
+        PrintWriter pw = null;
+        try {
+            pw = new PrintWriter(new FileWriter("./src/File/orders.txt", true));
+            pw.println(newOrder);
+            pw.flush();
+        } catch (IOException ioe) {
+            System.err.println(ioe.getMessage());
+        } finally {
+            if (pw != null) {
+                pw.close();
+            }
+        }
+        
         // display order details
         order.displayOrderInfo();
     }
