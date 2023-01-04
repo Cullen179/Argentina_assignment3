@@ -169,6 +169,7 @@ public class Customer {
         pw.close();
     }
 
+    //Function to create new customer ID
     public static String newCustomerID() throws IOException{
         Scanner sc = new Scanner(new File("D:\\Java project\\group asm\\customer.txt"));
 
@@ -194,6 +195,7 @@ public class Customer {
         return String.format("C%03d", idNumber + 1);
     }
 
+    // Function to check the unique of the input username
     private static boolean checkUsername(String inputUsername) throws IOException {
         Boolean usernameExist = false;
         String fileName = "./src/File/customers.txt";
@@ -210,6 +212,7 @@ public class Customer {
         return usernameExist;
     }
 
+    // Function to check the unique of the input password
     private static boolean checkPassword(String inputPassword) throws IOException {
         Boolean passwordExist = false;
         String fileName = "./src/File/customers.txt";
@@ -226,6 +229,7 @@ public class Customer {
         return passwordExist;
     }
 
+    // Function for the customer to login as a role member
     public Customer login() throws IOException {
         Boolean loggedIn = false;
         Scanner scanner = new Scanner(System.in);
@@ -256,6 +260,7 @@ public class Customer {
         return user;
     }
 
+    // Function to display the customer account information
     public void displayAccountInfo() throws IOException {
         System.out.println("-".repeat(17));
         System.out.println("ID:" + this.getID());
@@ -269,7 +274,7 @@ public class Customer {
         System.out.println("-".repeat(17));
     }
 
-    // Rewrite
+    // Function to replace the old content with the new content in text file
     public static void modifyFile(String filePath, String oldString, String newString) throws IOException{
         File file = new File(filePath);
         String oldContent = "";
@@ -304,6 +309,7 @@ public class Customer {
         pw.close();
     }
 
+    // Function to update account information of the customer
     public void updateAccountInfo() throws IOException {
         String newData;
         String fileName = "./src/File/customers.txt";
@@ -363,6 +369,7 @@ public class Customer {
         }
     }
 
+    // Function to get the total spending of the customer form the orders file
     public double getTotalSpending() throws IOException {
         double totalSpending = 0;
         String fileName = "./src/File/orders.txt";
@@ -378,6 +385,7 @@ public class Customer {
         return this.totalSpending;
     }
 
+    // Function to update the total spending of the customer
     public void updateTotalSpending() throws IOException {
 
         // get total spending of the customer
@@ -395,7 +403,7 @@ public class Customer {
         }
     }
 
-    // Rewrite
+    // Function to update customer's membership depend on the total spending
     public void updateMembership() throws IOException {
         String fileName = "./src/File/customers.txt";
         Scanner fileScanner = new Scanner(new File(fileName));
