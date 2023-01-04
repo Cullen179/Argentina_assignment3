@@ -450,8 +450,12 @@ public class Customer {
 
         // use try-catch in case the customer did not enter the minimum and/or the maximum
         // the default minimum is 0 and that of maximum is positive infinity
-        
-        category = Product.checkCategory();
+
+        try {
+            category = Product.checkCategory();
+        } catch (IOException ioException) {
+            System.out.println("Cannot check category!");
+        }
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter the minimum price: ");
         String minimumString = sc.nextLine();
@@ -653,7 +657,12 @@ public class Customer {
         String shippingAddress = customerInput.nextLine();
 
         // generate new order id
-        String orderId = Order.newOrderId();
+        String orderId = null;
+        try {
+            orderId = Order.newOrderId();
+        } catch (IOException ioException) {
+            System.out.println("Cannot generate order ID");
+        }
 
         // getting the date for the order
         String orderDate = LocalDate.now().toString();

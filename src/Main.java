@@ -109,10 +109,6 @@ public class Main {
 //                    customerFlow();
 //                    userRole = true;
 //                    break;
-                case "member":
-//                    memberFlow();
-//                    userRole = true;
-//                    break;
                 case "admin":
                     adminFlow();
                     userRole = true;
