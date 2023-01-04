@@ -24,7 +24,6 @@ public class Main {
         boolean isRunning = true;
 
         while (isRunning) {
-            Scanner sc = new Scanner(System.in);
             System.out.println("------------------");
             System.out.println("(0) : Log Out");
             System.out.println("(1) : View All The Products");

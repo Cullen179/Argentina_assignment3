@@ -59,7 +59,7 @@ public class Order {
     public HashMap<String, Integer> getProductList() {
         String[] productNameList = this.productName.split(":");
         String[] quantityList = this.quantity.split(":");
-        HashMap<String, Integer> productList = new HashMap<String, Integer>();
+        HashMap<String, Integer> productList = new HashMap<>();
 
         // Loop through name and quantity list
         for (int i = 0; i < productNameList.length; i++) {
@@ -80,7 +80,7 @@ public class Order {
         this.status = status;
     }
 
-    public void displayOrderInfo() throws IOException {
+    public void displayOrderInfo() {
         System.out.println("-----------------");
         System.out.println("Order detail");
         System.out.println("-----------------");
@@ -92,7 +92,7 @@ public class Order {
         System.out.println("Total: " + this.getPrice());
     }
 
-    public String generateOrderLine() throws IOException {
+    public String generateOrderLine() {
         return String.format("%s,%s,%s,%s,%s,%s,%.1f,%s", ID, customerID, date, address, productName, quantity, price, status);
     }
 

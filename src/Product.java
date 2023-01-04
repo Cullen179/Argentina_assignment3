@@ -8,7 +8,7 @@ public class Product {
     private final String name;
     private double price;
     private String category;
-    private static ArrayList<String> categoryList = new ArrayList<String>();
+    private static ArrayList<String> categoryList = new ArrayList<>();
 
     public Product(String id, String name, double price, String category) {
         this.id = id;
