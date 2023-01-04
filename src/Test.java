@@ -8,11 +8,12 @@ import java.util.Scanner;
 
 public class Test {
     public static void main(String[] args) throws IOException {
-        try (PrintWriter pw = new PrintWriter(new FileWriter("test.txt"))) {
-            pw.printf("");
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
+//        int a  = InputValidator.getIntInput("test", "wrong");
+        File itemFile = new File("./src/File/items.txt");
+
+        PrintWriter pw = new PrintWriter(new FileWriter(itemFile, false));
+        pw.printf("hello");
+        pw.close();
     }
 
 }

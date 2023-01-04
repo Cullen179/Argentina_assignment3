@@ -179,7 +179,7 @@ public class Admin {
             boolean lineCheck = (line == 1 || (line == 2 && matchedLine1));
 
             // Avoid adding new line at the start of the file if line check is true
-            newContent.concat((lineCheck ? "" : "\n") + item);
+            newContent += ((lineCheck ? "" : "\n") + item);
         }
 
         fileScanner.close();
@@ -187,6 +187,7 @@ public class Admin {
         // Rewrite item file with new content
         PrintWriter pw = new PrintWriter(new FileWriter(itemFile, false));
         pw.printf(newContent);
+        pw.close();
 
         // Print error if product name doesn't match
         if (Product.checkProductExisted(productName)) {
@@ -222,13 +223,14 @@ public class Admin {
             }
 
             // If the item reach last line, don't add new line
-            newContent.concat(item + (fileScanner.hasNextLine() ? "" : "\n"));
+            newContent += (item + (fileScanner.hasNextLine() ? "\n" : ""));
         }
         fileScanner.close();
-
+        System.out.println(newContent);
         // Rewrite item file with new content
         PrintWriter pw = new PrintWriter(new FileWriter(itemFile, false));
         pw.printf(newContent);
+        pw.close();
 
         // Print error if product name doesn't match
         if (!Product.checkProductExisted(productName)) {
@@ -284,7 +286,7 @@ public class Admin {
             }
 
             // If the item reach last line, don't add new line
-            newContent.concat(item + (fileScanner.hasNextLine() ? "" : "\n"));
+            newContent += (item + (fileScanner.hasNextLine() ? "\n" : ""));
         }
 
         fileScanner.close();
@@ -292,6 +294,7 @@ public class Admin {
         // Rewrite item file with new content
         PrintWriter pw = new PrintWriter(new FileWriter(items, false));
         pw.printf(newContent);
+        pw.close();
 
         // Print error if category doesn't exist
         if (!matchCategory) {
@@ -339,13 +342,14 @@ public class Admin {
             boolean lineCheck = (line == 1 || (line == 2 && matchedLine1));
 
             // Avoid adding new line at the start of the file if line check is true
-            newContent.concat((lineCheck ? "" : "\n") + customerInfo);
+            newContent += ((lineCheck ? "" : "\n") + customerInfo);
         }
         fileScanner.close();
 
         // Rewrite item file with new content
         PrintWriter pw = new PrintWriter(new FileWriter(customerFile, false));
         pw.printf(newContent);
+        pw.close();
 
         // Print error if customer ID doesn't exist
         if (!matchCus) {
@@ -425,7 +429,7 @@ public class Admin {
             }
 
             // If the order line reach last line, don't add new line
-            newContent.concat(order.generateOrderLine() + (fileScanner.hasNextLine() ? "\n" : ""));
+            newContent += (order.generateOrderLine() + (fileScanner.hasNextLine() ? "\n" : ""));
         }
 
         fileScanner.close();
@@ -433,6 +437,7 @@ public class Admin {
         // Rewrite item file with new content
         PrintWriter pw = new PrintWriter(new FileWriter(orders, false));
         pw.printf(newContent);
+        pw.close();
 
         // In case the order's id is not existed, prompt user a message.
         if (!matchOrderID) {
@@ -474,7 +479,7 @@ public class Admin {
         }
     }
 
-    public static boolean calculateTotalRevenue(String date) throws IOException {
+    public static void calculateTotalRevenue(String date) throws IOException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         Scanner scannerOrder = new Scanner(new File("./src/File/orders.txt"));
         try {
@@ -496,7 +501,6 @@ public class Admin {
         catch (Exception e) {
             System.out.println("\nInvalid input, please try with another one.");
         }
-        return true;
     }
 
     public void getTotalRevenue() throws IOException {

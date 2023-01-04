@@ -13,13 +13,14 @@ public class InputValidator {
                 if (input < 0) {
                     throw new IllegalArgumentException("Input has to be positive. Please try again");
                 }
+
+                return input;
             }
             catch (InputMismatchException e) {
                 System.out.println(errorMessage);
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
-
         }
     }
 
@@ -34,6 +35,7 @@ public class InputValidator {
                 if (input < 0) {
                     throw new IllegalArgumentException("Input has to be positive. Please try again");
                 }
+                return input;
             }
             catch (InputMismatchException e) {
                 System.out.println(errorMessage);
