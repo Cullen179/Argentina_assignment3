@@ -154,8 +154,18 @@ public class Customer {
         }
         System.out.println("Register successful");
         fileName = "./src/File/customers.txt";
-        PrintWriter pw = new PrintWriter(new FileWriter(fileName, true));
-        pw.printf("%s,%s,%s,%s,%s,%s,%s,%s,%1.f" + (scanner.hasNextLine() ? "\n" : ""), newCustomerID(), name, email, address, phoneNumb, "Normal", username, password, totalSpending);
+        PrintWriter pw = null;
+        try {
+            pw = new PrintWriter(new FileWriter(fileName, true));
+            pw.printf("%s,%s,%s,%s,%s,%s,%s,%s,%1.f" + (scanner.hasNextLine() ? "\n" : ""), newCustomerID(), name, email, address, phoneNumb, "Normal", username, password, totalSpending);
+            pw.flush();
+        } catch (IOException ioe) {
+            System.err.println(ioe.getMessage());
+        } finally {
+            if (pw != null) {
+                pw.close();
+            }
+        }
         pw.close();
     }
 
@@ -279,8 +289,18 @@ public class Customer {
         String newContent = oldContent.replaceAll(oldString, newString);
 
         //Rewriting the input text file with newContent
-        PrintWriter pw = new PrintWriter(new FileWriter(file, false));
-        pw.printf(newContent);
+        PrintWriter pw = null;
+        try {
+            pw = new PrintWriter(new FileWriter(file, false));
+            pw.printf(newContent);
+            pw.flush();
+        } catch (IOException ioe) {
+            System.err.println(ioe.getMessage());
+        } finally {
+            if (pw != null) {
+                pw.close();
+            }
+        }
         pw.close();
     }
 
