@@ -428,10 +428,12 @@ public class Customer {
         }
     }
 
+    // Function to generate customer information
     public String generateCustomerInfo() throws IOException {
         return String.format("%s,%s,%s,%s,%s,%s,%s,%s,%.1f", ID, name, address, email, phoneNumb, getMembership(), username, password, getTotalSpending());
     }
 
+    // Function for customers to view the store's products
     public static void viewProduct() throws IOException {
         Scanner scannerProduct = new Scanner(new File("./src/File/items.txt"));
         System.out.println("\nVIEW PRODUCT\n");
@@ -443,6 +445,7 @@ public class Customer {
         }
     }
 
+    // Function for customers to search the store's products based on category and price range
     public static void searchProduct() throws IOException {
         String category = "";
         double minimum = 0;
@@ -486,6 +489,7 @@ public class Customer {
         }
     }
 
+    // Function for customers to sort the store's products in ascending or descending order
     public static void sortProducts() throws IOException {
         boolean correctInput = false;
         int sortOrder;
@@ -547,7 +551,7 @@ public class Customer {
     }
 
 
-    // apply membership discount
+    // function to apply membership discount
     private double applyDiscount(double beforeDiscount) {
         switch (this.getMembership()) {
             case "platinum":
@@ -561,6 +565,7 @@ public class Customer {
         }
     }
 
+    // Function for customers to create order(s)
     public void createOrder() throws IOException {
 
         // create a scanner to receive customer's input
@@ -698,6 +703,7 @@ public class Customer {
         order.displayOrderInfo();
     }
 
+    // Function for customers to find the details of a specific order based on order ID
     public static void findOrderDetails() throws IOException {
         boolean matched = false;
         System.out.println("Please enter the orderID: ");
@@ -721,6 +727,8 @@ public class Customer {
             System.out.println("Can't find the order ID. Please try again.");
         }
     }
+
+    // Function for customers to view all of their previous orders
     public void displayPreviousOrders() throws IOException {
         Scanner sc = new Scanner(new File("./src/File/orders.txt"));
 
