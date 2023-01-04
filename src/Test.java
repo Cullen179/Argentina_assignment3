@@ -8,14 +8,11 @@ import java.util.Scanner;
 
 public class Test {
     public static void main(String[] args) throws IOException {
-        HashMap<String, Integer> test = new HashMap<String, Integer>();
-        for (int i = 0; i < 5; i++) {
-            test.put("hello" + i, i);
+        try (PrintWriter pw = new PrintWriter(new FileWriter("test.txt"))) {
+            pw.printf("");
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
-        test.put("hello1", test.get("hello1") + 3);
-        System.out.println(test.get("hello1"));
-        System.out.println(test);
-        System.out.println(test.get("hellof"));
-
     }
+
 }

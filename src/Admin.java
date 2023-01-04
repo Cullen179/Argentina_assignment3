@@ -43,6 +43,7 @@ public class Admin {
                 return true;
             }
         }
+
         // In case the users input are not matched, prompt user an unsuccessful message.
         System.out.println("Login unsuccessfully, please check your username and password and try again");
         scannerAdmin.close();
@@ -139,15 +140,16 @@ public class Admin {
         Scanner sc = new Scanner(System.in);
         System.out.println("What is name of the product you want to delete ?");
         String productName = sc.nextLine();
-        boolean matchProduct = false;
 
-        // Add new file
-        File removeItem = new File("./src/File/removeItems.txt");
         File itemFile = new File("./src/File/items.txt");
-        Scanner fileScanner = new Scanner(itemFile);
-        PrintWriter pw = new PrintWriter(new FileWriter(removeItem));
 
-        // Initiate line number
+        // Scan item file
+        Scanner fileScanner = new Scanner(itemFile);
+
+        // Initiate variable to store new content
+        String newContent = "";
+
+        // Initiate file line number
         int line = 0;
 
         // Boolean variable if remove item matches line 1
@@ -177,14 +179,14 @@ public class Admin {
             boolean lineCheck = (line == 1 || (line == 2 && matchedLine1));
 
             // Avoid adding new line at the start of the file if line check is true
-            pw.printf((lineCheck ? "" : "\n") + item);
+            newContent.concat((lineCheck ? "" : "\n") + item);
         }
 
         fileScanner.close();
-        pw.close();
 
-        // Rename remove item file to item file
-        removeItem.renameTo(itemFile);
+        // Rewrite item file with new content
+        PrintWriter pw = new PrintWriter(new FileWriter(itemFile, false));
+        pw.printf(newContent);
 
         // Print error if product name doesn't match
         if (Product.checkProductExisted(productName)) {
@@ -197,11 +199,12 @@ public class Admin {
         System.out.println("What is the product you want to update");
         String productName = sc.nextLine();
 
-        // Add new file
-        File updatePrice = new File("./src/File/update_items.txt");
+        // Scan item file
         File itemFile = new File("./src/File/items.txt");
         Scanner fileScanner = new Scanner(itemFile);
-        PrintWriter pw = new PrintWriter(new FileWriter(updatePrice, true));
+
+        // Initiate variable to store new content
+        String newContent = "";
 
         // Loop through items file
         while (fileScanner.hasNextLine()) {
@@ -219,13 +222,13 @@ public class Admin {
             }
 
             // If the item reach last line, don't add new line
-            pw.printf(item + (fileScanner.hasNextLine() ? "\n" : ""));
+            newContent.concat(item + (fileScanner.hasNextLine() ? "" : "\n"));
         }
         fileScanner.close();
-        pw.close();
 
-        // Rename remove item file to item file
-        updatePrice.renameTo(itemFile);
+        // Rewrite item file with new content
+        PrintWriter pw = new PrintWriter(new FileWriter(itemFile, false));
+        pw.printf(newContent);
 
         // Print error if product name doesn't match
         if (!Product.checkProductExisted(productName)) {
@@ -259,11 +262,12 @@ public class Admin {
             categoryList.remove(removeCategory);
         }
 
-        // Update category in item file to None
-        File update = new File("./src/File/update.txt");
+        // Scan item file
         File items = new File("./src/File/items.txt");
         Scanner fileScanner = new Scanner(items);
-        PrintWriter pw = new PrintWriter(new FileWriter(update, true));
+
+        // Initiate variable to store new content
+        String newContent = "";
 
         // Loop through items file
         while (fileScanner.hasNextLine()) {
@@ -280,14 +284,15 @@ public class Admin {
             }
 
             // If the item reach last line, don't add new line
-            pw.printf(item + (fileScanner.hasNextLine() ? "\n" : ""));
+            newContent.concat(item + (fileScanner.hasNextLine() ? "" : "\n"));
         }
 
         fileScanner.close();
-        pw.close();
 
-        // Rename remove item file to item file
-        update.renameTo(items);
+        // Rewrite item file with new content
+        PrintWriter pw = new PrintWriter(new FileWriter(items, false));
+        pw.printf(newContent);
+
         // Print error if category doesn't exist
         if (!matchCategory) {
             System.out.println("Category doesn't exist. Please try again.");
@@ -300,13 +305,15 @@ public class Admin {
 
         // Boolean variable if customer ID exists
         boolean matchCus = false;
-        // Add new file
-        File removeCus = new File("./src/File/removeCustomers.txt");
         File customerFile = new File("./src/File/customers.txt");
         Scanner fileScanner = new Scanner(customerFile);
-        PrintWriter pw = new PrintWriter(new FileWriter(removeCus, true));
+
+        // Initiate variable to store new content
+        String newContent = "";
+
         // Initiate line number
         int line = 0;
+
         // Boolean variable if remove customer match line 1
         boolean matchedLine1 = false;
 
@@ -332,13 +339,13 @@ public class Admin {
             boolean lineCheck = (line == 1 || (line == 2 && matchedLine1));
 
             // Avoid adding new line at the start of the file if line check is true
-            pw.printf((lineCheck ? "" : "\n") + customerInfo);
+            newContent.concat((lineCheck ? "" : "\n") + customerInfo);
         }
         fileScanner.close();
-        pw.close();
 
-        // Rename remove item file to item file
-        removeCus.renameTo(customerFile);
+        // Rewrite item file with new content
+        PrintWriter pw = new PrintWriter(new FileWriter(customerFile, false));
+        pw.printf(newContent);
 
         // Print error if customer ID doesn't exist
         if (!matchCus) {
@@ -390,11 +397,12 @@ public class Admin {
         // Boolean variable if orderID exists
         boolean matchOrderID = false;
 
-        // Update order status
-        File changeStatus = new File("./src/File/change.txt");
+        // Initiate variable to store new content
+        String newContent = "";
+
+        // Scan order file
         File orders = new File("src/File/orders.txt");
         Scanner fileScanner = new Scanner(orders);
-        PrintWriter pw = new PrintWriter(new FileWriter(changeStatus, true));
 
         // Loop through order file
         while (fileScanner.hasNextLine()) {
@@ -417,13 +425,14 @@ public class Admin {
             }
 
             // If the order line reach last line, don't add new line
-            pw.printf(order.generateOrderLine() + (fileScanner.hasNextLine() ? "\n" : ""));
+            newContent.concat(order.generateOrderLine() + (fileScanner.hasNextLine() ? "\n" : ""));
         }
 
         fileScanner.close();
-        pw.close();
 
-        changeStatus.renameTo(orders);
+        // Rewrite item file with new content
+        PrintWriter pw = new PrintWriter(new FileWriter(orders, false));
+        pw.printf(newContent);
 
         // In case the order's id is not existed, prompt user a message.
         if (!matchOrderID) {

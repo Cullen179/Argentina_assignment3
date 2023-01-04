@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class InputValidator {
@@ -5,12 +6,20 @@ public class InputValidator {
         Scanner sc = new Scanner(System.in);
         while (true) {
             try {
-                System.out.print(promptUser);
-                return Integer.parseInt(sc.nextLine());
+                System.out.println(promptUser);
+                int input = sc.nextInt();
+
+                // Throw error if input is negative
+                if (input < 0) {
+                    throw new IllegalArgumentException("Input has to be positive. Please try again");
+                }
             }
-            catch (Exception e) {
+            catch (InputMismatchException e) {
                 System.out.println(errorMessage);
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
             }
+
         }
     }
 
@@ -19,10 +28,17 @@ public class InputValidator {
         while (true) {
             try {
                 System.out.print(userInput);
-                return Double.parseDouble(sc.nextLine());
+                double input = sc.nextDouble();
+
+                // Throw error if input is negative
+                if (input < 0) {
+                    throw new IllegalArgumentException("Input has to be positive. Please try again");
+                }
             }
-            catch (Exception e) {
+            catch (InputMismatchException e) {
                 System.out.println(errorMessage);
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
             }
         }
     }
