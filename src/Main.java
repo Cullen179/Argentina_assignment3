@@ -94,8 +94,64 @@ public class Main {
         }
     }
 
-    public static void customerFlow() {
+    public static void customerFlow() throws IOException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Please choose to register or login");
+        String userChoice = scanner.nextLine();
+        Customer customer = null;
+        switch (userChoice) {
+            case "register":
+                Customer.registerMember();
+                break;
+            case "login":
+                customer = Customer.login();
+        }
+        if (customer != null) {
+            boolean isRunning = true;
 
+            while (isRunning) {
+                System.out.println("------------------");
+                System.out.println("(0) : Log Out");
+                System.out.println("(1) : Update Account Information");
+                System.out.println("(2) : View All Products");
+                System.out.println("(3) : Search Product (by Category and Price Range)");
+                System.out.println("(4) : Sort All Products (ascending or descending order)");
+                System.out.println("(5) : Create Order");
+                System.out.println("(6) : Find Order Details");
+                System.out.println("(7) : Display Previous Order(s)");
+                System.out.println("------------------");
+                int number = InputValidator.getIntInput("Execute your next action by entering one of listed numbers [0-7]: ",
+                        "Your input number is invalid. Please try another one.");
+                switch (number) {
+                    case 0:
+                        isRunning = false;
+                        System.out.println("Log Out Successfully.");
+                        break;
+                    case 1:
+                        customer.updateAccountInfo();
+                        break;
+                    case 2:
+                        customer.viewProduct();
+                        break;
+                    case 3:
+                        customer.searchProduct();
+                        break;
+                    case 4:
+                        customer.sortProducts();
+                        break;
+                    case 5:
+                        customer.createOrder();
+                        break;
+                    case 6:
+                        customer.findOrderDetails();
+                        break;
+                    case 7:
+                        customer.displayPreviousOrders();
+                        break;
+                }
+            }
+
+        }
     }
 
 
@@ -111,16 +167,23 @@ public class Main {
             role = sc.nextLine();
             switch (role) {
                 case "customer":
-                    customerFlow();
+                    try {
+                        customerFlow();
+                    } catch (IOException ioe) {
+                        ioe.printStackTrace();
+                    }
                     userRole = true;
                     break;
                 case "admin":
-                    adminFlow();
+                    try {
+                        adminFlow();
+                    } catch (IOException ioe) {
+                        ioe.printStackTrace();
+                    }
                     userRole = true;
                     break;
                 default:
                     System.out.println("Unsuccessfully access, please type your role again.");
-//                    Customer.login();
             }
         }
     }

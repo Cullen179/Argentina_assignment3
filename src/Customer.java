@@ -154,24 +154,18 @@ public class Customer {
         }
         System.out.println("Register successful");
         fileName = "./src/File/customers.txt";
-        PrintWriter pw = null;
-        try {
-            pw = new PrintWriter(new FileWriter(fileName, true));
-            pw.printf("%s,%s,%s,%s,%s,%s,%s,%s,%1.f" + (scanner.hasNextLine() ? "\n" : ""), newCustomerID(), name, email, address, phoneNumb, "Normal", username, password, totalSpending);
+        try (PrintWriter pw = new PrintWriter(new FileWriter(fileName, true))){
+            pw.printf("\n%s,%s,%s,%s,%s,%s,%s,%s,%.1f", newCustomerID(), name, email, address, phoneNumb, "Normal", username, password, totalSpending);
             pw.flush();
         } catch (IOException ioe) {
             System.err.println(ioe.getMessage());
-        } finally {
-            if (pw != null) {
-                pw.close();
-            }
+            ioe.printStackTrace();
         }
-        pw.close();
     }
 
     //Function to create new customer ID
     public static String newCustomerID() throws IOException{
-        Scanner sc = new Scanner(new File("D:\\Java project\\group asm\\customer.txt"));
+        Scanner sc = new Scanner(new File("./src/File/customers.txt"));
 
         // Initialize lastItem
         String lastCustomer = "";
@@ -195,7 +189,7 @@ public class Customer {
         return String.format("C%03d", idNumber + 1);
     }
 
-    // Function to check the unique of the input username
+    // Function to check the uniqueness of the input username
     private static boolean checkUsername(String inputUsername) throws IOException {
         Boolean usernameExist = false;
         String fileName = "./src/File/customers.txt";
@@ -212,7 +206,7 @@ public class Customer {
         return usernameExist;
     }
 
-    // Function to check the unique of the input password
+    // Function to check the uniqueness of the input password
     private static boolean checkPassword(String inputPassword) throws IOException {
         Boolean passwordExist = false;
         String fileName = "./src/File/customers.txt";
@@ -229,8 +223,7 @@ public class Customer {
         return passwordExist;
     }
 
-    // Function for the customer to login as a role member
-    public Customer login() throws IOException {
+    public static Customer login() throws IOException {
         Boolean loggedIn = false;
         Scanner scanner = new Scanner(System.in);
         String fileName = "./src/File/customers.txt";
@@ -294,19 +287,13 @@ public class Customer {
         String newContent = oldContent.replaceAll(oldString, newString);
 
         //Rewriting the input text file with newContent
-        PrintWriter pw = null;
-        try {
-            pw = new PrintWriter(new FileWriter(file, false));
-            pw.printf(newContent);
-            pw.flush();
+        try  (PrintWriter printWriter = new PrintWriter(new FileWriter(file, false))){
+            printWriter.printf(newContent);
+            printWriter.flush();
         } catch (IOException ioe) {
             System.err.println(ioe.getMessage());
-        } finally {
-            if (pw != null) {
-                pw.close();
-            }
+            ioe.printStackTrace();
         }
-        pw.close();
     }
 
     public static void modifyFile2(String filePath, String oldString, String newString) {
@@ -465,7 +452,7 @@ public class Customer {
     }
 
     // Function for customers to view the store's products
-    public static void viewProduct() throws IOException {
+    public void viewProduct() throws IOException {
         Scanner scannerProduct = new Scanner(new File("./src/File/items.txt"));
         System.out.println("\nVIEW PRODUCT\n");
         // Read each line in items.txt file, then generate and display the products.
@@ -477,7 +464,7 @@ public class Customer {
     }
 
     // Function for customers to search the store's products based on category and price range
-    public static void searchProduct() throws IOException {
+    public void searchProduct() throws IOException {
         String category = "";
         double minimum = 0;
         double maximum;
@@ -519,7 +506,7 @@ public class Customer {
     }
 
     // Function for customers to sort the store's products in ascending or descending order
-    public static void sortProducts() throws IOException {
+    public void sortProducts() throws IOException {
         boolean correctInput = false;
         int sortOrder;
 
@@ -710,17 +697,12 @@ public class Customer {
         String newOrder = String.join(",", orderId, this.getID(), orderDate, shippingAddress,
                 currentOrderProducts, currentOrderProductQuantities, String.valueOf(totalAfterDiscount), "delivered");
         Order order = Order.generateOrder(newOrder);
-        PrintWriter pw = null;
-        try {
-            pw = new PrintWriter(new FileWriter("./src/File/orders.txt", true));
-            pw.printf("\n" + newOrder);
+        try (PrintWriter pw = new PrintWriter(new FileWriter("./src/File/orders.txt", true))){
+            pw.printf("\n%s", newOrder);
             pw.flush();
         } catch (IOException ioe) {
             System.err.println(ioe.getMessage());
-        } finally {
-            if (pw != null) {
-                pw.close();
-            }
+            ioe.printStackTrace();
         }
         
         // display order details
@@ -728,7 +710,7 @@ public class Customer {
     }
 
     // Function for customers to find the details of a specific order based on order ID
-    public static void findOrderDetails() throws IOException {
+    public void findOrderDetails() throws IOException {
         boolean matched = false;
         System.out.println("Please enter the orderID: ");
 
