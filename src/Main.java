@@ -34,7 +34,7 @@ public class Main {
             System.out.println("(6) : Add New Category");
             System.out.println("(7) : Remove Existed Category");
             System.out.println("(8) : Update The Price");
-            System.out.println("(9) : Display Information of Order by Customer ID");
+            System.out.println("(9) : Display Information of All Orders by Customer ID");
             System.out.println("(10) : Change the Order Status");
             System.out.println("(11) : Remove a customer/member by customer ID");
             System.out.println("(12) : List product with the highest number bought by a customer");
@@ -163,7 +163,7 @@ public class Main {
         boolean userRole = false;
 
         while (!userRole) {
-            System.out.println("Please type your role (customer / member / admin) to access the system: ");
+            System.out.println("Please type your role (customer / admin) to access the system: ");
             role = sc.nextLine();
             switch (role) {
                 case "customer":
