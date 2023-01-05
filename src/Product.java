@@ -66,9 +66,9 @@ public class Product {
     public static Product createProduct() throws IOException{
         String name = checkNewProductName();
         // Validate price input
-        double price = InputValidator.getDoubleInput("What is the price of the product:\n", "Price must be of integer or double value");
+        double price = InputValidator.getDoubleInput("What is the price of the product:", "Price must be of integer or double value");
         String category = checkCategory();
-        int year = InputValidator.getIntInput("What is the year of the product:\n", "Year must be of integer value");
+        int year = InputValidator.getIntInput("What is the year of the product:", "Year must be of integer value");
         return new Product(newIDNumber(year), name, price, category);
     }
 

@@ -3,9 +3,9 @@ import java.util.Scanner;
 
 public class InputValidator {
     public static int getIntInput(String promptUser, String errorMessage) {
-        Scanner sc = new Scanner(System.in);
         while (true) {
             try {
+                Scanner sc = new Scanner(System.in);
                 System.out.println(promptUser);
                 int input = sc.nextInt();
 
@@ -25,9 +25,9 @@ public class InputValidator {
     }
 
     public static double getDoubleInput(String userInput, String errorMessage) {
-        Scanner sc = new Scanner(System.in);
         while (true) {
             try {
+                Scanner sc = new Scanner(System.in);
                 System.out.print(userInput);
                 double input = sc.nextDouble();
 

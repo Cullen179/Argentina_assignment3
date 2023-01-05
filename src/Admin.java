@@ -227,6 +227,7 @@ public class Admin {
         }
         fileScanner.close();
         System.out.println(newContent);
+
         // Rewrite item file with new content
         PrintWriter pw = new PrintWriter(new FileWriter(itemFile, false));
         pw.printf(newContent);
