@@ -94,6 +94,10 @@ public class Main {
         }
     }
 
+    public static void customerFlow() {
+
+    }
+
     public static void main(String[] args) throws IOException {
         welcomeScreen();
         System.out.println("\n");
@@ -106,9 +110,9 @@ public class Main {
             role = sc.nextLine();
             switch (role) {
                 case "customer":
-//                    customerFlow();
-//                    userRole = true;
-//                    break;
+                    customerFlow();
+                    userRole = true;
+                    break;
                 case "admin":
                     adminFlow();
                     userRole = true;
