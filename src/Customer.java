@@ -382,6 +382,7 @@ public class Customer {
                     }
                     newData = customer.getID() + "," + name + "," + email + "," + address + "," + phoneNumb + "," + customer.getMembership() + "," + customer.getUsername() + "," + customer.getPassword() + "," + customer.getTotalSpending();
                     modifyFile(fileName, line, newData);
+                    break;
                 }
             }
         }
