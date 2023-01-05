@@ -309,6 +309,37 @@ public class Customer {
         pw.close();
     }
 
+    public static void modifyFile2(String filePath, String oldString, String newString) {
+        File file = new File(filePath);
+        String oldContent = "";
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            //Reading all the lines of input text file into oldContent
+            String line = reader.readLine();
+            int lineIndex = 0;
+
+            while (line != null) {
+                oldContent = oldContent + (lineIndex == 0 ? "" : "\n") + line;
+                line = reader.readLine();
+                lineIndex++;
+            }
+        } catch (IOException ioe) {
+            System.err.println(ioe.getMessage());
+            ioe.printStackTrace();
+        }
+
+        //Replacing oldString with newString in the oldContent
+        String newContent = oldContent.replaceAll(oldString, newString);
+
+        //Rewriting the input text file with newContent
+        try (PrintWriter pw = new PrintWriter(new FileWriter(file, false))) {
+            pw.printf(newContent);
+            pw.flush();
+        } catch (IOException ioe) {
+            System.err.println(ioe.getMessage());
+            ioe.printStackTrace();
+        }
+    }
+
     // Function to update account information of the customer
     public void updateAccountInfo() throws IOException {
         String newData;
@@ -499,8 +530,7 @@ public class Customer {
             System.out.println("Choose the way you want to sort");
             System.out.println("0.Ascending");
             System.out.println("1.Descending");
-            Scanner sort = new Scanner(System.in);
-            sortOrder = sort.nextInt();
+            sortOrder = InputValidator.getIntInput("", "Input must be of integer value. Please try again");
             if (sortOrder == 0 || sortOrder == 1)
                 correctInput = true;
             else
@@ -620,7 +650,7 @@ public class Customer {
             }
 
             // ask the user for the quantity of the product they want to purchase
-            int quantity = InputValidator.getIntInput("How many do you want to buy?\n",
+            int quantity = InputValidator.getIntInput("How many do you want to buy?",
                     "Quantity value must be of integer number!");
 
             // update the total cost of the order
@@ -689,7 +719,7 @@ public class Customer {
         PrintWriter pw = null;
         try {
             pw = new PrintWriter(new FileWriter("./src/File/orders.txt", true));
-            pw.println(newOrder);
+            pw.printf("\n" + newOrder);
             pw.flush();
         } catch (IOException ioe) {
             System.err.println(ioe.getMessage());
@@ -808,9 +838,9 @@ public class Customer {
         this.password = password;
     }
 
-
     public void setTotalSpending(double totalSpending) {
         this.totalSpending = totalSpending;
     }
+
 }
 
