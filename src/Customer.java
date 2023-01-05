@@ -342,6 +342,7 @@ public class Customer {
                     String email = customer.getEmail();
                     String address = customer.getAddress();
                     String phoneNumb = customer.getPhoneNumb();
+                    double totalSpending = customer.getTotalSpending();
                     System.out.println("Choose the number to change the information you want to change:");
                     System.out.println("(1) - Name");
                     System.out.println("(2) - Email");
@@ -380,7 +381,7 @@ public class Customer {
                             }
                             break;
                     }
-                    newData = customer.getID() + "," + name + "," + email + "," + address + "," + phoneNumb + "," + customer.getMembership() + "," + customer.getUsername() + "," + customer.getPassword() + "," + customer.getTotalSpending();
+                    newData = customer.getID() + "," + name + "," + email + "," + address + "," + phoneNumb + "," + customer.getMembership() + "," + customer.getUsername() + "," + customer.getPassword() + "," + totalSpending;
                     modifyFile(fileName, line, newData);
                     break;
                 }

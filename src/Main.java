@@ -96,15 +96,24 @@ public class Main {
 
     public static void customerFlow() throws IOException {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Please choose to register or login");
-        String userChoice = scanner.nextLine();
         Customer customer = null;
-        switch (userChoice) {
-            case "register":
-                Customer.registerMember();
-                break;
-            case "login":
-                customer = Customer.login();
+        boolean userInput = false;
+        String userChoice;
+        while (!userInput) {
+            System.out.println("Please choose to register or login");
+            userChoice = scanner.nextLine();
+            switch (userChoice) {
+                case "register":
+                    System.out.println("You're ready to register");
+                    Customer.registerMember();
+                    userInput = true;
+                case "login":
+                    System.out.println("You're ready to login");
+                    customer = Customer.login();
+                    userInput = true;
+                default:
+                    System.out.println("Only enter register or login");
+            }
         }
         if (customer != null) {
             boolean isRunning = true;
