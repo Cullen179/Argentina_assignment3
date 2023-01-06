@@ -483,17 +483,19 @@ public class Customer {
             minimum = Double.parseDouble(minimumString);
         } catch (NumberFormatException nfe) {
             minimum = 0;
+            System.out.println("The default minimum is 0");
         }
             System.out.println("Enter the maximum price: ");
             String maximumString = sc.nextLine();
             System.out.println("--------------");
         try {
             maximum = Double.parseDouble(maximumString);
-            System.out.println("--------------");
+            
         } catch (NumberFormatException nfe) {
             maximum = Double.POSITIVE_INFINITY;
+            System.out.println("The default maximum is positive infinity");
         }
-
+        System.out.println("--------------");
         Scanner scannerProduct = new Scanner(new File("./src/File/items.txt"));
         while (scannerProduct.hasNext()) {
             String items = scannerProduct.nextLine();
