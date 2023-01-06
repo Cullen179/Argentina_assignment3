@@ -185,6 +185,7 @@ public class Customer {
         // Get number of item ID
         int idNumber = Integer.parseInt(customerID.replace("C", ""));
 
+        sc.close();
         // Return ID
         return String.format("C%03d", idNumber + 1);
     }
@@ -203,6 +204,7 @@ public class Customer {
                 break;
             }
         }
+        fileScanner.close();
         return usernameExist;
     }
 
@@ -220,6 +222,7 @@ public class Customer {
                 break;
             }
         }
+        fileScanner.close();
         return passwordExist;
     }
 
@@ -294,6 +297,7 @@ public class Customer {
             System.err.println(ioe.getMessage());
             ioe.printStackTrace();
         }
+        reader.close();
     }
 
     public static void modifyFile2(String filePath, String oldString, String newString) {
@@ -387,6 +391,7 @@ public class Customer {
                 }
             }
         }
+        fileScanner.close();
     }
 
     // Function to get the total spending of the customer form the orders file
@@ -402,6 +407,7 @@ public class Customer {
             }
         }
         this.totalSpending = totalSpending;
+        fileScanner.close();
         return this.totalSpending;
     }
 
@@ -421,6 +427,7 @@ public class Customer {
                 break;
             }
         }
+        fileScanner.close();
     }
 
     // Function to update customer's membership depend on the total spending
@@ -446,6 +453,7 @@ public class Customer {
                 break;
             }
         }
+        fileScanner.close();
     }
 
     // Function to generate customer information
