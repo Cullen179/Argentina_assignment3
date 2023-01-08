@@ -122,12 +122,13 @@ public class Main {
                 System.out.println("------------------");
                 System.out.println("(0) : Log Out");
                 System.out.println("(1) : Update Account Information");
-                System.out.println("(2) : View All Products");
-                System.out.println("(3) : Search Product (by Category and Price Range)");
-                System.out.println("(4) : Sort All Products (ascending or descending order)");
-                System.out.println("(5) : Create Order");
-                System.out.println("(6) : Find Order Details");
-                System.out.println("(7) : Display Previous Order(s)");
+                System.out.println("(2) : Check the current membership status.");
+                System.out.println("(3) : View All Products");
+                System.out.println("(4) : Search Product (by Category and Price Range)");
+                System.out.println("(5) : Sort All Products (ascending or descending order)");
+                System.out.println("(6) : Create Order");
+                System.out.println("(7) : Find Order Details");
+                System.out.println("(8) : Display Previous Order(s)");
                 System.out.println("------------------");
                 int number = InputValidator.getIntInput("Execute your next action by entering one of listed numbers [0-7]: ",
                         "Your input number is invalid. Please try another one.");
@@ -140,21 +141,24 @@ public class Main {
                         customer.updateAccountInfo();
                         break;
                     case 2:
-                        customer.viewProduct();
+                        System.out.printf("The current membership status: %s \n", customer.getMembership());
                         break;
                     case 3:
-                        customer.searchProduct();
+                        customer.viewProduct();
                         break;
                     case 4:
-                        customer.sortProducts();
+                        customer.searchProduct();
                         break;
                     case 5:
-                        customer.createOrder();
+                        customer.sortProducts();
                         break;
                     case 6:
-                        customer.findOrderDetails();
+                        customer.createOrder();
                         break;
                     case 7:
+                        customer.findOrderDetails();
+                        break;
+                    case 8:
                         customer.displayPreviousOrders();
                         break;
                 }
