@@ -593,8 +593,8 @@ public class Admin {
             }
         }
 
-        System.out.println("Most popular product(s): " + maxList);
-        System.out.println("Least popular product(s): " + minList);
+        System.out.println("Most popular product(s): " + maxList + " - Quantity: " + max);
+        System.out.println("Least popular product(s): " + minList + " - Quantity: " + min);
 
     }
 
@@ -656,6 +656,6 @@ public class Admin {
 
     public static void main(String[] args) throws IOException {
         Admin admin = new Admin();
-        admin.findMostPaidCustomer();
+        admin.findMostLeastPopularProduct();
     }
 }
