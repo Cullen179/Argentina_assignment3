@@ -727,6 +727,7 @@ public class Customer {
 
         // applying discount to the total cost of the order
         double totalAfterDiscount = applyDiscount(total);
+        double discount = total - totalAfterDiscount;
 
         // append the line for the new order to the end of the orders.txt file
         String newOrder = String.join(",", orderId, this.getID(), orderDate, shippingAddress,
@@ -742,6 +743,7 @@ public class Customer {
         
         // display order details
         order.displayOrderInfo();
+        System.out.printf("Your discount is: %.2f\n", discount);
     }
 
     // Function for customers to find the details of a specific order based on order ID
