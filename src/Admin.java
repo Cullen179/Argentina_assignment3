@@ -198,7 +198,7 @@ public class Admin {
             newContent += ((lineCheck ? "" : "\n") + item);
         }
         fileScanner.close();
-        System.out.println("Remove product successfully!");
+
         // Rewrite item file with new content
         PrintWriter pw = new PrintWriter(new FileWriter(itemFile, false));
         pw.printf(newContent);
@@ -207,6 +207,8 @@ public class Admin {
         // Print error if product name doesn't match
         if (Product.checkProductExisted(productName)) {
             System.out.println("Product doesn't exist.Please try again");
+        } else {
+            System.out.println("Remove product successfully!");
         }
     }
 
@@ -302,24 +304,55 @@ public class Admin {
         System.out.println("What category do you want to remove?");
         String removeCategory = sc.nextLine();
 
+        // Initiate variable to store new content
+        String newContent = "";
+
+        // Initiate file line number
+        int line = 0;
+
+        // Boolean variable if remove item matches line 1
+        boolean matchedLine1 = false;
+
+        // Scan category file
         Scanner fileScanner = new Scanner(new File ("./src/File/category.txt"));
         boolean matchCategory = false;
 
         // Loop through category file
         while (fileScanner.hasNextLine()) {
+
+            // Add 1 to line after each loop
+            line++;
             String category = fileScanner.nextLine();
 
-            // Check if new category equal category
-            if (removeCategory.equals(category)) {
+            // Check if remove category equal category
+            if (removeCategory.equals(category) && line == 1) {
                 matchCategory = true;
+                matchedLine1 = true;
+                continue;
+            } else if (removeCategory.equals(category)) {
+                matchCategory = true;
+                continue;
             }
+
+            // Boolean variable if line number is 1 or 2 with remove item in line 1, avoid adding new line
+            boolean lineCheck = (line == 1 || (line == 2 && matchedLine1));
+
+            // Avoid adding new line at the start of the file if line check is true
+            newContent += ((lineCheck ? "" : "\n") + category);
         }
         fileScanner.close();
+
+        // Rewrite item file with new content
+        PrintWriter pw = new PrintWriter(new FileWriter("./src/File/category.txt", false));
+        pw.printf(newContent);
+        pw.close();
 
         // Print error if category doesn't exist
         if (!matchCategory) {
             System.out.println("Remove category doesn't exist. Please try again.");
         } else {
+
+            // Update category of product with remove category
             updateItemCategory(removeCategory);
         }
     }
@@ -678,5 +711,10 @@ public class Admin {
         System.out.println("Platinum membership: " + memberList.get("Platinum"));
         System.out.println("Gold membership: " + memberList.get("Gold"));
         System.out.println("Silver membership: " + memberList.get("Silver"));
+    }
+
+    public static void main(String[] args) throws IOException{
+        Admin admin = new Admin();
+        admin.removeCategory();
     }
 }
