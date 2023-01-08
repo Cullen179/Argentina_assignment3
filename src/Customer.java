@@ -44,62 +44,6 @@ public class Customer {
         return new Customer(ID, name, email, address, phoneNumb, membership, username, password, totalSpending);
     }
 
-    // Rewrite
-    public HashMap<String, Integer> getBoughtList() throws IOException {
-        HashMap<String, Integer> productBought = new HashMap<>();
-
-        // Scan orders file
-        Scanner sc = new Scanner(new File("./src/File/orders.txt"));
-
-        // Loop through orders file
-        while (sc.hasNextLine()) {
-            String orderInfo = sc.nextLine();
-
-            // Generate order from order info line
-            Order order = Order.generateOrder(orderInfo);
-
-            // Check if order customer ID matches customer ID
-            if (order.getCustomerID().equals(ID)) {
-
-                // Loop through product name from order product list key set
-                for (String productName : order.getProductList().keySet()) {
-
-                    // Check if product name is in product bought
-                    if (productBought.get(productName) == null) {
-                        productBought.put(productName, order.getProductList().get(productName));
-                    } else {
-
-                        // Add order quantity to product bought quantity of that product
-                        productBought.put(productName, productBought.get(productName) + order.getProductList().get(productName));
-                    }
-                }
-            }
-        }
-        return productBought;
-    }
-
-    public int getHighestBoughtQuantity() throws IOException {
-        int maxQuan = 0;
-        for (int quantity : getBoughtList().values()) {
-            if (quantity > maxQuan) {
-                maxQuan = quantity;
-            }
-        }
-        return maxQuan;
-    }
-
-    public ArrayList<String> getHighestBoughtProduct() throws IOException {
-        ArrayList<String> list = new ArrayList<>();
-        int highestQuantity = getHighestBoughtQuantity();
-        for (String product : getBoughtList().keySet()) {
-            if (getBoughtList().get(product) == highestQuantity) {
-                list.add(product);
-            }
-        }
-        return list;
-    }
-
-    // Rewrite
     // Function for customer to register new account
     public static void registerMember() throws IOException {
         //declare attribute
@@ -437,7 +381,6 @@ public class Customer {
     // Function to update the total spending of the customer
     public void updateTotalSpending() throws IOException {
 
-        // get total spending of the customer
         String newData;
         String fileName = "./src/File/customers.txt";
         Scanner fileScanner = new Scanner(new File(fileName));
@@ -445,6 +388,8 @@ public class Customer {
             String line = fileScanner.nextLine();
             Customer customer = generateCus(line);
             if (this.getUsername().equals(customer.getUsername())) {
+
+                // Update customer info
                 newData = customer.generateCustomerInfo();
                 modifyFile(fileName, line, newData);
                 break;

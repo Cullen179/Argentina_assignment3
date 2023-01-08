@@ -1,6 +1,8 @@
 import java.io.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Admin {
@@ -298,42 +300,27 @@ public class Admin {
         // Check if category exists
         Scanner sc = new Scanner(System.in);
         System.out.println("What category do you want to remove?");
-        String removeCategory = sc.next();
+        String removeCategory = sc.nextLine();
 
-        // Scan item file
-        Scanner fileScanner = new Scanner(items);
+        Scanner fileScanner = new Scanner(new File ("./src/File/category.txt"));
+        boolean matchCategory = false;
 
-        // Initiate variable to store new content
-        String newContent = "";
-
-        // Loop through items file
+        // Loop through category file
         while (fileScanner.hasNextLine()) {
-            String item = fileScanner.nextLine();
+            String category = fileScanner.nextLine();
 
-            // Get product from item line
-            Product product = Product.generateProduct(item);
-
-            // Check if product category equal remove category
-            if (product.getCategory().equals(removeCategory)) {
-                product.setCategory("None");
-                // Update category to item line
-                item = Product.generateItem(product);
+            // Check if new category equal category
+            if (removeCategory.equals(category)) {
+                matchCategory = true;
             }
-
-            // If the item reach last line, don't add new line
-            newContent += (item + (fileScanner.hasNextLine() ? "\n" : ""));
         }
-
         fileScanner.close();
-
-        // Rewrite item file with new content
-        PrintWriter pw = new PrintWriter(new FileWriter(items, false));
-        pw.printf(newContent);
-        pw.close();
 
         // Print error if category doesn't exist
         if (!matchCategory) {
-            System.out.println("Category doesn't exist. Please try again.");
+            System.out.println("Remove category doesn't exist. Please try again.");
+        } else {
+            updateItemCategory(removeCategory);
         }
     }
 
@@ -463,9 +450,8 @@ public class Admin {
     }
 
     public void changeOrderStatus() throws IOException {
-        System.out.println("-".repeat(17));
-        System.out.println("CHANGE STATUS OF THE ORDER");
-        System.out.println("-".repeat(17));
+        System.out.println("\nCHANGE STATUS OF THE ORDER\n");
+
         // Get order id
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter the order ID: ");
@@ -498,6 +484,7 @@ public class Admin {
 
                     // Update status order if not
                     order.setStatus("paid");
+
                 }
             }
 
@@ -515,40 +502,6 @@ public class Admin {
         // In case the order's id is not existed, prompt user a message.
         if (!matchOrderID) {
             System.out.println("\nThis order's id cannot found. Please try with another one.");
-        }
-    }
-
-    public void getHighestBoughtProduct() throws IOException{
-        System.out.println("-".repeat(17));
-        System.out.println("GET THE HIGHEST BOUGHT PRODUCT OF A CUSTOMER");
-        System.out.println("-".repeat(17));
-        Scanner sc = new Scanner(System.in);
-        System.out.println("What is the ID of the customer you want to view ?");
-        String id = sc.next();
-
-        // If the id of the customer
-        boolean matchCustomer = false;
-        Scanner fileScanner = new Scanner(new File("./src/File/customers.txt"));
-
-        // Loop through customer file
-        while(fileScanner.hasNextLine()) {
-            String customerInfo = fileScanner.nextLine();
-            Customer customer = Customer.generateCus(customerInfo);
-
-            // Get the highest bought product(s) and the quantity
-            if (customer.getID().equals(id)) {
-                matchCustomer = true;
-                System.out.println("-".repeat(17));
-                System.out.println("The highest bought item(s) of customer " + customer.getID() + ":");
-                System.out.println(customer.getHighestBoughtProduct());
-                System.out.println("The total number bought is " + customer.getHighestBoughtQuantity());
-                System.out.println("-".repeat(17));
-            }
-        }
-
-        // Print error if customer ID not matched
-        if (!matchCustomer) {
-            System.out.println("Customer ID not valid. Please try again");
         }
     }
 
@@ -614,8 +567,95 @@ public class Admin {
         }
     }
 
+    public void findMostLeastPopularProduct() throws IOException{
+        System.out.println("\nVIEW THE MOST AND LEAST POPULAR PRODUCT\n");
+
+        // Get product list and quantity
+        HashMap<String, Integer> productList = getProductList();
+
+        // Create array list to find max and min quantity
+        ArrayList<Integer> quantity = new ArrayList<>();
+        for (int num : productList.values()) {
+            quantity.add(num);
+        }
+        int min = Collections.min(quantity);
+        int max = Collections.max(quantity);
+
+        // Create array list of product with max and min quantity
+        ArrayList<String> maxList = new ArrayList<>();
+        ArrayList<String> minList = new ArrayList<>();
+
+        for (String product: productList.keySet()) {
+            if (productList.get(product) == max) {
+                maxList.add(product);
+            } else if (productList.get(product) == min) {
+                minList.add(product);
+            }
+        }
+
+        System.out.println("Most popular product(s): " + maxList);
+        System.out.println("Least popular product(s): " + minList);
+
+    }
+
+    public HashMap<String, Integer> getProductList() throws IOException {
+        HashMap<String, Integer> productBought = new HashMap<>();
+
+        // Scan orders file
+        Scanner sc = new Scanner(new File("./src/File/orders.txt"));
+
+        // Loop through orders file
+        while (sc.hasNextLine()) {
+            String orderInfo = sc.nextLine();
+
+            // Generate order from order info line
+            Order order = Order.generateOrder(orderInfo);
+
+            // Loop through product name from order product list key set
+            for (String productName : order.getProductList().keySet()) {
+
+                // Check if product name is in product bought
+                if (productBought.get(productName) == null) {
+                    productBought.put(productName, order.getProductList().get(productName));
+                } else {
+
+                    // Add order quantity to product bought quantity of that product
+                    productBought.put(productName, productBought.get(productName) + order.getProductList().get(productName));
+                }
+            }
+        }
+        return productBought;
+    }
+
+    public void findMostPaidCustomer() throws IOException{
+        System.out.println("\nFIND CUSTOMER PAY THE MOST\n");
+        // Create a scanner object to read from a member text file.
+        Scanner sc = new Scanner(new File("./src/File/customers.txt"));
+        double maxSpending = 0;
+        ArrayList<String> maxPaidCustomer = new ArrayList<>();
+        // A loop is used to display detailed information of each member.
+        while (sc.hasNextLine()) {
+            String customerInfo = sc.nextLine();
+
+            // Generate Customer object from customer info
+            Customer customer = Customer.generateCus(customerInfo);
+
+            if (customer.getTotalSpending() > maxSpending) {
+                maxSpending = customer.getTotalSpending();
+                System.out.println(maxSpending);
+                maxPaidCustomer.clear();
+                maxPaidCustomer.add(customer.getID() + " " + customer.getName());
+            } else if (customer.getTotalSpending() == maxSpending) {
+                maxPaidCustomer.add(customer.getID() + " " + customer.getName());
+            }
+        }
+        sc.close();
+
+        System.out.println("Customer(s) pay(s) the most: " + maxPaidCustomer);
+    }
+
     public static void main(String[] args) throws IOException {
         Admin admin = new Admin();
-        admin.addCategory();
+        admin.findMostPaidCustomer();
     }
 }

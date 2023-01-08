@@ -82,7 +82,7 @@ public class Main {
                     admin.removeCustomer();
                     break;
                 case 12:
-                    admin.getHighestBoughtProduct();
+//                    admin.getHighestBoughtProduct();
                     break;
                 case 13:
                     admin.getTotalRevenue();
