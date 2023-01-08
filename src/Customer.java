@@ -102,8 +102,8 @@ public class Customer {
     // Rewrite
     // Function for customer to register new account
     public static void registerMember() throws IOException {
-        //Declare attribute
-        String line, ID, username, password, fileName, name, email, address, phoneNumb;
+        //declare attribute
+        String username, password, fileName, name, email, address, phoneNumb;
         double totalSpending = 0;
         //create a scanner setup for user inputs
         Scanner scanner = new Scanner(System.in);
@@ -116,44 +116,67 @@ public class Customer {
         while (true) {
             System.out.println("Enter email");
             email = scanner.nextLine();
+            // if the input is valid, break the loop
             if (email.matches("^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$")) {
                 break;
-            } else {
+            }
+            // request another attempt from the user if the input is incorrect
+            else {
                 System.out.println("Wrong format for an email. Please enter email again");
             }
         }
+
         //get customer's address
         System.out.println("Enter address: ");
         address = scanner.nextLine();
+
+        //a loop to get customer's phone number
+        while (true) {
+            System.out.println("Enter phone number:");
+            phoneNumb = scanner.nextLine();
+            // if the input is valid, break the loop
+            if (phoneNumb.matches("^\\d{10}$")) {
+                break;
+            }
+            // request another attempt from the user if the input is incorrect
+            else {
+                System.out.println("Wrong format for a phone number. Please enter phone number again");
+            }
+        }
+
+        //a loop to get customer's username
+        while (true) {
+            System.out.println("Enter username:");
+            username = scanner.nextLine();
+            // if the input is valid, break the loop
+            if (!checkUsername(username)) {
+                break;
+            }
+            // request another attempt from the user if the input is incorrect
+            else {
+                System.out.println("This username has already used! Please enter different username");
+            }
+        }
+
+        //a loop to get customer's password
         while (true) {
             System.out.println("Enter password:");
             password = scanner.nextLine();
-            while (true) {
-                System.out.println("Enter phone number:");
-                phoneNumb = scanner.nextLine();
-                if (phoneNumb.matches("^\\d{10}$")) {
-                    break;
-                } else {
-                    System.out.println("Wrong format for a phone number. Please enter phone number again");
-                }
-            }
-            while (true) {
-                System.out.println("Enter username:");
-                username = scanner.nextLine();
-                if (!checkUsername(username)) {
-                    break;
-                } else {
-                    System.out.println("This username has already used! Please enter different username");
-                }
-            }
+            // if the input is valid, break the loop
             if (!checkPassword(password)) {
                 break;
-            } else {
+            }
+            // request another attempt from the user if the input is incorrect
+            else {
                 System.out.println("This password has already used! Please enter different username");
             }
         }
+
+        //Notice that the user has successfully registered
         System.out.println("Register successful");
+
         fileName = "./src/File/customers.txt";
+        // Write the input from the user to customer file
         try (PrintWriter pw = new PrintWriter(new FileWriter(fileName, true))){
             pw.printf("\n%s,%s,%s,%s,%s,%s,%s,%s,%.1f", newCustomerID(), name, email, address, phoneNumb, "Normal", username, password, totalSpending);
             pw.flush();
@@ -180,9 +203,9 @@ public class Customer {
             }
         }
 
-        // Get item ID
+        // Get customer ID
         String customerID = lastCustomer.split(",")[0];
-        // Get number of item ID
+        // Get number of customer ID
         int idNumber = Integer.parseInt(customerID.replace("C", ""));
 
         sc.close();
