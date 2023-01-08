@@ -654,8 +654,29 @@ public class Admin {
         System.out.println("Customer(s) pay(s) the most: " + maxPaidCustomer);
     }
 
-    public static void main(String[] args) throws IOException {
-        Admin admin = new Admin();
-        admin.findMostLeastPopularProduct();
+    public void viewMemberList() throws IOException{
+        HashMap<String, Integer> memberList = new HashMap<>();
+        memberList.put("Platinum", 0);
+        memberList.put("Gold", 0);
+        memberList.put("Silver", 0);
+
+        // Create a scanner object to read from a member text file.
+        Scanner sc = new Scanner(new File("./src/File/customers.txt"));
+
+        // A loop is used to display detailed information of each member.
+        while (sc.hasNextLine()) {
+            String memberInfo = sc.nextLine();
+            Customer member = Customer.generateCus(memberInfo);
+
+            // Display member only
+            if (!member.getMembership().equals("Normal")) {
+
+                // Add 1 to quantity
+                memberList.put(member.getMembership(), memberList.get(member.getMembership()) + 1);
+            }
+        }
+        System.out.println("Platinum membership: " + memberList.get("Platinum"));
+        System.out.println("Gold membership: " + memberList.get("Gold"));
+        System.out.println("Silver membership: " + memberList.get("Silver"));
     }
 }
