@@ -37,11 +37,14 @@ public class Main {
             System.out.println("(9) : Display Information of All Orders by Customer ID");
             System.out.println("(10) : Change the Order Status");
             System.out.println("(11) : Remove a customer/member by customer ID");
-            System.out.println("(12) : List product with the highest number bought by a customer");
-            System.out.println("(13) : Calculate the store total revenue on a day");
-            System.out.println("(14) : Display Information of all Orders on a day");
+            System.out.println("(12) : Calculate the store total revenue");
+            System.out.println("(13) : Calculate the store revenue on a particular day");
+            System.out.println("(14) : List current most popular product or the least popular product");
+            System.out.println("(15) : Find out customer pays the most in store");
+            System.out.println("(16) : List the numbers of different types of membership");
+            System.out.println("(17) : Display Information of all Orders on a particular day");
             System.out.println("------------------");
-            int number = InputValidator.getIntInput("Execute your next action by entering one of listed numbers [0-14]: ",
+            int number = InputValidator.getIntInput("Execute your next action by entering one of listed numbers [0-17]: ",
                     "Your input number is invalid. Please try another one.");
             switch (number) {
                 case 0:
@@ -82,12 +85,21 @@ public class Main {
                     admin.removeCustomer();
                     break;
                 case 12:
-//                    admin.getHighestBoughtProduct();
+                    admin.getStoreTotalRevenue();
                     break;
                 case 13:
-                    admin.getTotalRevenue();
+                    admin.getStoreRevenueInADay();
                     break;
                 case 14:
+                    admin.findMostLeastPopularProduct();
+                    break;
+                case 15:
+                    admin.findMostPaidCustomer();
+                    break;
+                case 16:
+                    admin.viewMemberList();
+                    break;
+                case 17:
                     admin.checkOrderInfoInADay();
                     break;
             }

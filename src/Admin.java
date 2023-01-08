@@ -186,7 +186,7 @@ public class Admin {
                 matchedLine1 = true;
                 continue;
 
-            // Check if product id equal remove item id,
+                // Check if product id equal remove item id,
             } else if (product.getName().equals(productName)) {
                 continue;
             }
@@ -246,7 +246,6 @@ public class Admin {
             newContent += (item + (fileScanner.hasNextLine() ? "\n" : ""));
         }
         fileScanner.close();
-        System.out.println("Update the product successfully!");
 
         // Rewrite item file with new content
         PrintWriter pw = new PrintWriter(new FileWriter(itemFile, false));
@@ -256,6 +255,9 @@ public class Admin {
         // Print error if product name doesn't match
         if (!Product.checkProductExisted(productName)) {
             System.out.println("Product doesn't exist. Please try again");
+        } else {
+            System.out.println("Update the product successfully!");
+
         }
     }
     public void addCategory() throws IOException{
@@ -437,7 +439,6 @@ public class Admin {
             newContent += ((lineCheck ? "" : "\n") + customerInfo);
         }
         fileScanner.close();
-        System.out.println("Remove the customer successfully !");
         // Rewrite item file with new content
         PrintWriter pw = new PrintWriter(new FileWriter(customerFile, false));
         pw.printf(newContent);
@@ -446,6 +447,9 @@ public class Admin {
         // Print error if customer ID doesn't exist
         if (!matchCus) {
             System.out.println("Customer ID doesn't exist. Please try again");
+        } else {
+            System.out.println("Remove the customer successfully !");
+
         }
     }
 
@@ -526,7 +530,6 @@ public class Admin {
         }
 
         fileScanner.close();
-        System.out.println("Change the status of the order successfully !");
         // Rewrite item file with new content
         PrintWriter pw = new PrintWriter(new FileWriter(orders, false));
         pw.printf(newContent);
@@ -535,6 +538,8 @@ public class Admin {
         // In case the order's id is not existed, prompt user a message.
         if (!matchOrderID) {
             System.out.println("\nThis order's id cannot found. Please try with another one.");
+        } else {
+            System.out.println("Change the status of the order successfully !");
         }
     }
 
@@ -562,7 +567,7 @@ public class Admin {
         }
     }
 
-    public void getTotalRevenue() throws IOException {
+    public void getStoreRevenueInADay() throws IOException {
         System.out.println("-".repeat(17));
         System.out.println("CALCULATE THE STORE TOTAL REVENUE IN A PARTICULAR DAY");
         System.out.println("-".repeat(17));
@@ -571,6 +576,24 @@ public class Admin {
         System.out.print("\nEnter date(yyyy-MM-dd) that you want to calculate the revenue: ");
         String date = sc.nextLine();
         calculateTotalRevenue(date);
+        scannerOrder.close();
+    }
+
+    public void getStoreTotalRevenue() throws IOException {
+        Scanner scannerOrder = new Scanner(new File("./src/File/orders.txt"));
+        double revenue = 0;
+        while (scannerOrder.hasNextLine()) {
+            String orderInfo = scannerOrder.nextLine();
+            // Generate order from order info line
+
+            Order order = Order.generateOrder(orderInfo);
+            if (order.getStatus().equals("paid")) {
+                double orderTotal = order.getPrice();
+                revenue += orderTotal;
+            }
+        }
+        System.out.println("-".repeat(17));
+        System.out.printf("\nThe store total revenue is %.2f\n", revenue);
         scannerOrder.close();
     }
 
@@ -596,13 +619,14 @@ public class Admin {
             }
         }
         if (!checkOrderExisted) {
-            System.out.printf("There isn't any orders in %s, please try with another date", date);
+            System.out.printf("There isn't any orders in %s, please try with another date\n", date);
         }
     }
 
     public void findMostLeastPopularProduct() throws IOException{
+        System.out.println("-".repeat(17));
         System.out.println("\nVIEW THE MOST AND LEAST POPULAR PRODUCT\n");
-
+        System.out.println("-".repeat(17));
         // Get product list and quantity
         HashMap<String, Integer> productList = getProductList();
 
@@ -658,7 +682,9 @@ public class Admin {
     }
 
     public void findMostPaidCustomer() throws IOException{
+        System.out.println("-".repeat(17));
         System.out.println("\nFIND CUSTOMER PAY THE MOST\n");
+        System.out.println("-".repeat(17));
         // Create a scanner object to read from a member text file.
         Scanner sc = new Scanner(new File("./src/File/customers.txt"));
         double maxSpending = 0;
@@ -705,13 +731,9 @@ public class Admin {
                 memberList.put(member.getMembership(), memberList.get(member.getMembership()) + 1);
             }
         }
+        System.out.println("-".repeat(17));
         System.out.println("Platinum membership: " + memberList.get("Platinum"));
         System.out.println("Gold membership: " + memberList.get("Gold"));
         System.out.println("Silver membership: " + memberList.get("Silver"));
-    }
-
-    public static void main(String[] args) throws IOException{
-        Admin admin = new Admin();
-        admin.removeCategory();
     }
 }
