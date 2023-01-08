@@ -255,12 +255,33 @@ public class Admin {
         }
     }
     public void addCategory() throws IOException{
-        System.out.println("-".repeat(17));
-        System.out.println("ADD NEW CATEGORY");
-        System.out.println("-".repeat(17));
+        System.out.println("\nADD NEW CATEGORY\n");
         Scanner sc = new Scanner(System.in);
         System.out.println("What category do you want to add ?");
         String newCategory = sc.nextLine();
+
+        Scanner fileScanner = new Scanner(new File ("./src/File/category.txt"));
+        boolean matchCategory = false;
+
+        // Loop through category file
+        while (fileScanner.hasNextLine()) {
+            String category = fileScanner.nextLine();
+
+            // Check if new category equal category
+            if (newCategory.equals(category)) {
+                matchCategory = true;
+            }
+        }
+        fileScanner.close();
+
+        // Check if category is available
+        if (matchCategory) {
+            System.out.println("Category is already available. Please try again");
+        } else {
+            PrintWriter pw = new PrintWriter(new FileWriter("./src/File/category.txt", true));
+            pw.printf("\n" + newCategory);
+            pw.close();
+        }
 
         // Check if new category is in category list
         if (!Product.getCategoryList().contains(newCategory)) {
@@ -273,24 +294,13 @@ public class Admin {
     }
 
     public void removeCategory() throws IOException {
-        System.out.println("-".repeat(17));
-        System.out.println("REMOVE EXISTED CATEGORY");
-        System.out.println("-".repeat(17));
+        System.out.println("\nREMOVE EXISTED CATEGORY\n");
         // Check if category exists
         Scanner sc = new Scanner(System.in);
         System.out.println("What category do you want to remove?");
-        String removeCategory = sc.nextLine();
-        boolean matchCategory = false;
-        ArrayList<String> categoryList = Product.getCategoryList();
-
-        // Check if remove category is in category list
-        if (categoryList.contains(removeCategory)) {
-            matchCategory = true;
-            categoryList.remove(removeCategory);
-        }
+        String removeCategory = sc.next();
 
         // Scan item file
-        File items = new File("./src/File/items.txt");
         Scanner fileScanner = new Scanner(items);
 
         // Initiate variable to store new content
@@ -325,6 +335,40 @@ public class Admin {
         if (!matchCategory) {
             System.out.println("Category doesn't exist. Please try again.");
         }
+    }
+
+    public void updateItemCategory(String category) throws IOException{
+        // Scan item file
+        File items = new File("./src/File/items.txt");
+        Scanner fileScanner = new Scanner(items);
+
+        // Initiate variable to store new content
+        String newContent = "";
+
+        // Loop through items file
+        while (fileScanner.hasNextLine()) {
+            String item = fileScanner.nextLine();
+
+            // Get product from item line
+            Product product = Product.generateProduct(item);
+
+            // Check if product category equal given category
+            if (product.getCategory().equals(category)) {
+                product.setCategory("None");
+                // Update category to item line
+                item = Product.generateItem(product);
+            }
+
+            // If the item reach last line, don't add new line
+            newContent += (item + (fileScanner.hasNextLine() ? "\n" : ""));
+        }
+
+        fileScanner.close();
+
+        // Rewrite item file with new content
+        PrintWriter pw = new PrintWriter(new FileWriter(items, false));
+        pw.printf(newContent);
+        pw.close();
     }
     public void removeCustomer() throws IOException{
         System.out.println("-".repeat(17));
@@ -568,5 +612,10 @@ public class Admin {
         if (!checkOrderExisted) {
             System.out.printf("There isn't any orders in %s, please try with another date", date);
         }
+    }
+
+    public static void main(String[] args) throws IOException {
+        Admin admin = new Admin();
+        admin.addCategory();
     }
 }

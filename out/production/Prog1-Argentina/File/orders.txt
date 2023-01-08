@@ -1,4 +1,3 @@
-O001,C001,2022-12-25,4555,Banana,1,34.2,delivered
-O002,C001,2022-12-23,233232,Cow:Banana,4:2,10000000,delivered
-O003,C001,2022-12-25,4555,Banana,2,68.4,delivered
-O004,C001,2022-12-24,4555,Cow:Banana,4:2,147800000000,paid
+O001,C005,2023-01-05,4545 Baker Street,Marshall,2,11.4,delivered
+O002,C004,2023-01-05,114 Fraser Avenue,Iphone 13 PM:Marshall,2:3,33.0,delivered
+O003,C004,2023-01-05,114 Fraser Avenue,Iphone 13 PM:Marshall,3:2,34.5,delivered

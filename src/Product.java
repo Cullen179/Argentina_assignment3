@@ -120,21 +120,35 @@ public class Product {
     }
 
     public static String checkCategory() throws IOException {
-        Scanner sc = new Scanner(System.in);
-        String category;
+        String inputCategory;
         while (true) {
+            Scanner sc = new Scanner(System.in);
             System.out.println("What is the category of the product:");
-            category = sc.next();
+            inputCategory = sc.next();
+            Scanner fileScanner = new Scanner(new File ("./src/File/category.txt"));
+            boolean matchCategory = false;
+
+            // Loop through category file
+            while (fileScanner.hasNextLine()) {
+                String category = fileScanner.nextLine();
+
+                // Check if input category equal category
+                if (inputCategory.equals(category)) {
+                    matchCategory = true;
+                }
+            }
+            fileScanner.close();
+
             // Check if category is available
-            if (!Product.getCategoryList().contains(category)) {
+            if (!matchCategory) {
                 System.out.println("The category does not exist");
                 System.out.println("Please enter a valid category");
-                // Stop if category is valid
             } else {
+                // Stop if category is valid
                 break;
             }
         }
-        return category;
+        return inputCategory;
     }
 
     public String getId() { return id;
@@ -162,9 +176,5 @@ public class Product {
 
     public static void addCategory(String category) throws IOException{
         getCategoryList().add(category);
-    }
-
-    public static void main(String[] args) throws IOException{
-        System.out.println(Product.newIDNumber(2003));
     }
 }

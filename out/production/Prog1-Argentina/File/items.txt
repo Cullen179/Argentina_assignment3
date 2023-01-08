@@ -5,6 +5,6 @@ I005-2015,Harman Kardon,3.5,Earbud
 I006-2014,Marshall,6,Headset
 I007-2003,lam,8.5,None
 I008-2003,lam2,200.0,Phone
-I009-2002,lam3,16.0,Phone
+I009-2002,lam3,20.0,Phone
 I010-2009,lam4,5.0,Phone
 I011-2009,lam5,123.0,abc
