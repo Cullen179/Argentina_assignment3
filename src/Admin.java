@@ -607,10 +607,7 @@ public class Admin {
         HashMap<String, Integer> productList = getProductList();
 
         // Create array list to find max and min quantity
-        ArrayList<Integer> quantity = new ArrayList<>();
-        for (int num : productList.values()) {
-            quantity.add(num);
-        }
+        ArrayList<Integer> quantity = new ArrayList<>(productList.values());
         int min = Collections.min(quantity);
         int max = Collections.max(quantity);
 
