@@ -361,8 +361,8 @@ public class Customer {
         fileScanner.close();
     }
 
-    // Function to get the total spending of the customer form the orders file
-    public double getTotalSpending() throws IOException {
+    // Function to update the total spending of the customer
+    public double updateTotalSpending() throws IOException {
         double totalSpending = 0;
         String fileName = "./src/File/orders.txt";
         Scanner fileScanner = new Scanner(new File(fileName));
@@ -378,45 +378,27 @@ public class Customer {
         return this.totalSpending;
     }
 
-    // Function to update the total spending of the customer
-    public void updateTotalSpending() throws IOException {
-
-        String newData;
-        String fileName = "./src/File/customers.txt";
-        Scanner fileScanner = new Scanner(new File(fileName));
-        while (fileScanner.hasNext()) {
-            String line = fileScanner.nextLine();
-            Customer customer = generateCus(line);
-            if (this.getUsername().equals(customer.getUsername())) {
-
-                // Update customer info
-                newData = customer.generateCustomerInfo();
-                modifyFile(fileName, line, newData);
-                break;
-            }
-        }
-        fileScanner.close();
-    }
-
     // Function to update customer's membership depend on the total spending
-    public void updateMembership() throws IOException {
+    public static void changeSpendingmembership(int customerID) throws IOException {
         String fileName = "./src/File/customers.txt";
         Scanner fileScanner = new Scanner(new File(fileName));
         while (fileScanner.hasNext()) {
             String line = fileScanner.nextLine();
             Customer customer = generateCus(line);
             System.out.println(customer.getTotalSpending());
-            if (this.getUsername().equals(customer.getUsername())) {
+            if (customer.getID().equals(customerID)) {
+                double newSpending = customer.updateTotalSpending();
                 String newMembership = customer.getMembership();
                 if (customer.getTotalSpending() > 25000000) {
-                    newMembership = "platinum";
+                    newMembership = "Platinum";
                 } else if (customer.getTotalSpending() > 10000000) {
-                    newMembership = "gold";
+                    newMembership = "Gold";
                 } else if (customer.getTotalSpending() > 5000000) {
-                    newMembership = "silver";
+                    newMembership = "Silver";
                 }
-                this.setMembership(newMembership);
-                String newData = this.generateCustomerInfo();
+                customer.setMembership(newMembership);
+                customer.setTotalSpending(newSpending);
+                String newData = customer.generateCustomerInfo();
                 modifyFile(fileName, line, newData);
                 break;
             }
@@ -549,11 +531,11 @@ public class Customer {
     // function to apply membership discount
     private double applyDiscount(double beforeDiscount) {
         switch (this.getMembership()) {
-            case "platinum":
+            case "Platinum":
                 return beforeDiscount * 85 / 100;
-            case "gold":
+            case "Gold":
                 return beforeDiscount * 90 / 100;
-            case "silver":
+            case "Silver":
                 return beforeDiscount * 95 / 100;
             default:
                 return beforeDiscount;
@@ -794,6 +776,10 @@ public class Customer {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public double getTotalSpending() {
+        return totalSpending;
     }
 
     public void setTotalSpending(double totalSpending) {
