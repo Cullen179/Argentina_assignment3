@@ -127,7 +127,7 @@ public class Admin {
             Customer member = Customer.generateCus(memberInfo);
 
             // Display member only
-            if (!member.getMembership().equals("normal")) {
+            if (!member.getMembership().equals("Normal")) {
                 member.displayAccountInfo();
             }
         }
@@ -205,7 +205,7 @@ public class Admin {
         pw.close();
 
         // Print error if product name doesn't match
-        if (Product.checkProductExisted(productName)) {
+        if (!Product.checkProductExisted(productName)) {
             System.out.println("Product doesn't exist.Please try again");
         } else {
             System.out.println("Remove product successfully!");
@@ -497,6 +497,9 @@ public class Admin {
         // Boolean variable if orderID exists
         boolean matchOrderID = false;
 
+        // Customer ID of the order
+        String orderCustomerID = "";
+
         // Initiate variable to store new content
         String newContent = "";
 
@@ -521,7 +524,7 @@ public class Admin {
 
                     // Update status order if not
                     order.setStatus("paid");
-
+                    orderCustomerID = order.getCustomerID();
                 }
             }
 
@@ -540,6 +543,9 @@ public class Admin {
             System.out.println("\nThis order's id cannot found. Please try with another one.");
         } else {
             System.out.println("Change the status of the order successfully !");
+
+            // Update customer membership and spending
+            Customer.changeSpendingMembership(orderCustomerID);
         }
     }
 

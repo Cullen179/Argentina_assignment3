@@ -106,7 +106,7 @@ public class Product {
         String name;
         while (true) {
             System.out.println("What is the name of the product:");
-            name = sc.next();
+            name = sc.nextLine();
             // Check if product name exist
             if (checkProductExisted(name)) {
                 System.out.println("Product name already exist");

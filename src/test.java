@@ -1,5 +1,8 @@
+import java.util.Scanner;
+
 public class test {
     public static void main(String[] args) {
-        int a = InputValidator.getIntInput("", "wrong");
+        Scanner sc = new Scanner(System.in);
+        int a = sc.nextInt();
     }
 }

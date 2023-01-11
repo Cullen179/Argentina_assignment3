@@ -379,13 +379,12 @@ public class Customer {
     }
 
     // Function to update customer's membership depend on the total spending
-    public static void changeSpendingmembership(int customerID) throws IOException {
+    public static void changeSpendingMembership(String customerID) throws IOException {
         String fileName = "./src/File/customers.txt";
         Scanner fileScanner = new Scanner(new File(fileName));
         while (fileScanner.hasNext()) {
             String line = fileScanner.nextLine();
             Customer customer = generateCus(line);
-            System.out.println(customer.getTotalSpending());
             if (customer.getID().equals(customerID)) {
                 double newSpending = customer.updateTotalSpending();
                 String newMembership = customer.getMembership();
