@@ -704,7 +704,6 @@ public class Admin {
 
             if (customer.getTotalSpending() > maxSpending) {
                 maxSpending = customer.getTotalSpending();
-                System.out.println(maxSpending);
                 maxPaidCustomer.clear();
                 maxPaidCustomer.add(customer.getID() + " " + customer.getName());
             } else if (customer.getTotalSpending() == maxSpending) {
@@ -714,6 +713,7 @@ public class Admin {
         sc.close();
 
         System.out.println("Customer(s) pay(s) the most: " + maxPaidCustomer);
+        System.out.println("Total spending: " + maxSpending);
     }
 
     public void viewMemberList() throws IOException{
@@ -741,5 +741,10 @@ public class Admin {
         System.out.println("Platinum membership: " + memberList.get("Platinum"));
         System.out.println("Gold membership: " + memberList.get("Gold"));
         System.out.println("Silver membership: " + memberList.get("Silver"));
+    }
+
+    public static void main(String[] args) throws IOException{
+        Admin admin = new Admin();
+        admin.findMostPaidCustomer();
     }
 }
