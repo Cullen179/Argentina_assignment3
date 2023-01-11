@@ -388,11 +388,11 @@ public class Customer {
             if (customer.getID().equals(customerID)) {
                 double newSpending = customer.updateTotalSpending();
                 String newMembership = customer.getMembership();
-                if (customer.getTotalSpending() > 25000000) {
+                if (customer.getTotalSpending() > 25) {
                     newMembership = "Platinum";
-                } else if (customer.getTotalSpending() > 10000000) {
+                } else if (customer.getTotalSpending() > 10) {
                     newMembership = "Gold";
-                } else if (customer.getTotalSpending() > 5000000) {
+                } else if (customer.getTotalSpending() > 5) {
                     newMembership = "Silver";
                 }
                 customer.setMembership(newMembership);

@@ -1,3 +1,5 @@
-O001,C005,2023-01-05,4545 Baker Street,Marshall,2,11.4,paid
-O002,C004,2023-01-05,114 Fraser Avenue,Iphone 13 PM:Marshall,2:3,200000000.0,paid
-O003,C004,2023-01-05,114 Fraser Avenue,Iphone 13 PM:Marshall,3:2,34.5,delivered
+O001,C001,2023-01-05,4545 Baker Street,Marshall,2,11.4,paid
+O002,C004,2023-01-05,114 Fraser Avenue,Iphone 13 PM:Marshall,2:3,33.0,paid
+O003,C004,2023-01-05,114 Fraser Avenue,Iphone 13 PM:Marshall,3:2,34.5,paid
+O004,C002,2023-01-11,20 Irwin Street,Macbook Pro 15,1,8.5,delivered
+O005,C003,2023-01-11,12 Brunswick Street,Samsung Galaxy S22,2,9.0,paid
