@@ -112,7 +112,7 @@ public class Customer {
             }
             // request another attempt from the user if the input is incorrect
             else {
-                System.out.println("This password has already used! Please enter different username");
+                System.out.println("This password has already used! Please enter different password");
             }
         }
 
@@ -310,6 +310,7 @@ public class Customer {
             if (this.getUsername().equals(customer.getUsername())) {
                 while (true) {
                     String name = customer.getName();
+                    String password = customer.getPassword();
                     String email = customer.getEmail();
                     String address = customer.getAddress();
                     String phoneNumb = customer.getPhoneNumb();
@@ -319,6 +320,7 @@ public class Customer {
                     System.out.println("(2) - Email");
                     System.out.println("(3) - Address");
                     System.out.println("(4) - Phone number");
+                    System.out.println("(5) - Password");
                     String askCustomer = scanner.nextLine();
                     switch (askCustomer) {
                         case "1":
@@ -351,8 +353,22 @@ public class Customer {
                                 }
                             }
                             break;
+                        case "5":
+                            while(true){
+                                System.out.println("Enter new password: ");
+                                password = scanner.nextLine();
+                                // if the input is valid, break the loop
+                                if (!checkPassword(password)) {
+                                    break;
+                                }
+                                // request another attempt from the user if the input is incorrect
+                                else {
+                                    System.out.println("This password has already used! Please enter different password");
+                                }
+                            }
+                            break;
                     }
-                    newData = customer.getID() + "," + name + "," + email + "," + address + "," + phoneNumb + "," + customer.getMembership() + "," + customer.getUsername() + "," + customer.getPassword() + "," + totalSpending;
+                    newData = customer.getID() + "," + name + "," + email + "," + address + "," + phoneNumb + "," + customer.getMembership() + "," + customer.getUsername() + "," + password + "," + totalSpending;
                     modifyFile(fileName, line, newData);
                     break;
                 }
