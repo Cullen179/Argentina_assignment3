@@ -102,19 +102,9 @@ public class Customer {
             }
         }
 
-        //a loop to get customer's password
-        while (true) {
-            System.out.println("Enter password:");
-            password = scanner.nextLine();
-            // if the input is valid, break the loop
-            if (!checkPassword(password)) {
-                break;
-            }
-            // request another attempt from the user if the input is incorrect
-            else {
-                System.out.println("This password has already used! Please enter different password");
-            }
-        }
+        //get customer's password
+        System.out.println("Enter password:");
+        password = scanner.nextLine();
 
         //Notice that the user has successfully registered
         System.out.println("Register successful");
@@ -175,51 +165,36 @@ public class Customer {
         return usernameExist;
     }
 
-    // Function to check the uniqueness of the input password
-    private static boolean checkPassword(String inputPassword) throws IOException {
-        Boolean passwordExist = false;
-        String fileName = "./src/File/customers.txt";
-        Scanner fileScanner = new Scanner(new File(fileName));
-        while (fileScanner.hasNext()) {
-            String line = fileScanner.nextLine();
-            Customer customer = generateCus(line);
-            if (inputPassword.equals(customer.getPassword())) {
-                passwordExist = true;
-                System.out.println("Password already exist");
-                break;
-            }
-        }
-        fileScanner.close();
-        return passwordExist;
-    }
-
     public static Customer login() throws IOException {
         Boolean loggedIn = false;
         Scanner scanner = new Scanner(System.in);
         String fileName = "./src/File/customers.txt";
+
+        Customer user = null;
+        while(!loggedIn){
         Scanner fileScanner = new Scanner(new File(fileName));
         System.out.println("Enter username:");
         String username = scanner.nextLine();
         System.out.println("Enter password:");
         String password = scanner.nextLine();
-        
-        Customer user = null;
-        while (fileScanner.hasNextLine()) {
-            String line = fileScanner.nextLine();
-            Customer customer = generateCus(line);
-            if (username.equals(customer.getUsername()) && password.equals(customer.getPassword())) {
-                loggedIn = true;
-                System.out.println("Successfully login");
-
-                // Assign user to customer
-                user = customer;
+            while (fileScanner.hasNextLine()) {
+                String line = fileScanner.nextLine();
+                Customer customer = generateCus(line);
+                if (username.equals(customer.getUsername()) && password.equals(customer.getPassword())) {
+                    loggedIn = true;
+                    System.out.println("Successfully login");
+                    // Assign user to customer
+                    user = customer;
+                    break;
+                }
+            }
+            if(loggedIn){
+                fileScanner.close();
                 break;
+            } else {
+                System.out.println("Incorrect username or password");
             }
         }
-        if (loggedIn.equals(false)) {
-            System.out.println("Incorrect username or password");
-        }
-        fileScanner.close();
         return user;
     }
 
@@ -354,18 +329,8 @@ public class Customer {
                             }
                             break;
                         case "5":
-                            while(true){
-                                System.out.println("Enter new password: ");
-                                password = scanner.nextLine();
-                                // if the input is valid, break the loop
-                                if (!checkPassword(password)) {
-                                    break;
-                                }
-                                // request another attempt from the user if the input is incorrect
-                                else {
-                                    System.out.println("This password has already used! Please enter different password");
-                                }
-                            }
+                            System.out.println("Enter new password: ");
+                            password = scanner.nextLine();
                             break;
                     }
                     newData = customer.getID() + "," + name + "," + email + "," + address + "," + phoneNumb + "," + customer.getMembership() + "," + customer.getUsername() + "," + password + "," + totalSpending;
