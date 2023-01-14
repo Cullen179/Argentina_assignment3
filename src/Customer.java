@@ -242,37 +242,6 @@ public class Customer {
         reader.close();
     }
 
-    public static void modifyFile2(String filePath, String oldString, String newString) {
-        File file = new File(filePath);
-        String oldContent = "";
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            //Reading all the lines of input text file into oldContent
-            String line = reader.readLine();
-            int lineIndex = 0;
-
-            while (line != null) {
-                oldContent = oldContent + (lineIndex == 0 ? "" : "\n") + line;
-                line = reader.readLine();
-                lineIndex++;
-            }
-        } catch (IOException ioe) {
-            System.err.println(ioe.getMessage());
-            ioe.printStackTrace();
-        }
-
-        //Replacing oldString with newString in the oldContent
-        String newContent = oldContent.replaceAll(oldString, newString);
-
-        //Rewriting the input text file with newContent
-        try (PrintWriter pw = new PrintWriter(new FileWriter(file, false))) {
-            pw.printf(newContent);
-            pw.flush();
-        } catch (IOException ioe) {
-            System.err.println(ioe.getMessage());
-            ioe.printStackTrace();
-        }
-    }
-
     // Function to update account information of the customer
     public void updateAccountInfo() throws IOException {
         String newData;
