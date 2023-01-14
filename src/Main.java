@@ -123,6 +123,7 @@ public class Main {
                     System.out.println("You're ready to login");
                     customer = Customer.login();
                     userInput = true;
+                    break;
                 default:
                     System.out.println("Only enter register or login");
             }
