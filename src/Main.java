@@ -143,7 +143,7 @@ public class Main {
                 System.out.println("(7) : Find Order Details");
                 System.out.println("(8) : Display Previous Order(s)");
                 System.out.println("------------------");
-                int number = InputValidator.getIntInput("Execute your next action by entering one of listed numbers [0-7]: ",
+                int number = InputValidator.getIntInput("Execute your next action by entering one of listed numbers [0-8]: ",
                         "Your input number is invalid. Please try another one.");
                 switch (number) {
                     case 0:
