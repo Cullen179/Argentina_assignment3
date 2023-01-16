@@ -8,7 +8,6 @@ public class Product {
     private final String name;
     private double price;
     private String category;
-    private static ArrayList<String> categoryList = new ArrayList<>();
 
     public Product(String id, String name, double price, String category) {
         this.id = id;
@@ -86,21 +85,6 @@ public class Product {
         return String.format("%s,%s,%.1f,%s", product.getId(), product.getName(), product.getPrice(), product.getCategory());
     }
 
-    public static ArrayList<String> getCategoryList() throws IOException{
-        // Scan items file
-        Scanner sc = new Scanner(new File("./src/File/items.txt"));
-        // Loop through items file
-        while (sc.hasNextLine()) {
-            String item = sc.nextLine();
-            Product product = Product.generateProduct(item);
-            // If category is not in the list, add category
-            if (!categoryList.contains(product.getCategory())) {
-                categoryList.add(product.getCategory());
-            }
-        }
-        return categoryList;
-    }
-
     public static String checkNewProductName() throws IOException {
         Scanner sc = new Scanner(System.in);
         String name;
@@ -172,9 +156,5 @@ public class Product {
 
     public void setCategory(String category) {
         this.category = category;
-    }
-
-    public static void addCategory(String category) throws IOException{
-        getCategoryList().add(category);
     }
 }

@@ -2,7 +2,6 @@ import java.io.*;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.Scanner;
-import java.util.StringTokenizer;
 
 public class Customer {
     private String ID;
@@ -166,17 +165,17 @@ public class Customer {
     }
 
     public static Customer login() throws IOException {
-        Boolean loggedIn = false;
+        boolean loggedIn = false;
         Scanner scanner = new Scanner(System.in);
         String fileName = "./src/File/customers.txt";
 
         Customer user = null;
         while(!loggedIn){
-        Scanner fileScanner = new Scanner(new File(fileName));
-        System.out.println("Enter username:");
-        String username = scanner.nextLine();
-        System.out.println("Enter password:");
-        String password = scanner.nextLine();
+            Scanner fileScanner = new Scanner(new File(fileName));
+            System.out.println("Enter username:");
+            String username = scanner.nextLine();
+            System.out.println("Enter password:");
+            String password = scanner.nextLine();
             while (fileScanner.hasNextLine()) {
                 String line = fileScanner.nextLine();
                 Customer customer = generateCus(line);
@@ -185,7 +184,6 @@ public class Customer {
                     System.out.println("Successfully login");
                     // Assign user to customer
                     user = customer;
-                    break;
                 }
             }
             if(loggedIn){

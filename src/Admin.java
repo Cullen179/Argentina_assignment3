@@ -200,9 +200,11 @@ public class Admin {
         fileScanner.close();
 
         // Rewrite item file with new content
-        PrintWriter pw = new PrintWriter(new FileWriter(itemFile, false));
-        pw.printf(newContent);
-        pw.close();
+        try (PrintWriter pw = new PrintWriter(new FileWriter(itemFile, false))) {
+            pw.printf(newContent);
+        } catch (IOException e) {
+            System.out.println("Cannot add content to file");
+        }
 
         // Print error if product name doesn't match
         if (!Product.checkProductExisted(productName)) {
@@ -248,9 +250,11 @@ public class Admin {
         fileScanner.close();
 
         // Rewrite item file with new content
-        PrintWriter pw = new PrintWriter(new FileWriter(itemFile, false));
-        pw.printf(newContent);
-        pw.close();
+        try (PrintWriter pw = new PrintWriter(new FileWriter(itemFile, false))) {
+            pw.printf(newContent);
+        } catch (IOException e) {
+            System.out.println("Cannot add content to file");
+        }
 
         // Print error if product name doesn't match
         if (!Product.checkProductExisted(productName)) {
@@ -284,18 +288,11 @@ public class Admin {
         if (matchCategory) {
             System.out.println("Category is already available. Please try again");
         } else {
-            PrintWriter pw = new PrintWriter(new FileWriter("./src/File/category.txt", true));
-            pw.printf("\n" + newCategory);
-            pw.close();
-        }
-
-        // Check if new category is in category list
-        if (!Product.getCategoryList().contains(newCategory)) {
-            Product.addCategory(newCategory);
-            System.out.println("Add new category successfully !");
-
-        } else {
-            System.out.println("Category is already available. Please try again");
+            try (PrintWriter pw = new PrintWriter(new FileWriter("./src/File/category.txt", true))) {
+                pw.printf("\n" + newCategory);
+            } catch (IOException e) {
+                System.out.println("Cannot add content to file");
+            }
         }
     }
 
@@ -345,9 +342,11 @@ public class Admin {
         fileScanner.close();
 
         // Rewrite item file with new content
-        PrintWriter pw = new PrintWriter(new FileWriter("./src/File/category.txt", false));
-        pw.printf(newContent);
-        pw.close();
+        try (PrintWriter pw = new PrintWriter(new FileWriter("./src/File/category.txt", false))) {
+            pw.printf(newContent);
+        } catch (IOException e) {
+            System.out.println("Cannot add content to file");
+        }
 
         // Print error if category doesn't exist
         if (!matchCategory) {
@@ -388,9 +387,11 @@ public class Admin {
         fileScanner.close();
 
         // Rewrite item file with new content
-        PrintWriter pw = new PrintWriter(new FileWriter(items, false));
-        pw.printf(newContent);
-        pw.close();
+        try (PrintWriter pw = new PrintWriter(new FileWriter(items, false))) {
+            pw.printf(newContent);
+        } catch (IOException e) {
+            System.out.println("Cannot add content to file");
+        }
     }
     public void removeCustomer() throws IOException{
         System.out.println("-".repeat(17));
@@ -440,9 +441,11 @@ public class Admin {
         }
         fileScanner.close();
         // Rewrite item file with new content
-        PrintWriter pw = new PrintWriter(new FileWriter(customerFile, false));
-        pw.printf(newContent);
-        pw.close();
+        try (PrintWriter pw = new PrintWriter(new FileWriter(customerFile, false))) {
+            pw.printf(newContent);
+        } catch (IOException e) {
+            System.out.println("Cannot add content to file");
+        }
 
         // Print error if customer ID doesn't exist
         if (!matchCus) {
@@ -531,12 +534,14 @@ public class Admin {
             // If the order line reach last line, don't add new line
             newContent += (order.generateOrderLine() + (fileScanner.hasNextLine() ? "\n" : ""));
         }
-
         fileScanner.close();
+
         // Rewrite item file with new content
-        PrintWriter pw = new PrintWriter(new FileWriter(orders, false));
-        pw.printf(newContent);
-        pw.close();
+        try (PrintWriter pw = new PrintWriter(new FileWriter(orders, false))) {
+            pw.printf(newContent);
+        } catch (IOException e) {
+            System.out.println("Cannot add content to file");
+        }
 
         // In case the order's id is not existed, prompt user a message.
         if (!matchOrderID) {
@@ -590,8 +595,8 @@ public class Admin {
         double revenue = 0;
         while (scannerOrder.hasNextLine()) {
             String orderInfo = scannerOrder.nextLine();
-            // Generate order from order info line
 
+            // Generate order from order info line
             Order order = Order.generateOrder(orderInfo);
             if (order.getStatus().equals("paid")) {
                 double orderTotal = order.getPrice();
@@ -691,10 +696,12 @@ public class Admin {
         System.out.println("-".repeat(17));
         System.out.println("\nFIND CUSTOMER PAY THE MOST\n");
         System.out.println("-".repeat(17));
+
         // Create a scanner object to read from a member text file.
         Scanner sc = new Scanner(new File("./src/File/customers.txt"));
         double maxSpending = 0;
         ArrayList<String> maxPaidCustomer = new ArrayList<>();
+
         // A loop is used to display detailed information of each member.
         while (sc.hasNextLine()) {
             String customerInfo = sc.nextLine();
@@ -741,10 +748,5 @@ public class Admin {
         System.out.println("Platinum membership: " + memberList.get("Platinum"));
         System.out.println("Gold membership: " + memberList.get("Gold"));
         System.out.println("Silver membership: " + memberList.get("Silver"));
-    }
-
-    public static void main(String[] args) throws IOException{
-        Admin admin = new Admin();
-        admin.findMostPaidCustomer();
     }
 }
