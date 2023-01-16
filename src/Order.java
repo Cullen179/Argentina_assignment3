@@ -56,6 +56,7 @@ public class Order {
         return address;
     }
 
+    // Get all the product bought and quantity from customers
     public HashMap<String, Integer> getProductList() {
         String[] productNameList = this.productName.split(":");
         String[] quantityList = this.quantity.split(":");

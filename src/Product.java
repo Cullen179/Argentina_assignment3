@@ -85,6 +85,7 @@ public class Product {
         return String.format("%s,%s,%.1f,%s", product.getId(), product.getName(), product.getPrice(), product.getCategory());
     }
 
+    // Method to check if new product is valid
     public static String checkNewProductName() throws IOException {
         Scanner sc = new Scanner(System.in);
         String name;

@@ -547,7 +547,7 @@ public class Admin {
         if (!matchOrderID) {
             System.out.println("\nThis order's id cannot found. Please try with another one.");
         } else {
-            System.out.println("Change the status of the order successfully !");
+            System.out.println("Change the status of the order successfully!");
 
             // Update customer membership and spending
             Customer.changeSpendingMembership(orderCustomerID);
