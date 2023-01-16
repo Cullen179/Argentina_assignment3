@@ -7,5 +7,5 @@
 ## Github Repository
 https://github.com/Cullen179/Prog1-Argentina
 ## Presentation
-Slides: https://drive.google.com/file/d/1ToAhJVDTCM4vi8SQ0nshSAzfCWlEpMjA/view?usp=sharing 
-Youtube video: 
+- Slides: https://drive.google.com/file/d/1ToAhJVDTCM4vi8SQ0nshSAzfCWlEpMjA/view?usp=sharing 
+- Youtube Video: 
